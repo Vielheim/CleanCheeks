@@ -1,0 +1,10 @@
+# CS3216 Assignment 3
+
+## Members
+
+| Name                | Matric No. | Contributions |
+| ------------------- | ---------- | ------------- |
+| Keane Chan Jun Yu   | A0205678W  |               |
+| Wu Peirong          |            |               |
+| Tan Su Yin          | A0205369B  |               |
+| Terence Ho Wei Yang | A0196511E  |               |
