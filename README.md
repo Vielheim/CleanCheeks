@@ -2,12 +2,21 @@
 
 ## Setup
 
+### Development server ports
+
+| Service  | Port |
+| -------- | ---- |
+| Frontend |      |
+| Backend  | 8000 |
+
+### Frontend
+
+To be updated
+
 ### Backend
 
 1. Install npm packages using `npm i`.
 2. Run the backend service using `npm run dev`.
-
-**Currently, the server has not been set up. You should see a "Hello!" in your console**
 
 ## Members
 
