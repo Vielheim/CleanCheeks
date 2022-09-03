@@ -6,12 +6,13 @@
 
 | Service  | Port |
 | -------- | ---- |
-| Frontend |      |
+| Frontend | 3000 |
 | Backend  | 8000 |
 
 ### Frontend
 
-To be updated
+1. Install npm packages using `npm i`.
+2. Run the backend service using `npm start`.
 
 ### Backend
 
@@ -23,6 +24,6 @@ To be updated
 | Name                | Matric No. | Contributions |
 | ------------------- | ---------- | ------------- |
 | Keane Chan Jun Yu   | A0205678W  |               |
-| Wu Peirong          |            |               |
+| Wu Peirong          | A0199926E  |               |
 | Tan Su Yin          | A0205369B  |               |
 | Terence Ho Wei Yang | A0196511E  |               |
