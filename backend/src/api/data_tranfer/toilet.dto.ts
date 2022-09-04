@@ -13,7 +13,5 @@ export type UpdateToiletDTO = Optional<
     "name" | "floor" | "longitude" | "latitude"
 >;
 
-export type FilterToiletsDTO = {
-    isDeleted?: boolean;
-    includeDeleted?: boolean;
-};
+// TODO update filtersDTO
+export type FilterToiletsDTO = {};

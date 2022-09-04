@@ -10,7 +10,6 @@ export const toToilet = ({
     latitude,
     createdAt,
     updatedAt,
-    deletedAt,
 }: IToiletOutput): IToilet => {
     return {
         toilet_code,
@@ -20,6 +19,5 @@ export const toToilet = ({
         latitude,
         createdAt,
         updatedAt,
-        deletedAt,
     };
 };

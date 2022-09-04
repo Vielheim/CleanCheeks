@@ -46,17 +46,9 @@ export const getById = async (toilet_code: string): Promise<IToiletOutput> => {
     return toilet;
 };
 
-// TODO update to suit our use case better and make it readable
-// currently idk what it does lol
+// TODO update to filter via filters
 export const getAll = async (
     filters?: GetAllToiletsFilters
 ): Promise<IToiletOutput[]> => {
-    return Toilet.findAll({
-        where: {
-            ...(filters?.isDeleted && { deletedAt: { [Op.not]: null } }),
-        },
-        ...((filters?.isDeleted || filters?.includedDeleted) && {
-            paranoid: true,
-        }),
-    });
+    return Toilet.findAll();
 };

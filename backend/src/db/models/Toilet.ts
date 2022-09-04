@@ -9,15 +9,11 @@ interface IToiletAttributes {
     latitude: number;
     createdAt?: Date;
     updatedAt?: Date;
-    deletedAt?: Date;
 }
 
 // IToiletInput defines the type of object passed to model.create()
 export interface IToiletInput
-    extends Optional<
-        IToiletAttributes,
-        "createdAt" | "updatedAt" | "deletedAt"
-    > {}
+    extends Optional<IToiletAttributes, "createdAt" | "updatedAt"> {}
 
 // IToiletOutput defines the return object from model.create(), model.update(), model.findOne() etc.
 export interface IToiletOutput extends Required<IToiletAttributes> {}
@@ -35,7 +31,6 @@ class Toilet
     // timestamps! (Will be updated by sequelize)
     public createdAt!: Date;
     public updatedAt!: Date;
-    public deletedAt!: Date;
 }
 
 Toilet.init(
@@ -64,10 +59,6 @@ Toilet.init(
     {
         sequelize: sequelizeConnection,
         timestamps: true, // auto-update timestamps
-
-        // TODO: remove soft-delete (paranoid) if it does not suit our use case
-        // imposes a soft delete on the model by adding a deletedAt attribute that marks records as deleted when invoking the destroy method.
-        paranoid: true,
     }
 );
 

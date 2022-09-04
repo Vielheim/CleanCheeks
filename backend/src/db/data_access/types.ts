@@ -1,4 +1,2 @@
-export interface GetAllToiletsFilters {
-    isDeleted?: boolean;
-    includedDeleted?: boolean;
-}
+// TODO update filtering
+export interface GetAllToiletsFilters {}

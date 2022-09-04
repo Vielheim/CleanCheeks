@@ -6,5 +6,4 @@ export interface IToilet {
     latitude: number;
     createdAt: Date;
     updatedAt: Date;
-    deletedAt?: Date;
 }
