@@ -3,9 +3,9 @@ import { Toilet } from "../models";
 import { IToiletInput, IToiletOutput } from "../models/Toilet";
 import { GetAllToiletsFilters } from "./types";
 
-// @todo error and corner-cases handling for each data access function
+// TODO error and corner-cases handling for each data access function
 
-// @todo handle duplicate keys
+// TODO handle duplicate keys
 export const create = async (payload: IToiletInput): Promise<IToiletOutput> => {
     const toilet = await Toilet.create(payload);
     return toilet;
@@ -18,7 +18,7 @@ export const update = async (
     const toilet = await Toilet.findByPk(toilet_code);
 
     if (!toilet) {
-        // @todo handle error
+        // TODO handle error
         throw new Error("Toilet not found!");
     }
 
@@ -26,7 +26,7 @@ export const update = async (
     return updatedToilet;
 };
 
-// @todo handle missing key or deleted
+// TODO handle missing key or deleted
 export const deleteById = async (toilet_code: string): Promise<boolean> => {
     const deletedToiletCount = await Toilet.destroy({
         where: { toilet_code },
@@ -35,7 +35,7 @@ export const deleteById = async (toilet_code: string): Promise<boolean> => {
     return !!deletedToiletCount;
 };
 
-// @todo handle missing key or deleted
+// TODO handle missing key or deleted
 export const getById = async (toilet_code: string): Promise<IToiletOutput> => {
     const toilet = await Toilet.findByPk(toilet_code);
 
@@ -46,7 +46,7 @@ export const getById = async (toilet_code: string): Promise<IToiletOutput> => {
     return toilet;
 };
 
-// @todo update to suit our use case better and make it readable
+// TODO update to suit our use case better and make it readable
 // currently idk what it does lol
 export const getAll = async (
     filters?: GetAllToiletsFilters

@@ -65,7 +65,7 @@ Toilet.init(
         sequelize: sequelizeConnection,
         timestamps: true, // auto-update timestamps
 
-        // @todo: remove soft-delete (paranoid) if it does not suit our use case
+        // TODO: remove soft-delete (paranoid) if it does not suit our use case
         // imposes a soft delete on the model by adding a deletedAt attribute that marks records as deleted when invoking the destroy method.
         paranoid: true,
     }
