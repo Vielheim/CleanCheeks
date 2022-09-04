@@ -3,20 +3,34 @@ import { IToilet } from "../../interfaces";
 
 // maps data from db layer to api layer
 export const toToilet = ({
-    toilet_code,
-    name,
+    code,
+    building,
+    description,
     floor,
     longitude,
     latitude,
+    picture,
+    num_seats,
+    num_squats,
+    cleanliness,
+    type,
+    utilities,
     createdAt,
     updatedAt,
 }: IToiletOutput): IToilet => {
     return {
-        toilet_code,
-        name,
+        code,
+        building,
+        description,
         floor,
         longitude,
         latitude,
+        picture,
+        num_seats,
+        num_squats,
+        cleanliness,
+        type,
+        utilities,
         createdAt,
         updatedAt,
     };

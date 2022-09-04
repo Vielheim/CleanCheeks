@@ -1,9 +1,17 @@
+import { ToiletType, Utilities } from "../../enums";
 export interface IToilet {
-    toilet_code: string;
-    name: string;
+    code: string;
+    building: string;
+    description: string;
     floor: number;
     longitude: number;
     latitude: number;
-    createdAt: Date;
-    updatedAt: Date;
+    picture?: Blob;
+    num_seats: number;
+    num_squats: number;
+    cleanliness: number;
+    type: ToiletType;
+    utilities: Utilities[];
+    createdAt?: Date;
+    updatedAt?: Date;
 }
