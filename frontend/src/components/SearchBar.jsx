@@ -1,58 +1,111 @@
-import React, {useState} from 'react';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Form from 'react-bootstrap/Form';
-import InputGroup from 'react-bootstrap/InputGroup';
-import ListGroup from 'react-bootstrap/ListGroup';
-import {Search} from 'react-bootstrap-icons';
+import React, { useState } from "react";
+import FilterModal from "./FilterModal";
 
-const VENUES_MOCK = [
-  "UTown",
-  "COM1",
-  "ERC",
-];
+import Button from "react-bootstrap/Button";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Form from "react-bootstrap/Form";
+import InputGroup from "react-bootstrap/InputGroup";
+import ListGroup from "react-bootstrap/ListGroup";
+import { BsFilter, BsSearch } from "react-icons/bs";
+
+import { TOILET_TYPE, VENUES_MOCK } from "./constants";
+
+const INITIAL_FORM_STATE = {
+  search: "",
+  modal: {
+    gender: TOILET_TYPE.MALE,
+    haveShowers: false,
+  },
+};
 
 const SearchBar = () => {
-  const [keyword, setKeyword] = useState("");
+  let searchTimeoutId = 0;
+  const [form, setForm] = useState(INITIAL_FORM_STATE);
   const [isShowList, setIsShowList] = useState(false);
-  const [isListFocused, setIsListFocused] = useState(false);
-  const handleOnChange = ({ target: { value } }) => {
-    setKeyword(value);
-  };
-  const onFormLoseFocus = () => {
-    setTimeout(() => {
-      setIsShowList(isListFocused);
-    }, 300);
-  };
-  const filterVenues =
-    venues => venues.filter(venue => venue.toLowerCase().includes(keyword.toLowerCase()));
+  const [isShowModal, setIsShowModal] = useState(false);
 
+  const handleModalClose = () => {
+    setIsShowModal(false);
+  };
+
+  const handleOnChange = ({ target: { value } }) => {
+    setForm({
+      ...form,
+      search: value,
+    });
+  };
+
+  const handleModalOnSubmit = (modalState) => {
+    setForm({
+      ...form,
+      modal: modalState,
+    });
+  };
+
+  const onFormBlur = () => {
+    searchTimeoutId = setTimeout(() => setIsShowList(false), 500);
+  };
+
+  const onListFocus = () => {
+    if (searchTimeoutId > 0) {
+      clearTimeout(searchTimeoutId);
+    }
+  };
+
+  const filterVenues = (venues) =>
+    venues.filter((venue) =>
+      venue.toLowerCase().includes(form.search.toLowerCase())
+    );
 
   return (
-    <Container>
-      <Row>
-        <Form onChange={handleOnChange} onFocus={() => setIsShowList(true)}
-          onBlur={onFormLoseFocus}>
-          <InputGroup className="mb-1 search-row">
-            <InputGroup.Text><Search height={24}/></InputGroup.Text>            
-            <Form.Control
-              placeholder="Where are you? Eg: UTown, COM1"
-              
-            />
-          </InputGroup>
-        </Form>
-    </Row>
-    {isShowList &&
-      <Row>
-        <Col>
-          <ListGroup onFocus={() => setIsListFocused(true)} onBlur={() => setIsListFocused(false)}>
-            {filterVenues(VENUES_MOCK).map(venue => <ListGroup.Item key={venue} action>{venue}</ListGroup.Item>)}
-          </ListGroup>
-        </Col>
-      </Row>
-    }
-    </Container>
+    <>
+      <Container>
+        <Row>
+          <Col xs={11}>
+            <InputGroup
+              onChange={handleOnChange}
+              onFocus={() => setIsShowList(true)}
+              onBlur={onFormBlur}
+              className="mb-1 search-row"
+            >
+              <InputGroup.Text>
+                <BsSearch height={24} />
+              </InputGroup.Text>
+              <Form.Control placeholder="Where are you? Eg: UTown, COM1" />
+            </InputGroup>
+          </Col>
+          <Col className="p-0">
+            <Button onClick={() => setIsShowModal(true)}>
+              <BsFilter height={24} />
+            </Button>
+          </Col>
+        </Row>
+        {isShowList && (
+          <Row>
+            <Col>
+              <ListGroup
+                onFocus={onListFocus}
+                onBlur={() => setIsShowList(false)}
+              >
+                {filterVenues(VENUES_MOCK).map((venue) => (
+                  <ListGroup.Item key={venue} action>
+                    {venue}
+                  </ListGroup.Item>
+                ))}
+              </ListGroup>
+            </Col>
+          </Row>
+        )}
+      </Container>
+      <FilterModal
+        show={isShowModal}
+        handleModalClose={handleModalClose}
+        handleModalSubmit={handleModalOnSubmit}
+        state={form.modal}
+      />
+    </>
   );
 };
 

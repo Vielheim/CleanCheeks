@@ -1,0 +1,103 @@
+import React, { useState } from "react";
+
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Form from "react-bootstrap/Form";
+import { BiMale, BiFemale, BiHandicap } from "react-icons/bi";
+
+import { TOILET_TYPE } from "./constants";
+
+const FilterModal = ({ show, state, handleModalClose, handleModalSubmit }) => {
+  const [modalState, setModalState] = useState(state);
+  const onFieldsChange = ({ currentTarget }) => {
+    const { name, value } = currentTarget;
+    if (name === "haveShowers") {
+      setModalState({
+        ...modalState,
+        haveShowers: !modalState.haveShowers,
+      });
+    } else {
+      setModalState({
+        ...modalState,
+        gender: value,
+      });
+    }
+  };
+
+  const onSubmit = () => {
+    handleModalSubmit(modalState);
+  };
+
+  return (
+    <Modal show={show}>
+      <Modal.Dialog>
+        <Modal.Header>
+          <Modal.Title>Filters</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Container>
+            <Row className="mb-2">
+              <h6>I am looking for:</h6>
+            </Row>
+
+            <Row className="mb-3">
+              <Col className="col-4 d-flex justify-content-center">
+                <Button
+                  variant="light"
+                  value={TOILET_TYPE.MALE}
+                  onClick={onFieldsChange}
+                >
+                  <BiMale />
+                </Button>
+              </Col>
+              <Col className="col-4 d-flex justify-content-center">
+                <Button
+                  variant="light"
+                  value={TOILET_TYPE.FEMALE}
+                  onClick={onFieldsChange}
+                >
+                  <BiFemale />
+                </Button>
+              </Col>
+              <Col className="col-4 d-flex justify-content-center">
+                <Button
+                  variant="light"
+                  value={TOILET_TYPE.HANDICAPPED}
+                  onClick={onFieldsChange}
+                >
+                  <BiHandicap />
+                </Button>
+              </Col>
+            </Row>
+
+            <Row className="mb-2">
+              <h6>Utilities</h6>
+            </Row>
+            <Row>
+              <Form.Check
+                className="pl-3"
+                label="Showers"
+                name="haveShowers"
+                onChange={onFieldsChange}
+                checked={modalState.haveShowers}
+              />
+            </Row>
+          </Container>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleModalClose}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={onSubmit}>
+            Save Changes
+          </Button>
+        </Modal.Footer>
+      </Modal.Dialog>
+    </Modal>
+  );
+};
+
+export default FilterModal;
