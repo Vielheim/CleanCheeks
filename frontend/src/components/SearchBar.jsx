@@ -16,8 +16,14 @@ const VENUES_MOCK = [
 const SearchBar = () => {
   const [keyword, setKeyword] = useState("");
   const [isShowList, setIsShowList] = useState(false);
+  const [isListFocused, setIsListFocused] = useState(false);
   const handleOnChange = ({ target: { value } }) => {
     setKeyword(value);
+  };
+  const onFormLoseFocus = () => {
+    setTimeout(() => {
+      setIsShowList(isListFocused);
+    }, 300);
   };
   const filterVenues =
     venues => venues.filter(venue => venue.toLowerCase().includes(keyword.toLowerCase()));
@@ -27,7 +33,7 @@ const SearchBar = () => {
     <Container>
       <Row>
         <Form onChange={handleOnChange} onFocus={() => setIsShowList(true)}
-          onBlur={() => setIsShowList(false)}>
+          onBlur={onFormLoseFocus}>
           <InputGroup className="mb-1 search-row">
             <InputGroup.Text><Search height={24}/></InputGroup.Text>            
             <Form.Control
@@ -40,7 +46,9 @@ const SearchBar = () => {
     {isShowList &&
       <Row>
         <Col>
-          <ListGroup>{filterVenues(VENUES_MOCK).map(venue => <ListGroup.Item key={venue} action>{venue}</ListGroup.Item>)}</ListGroup>
+          <ListGroup onFocus={() => setIsListFocused(true)} onBlur={() => setIsListFocused(false)}>
+            {filterVenues(VENUES_MOCK).map(venue => <ListGroup.Item key={venue} action>{venue}</ListGroup.Item>)}
+          </ListGroup>
         </Col>
       </Row>
     }
