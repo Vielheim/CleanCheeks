@@ -17,9 +17,12 @@
 ### Backend
 
 1. Setup a `postgres` database on your local machine.
-2. Create a `.env` file in `/backend` to store credentials for postgres. Refer to [backend/.env.sample](backend/.env.sample) for more
+2. Create a `.env` file in `/backend` to store credentials for postgres. Refer to [backend/.env.sample](backend/.env.sample) for more info.
 3. Install npm packages using `npm i`.
 4. Run the backend service using `npm run dev`.
+
+**Note:** 
+The API endpoint can be found at http://localhost:8000/api/v1.
 
 ## Members
 

@@ -23,7 +23,7 @@ export const update = async (
 
 export const deleteById = async (toilet_code: string): Promise<boolean> => {
     const deletedToiletCount = await Toilet.destroy({
-        where: { code: toilet_code },
+      where: { id: toilet_code },
     });
 
     return !!deletedToiletCount;
