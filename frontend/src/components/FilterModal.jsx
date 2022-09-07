@@ -9,6 +9,7 @@ import Form from "react-bootstrap/Form";
 import { BiMale, BiFemale, BiHandicap } from "react-icons/bi";
 
 import { TOILET_TYPE } from "./constants";
+import "./FilterModal.scss";
 
 const FilterModal = ({ show, state, handleModalClose, handleModalSubmit }) => {
   const [modalState, setModalState] = useState(state);
@@ -78,7 +79,7 @@ const FilterModal = ({ show, state, handleModalClose, handleModalSubmit }) => {
             </Row>
             <Row>
               <Form.Check
-                className="pl-3"
+                className="checkbox"
                 label="Showers"
                 name="haveShowers"
                 onChange={onFieldsChange}
