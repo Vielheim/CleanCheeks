@@ -51,7 +51,7 @@ const FilterModal = ({ show, state, handleModalClose, handleModalSubmit }) => {
                   value={TOILET_TYPE.MALE}
                   onClick={onFieldsChange}
                 >
-                  <BiMale />
+                  <BiMale size={32} />
                 </Button>
               </Col>
               <Col className="col-4 d-flex justify-content-center">
@@ -60,7 +60,7 @@ const FilterModal = ({ show, state, handleModalClose, handleModalSubmit }) => {
                   value={TOILET_TYPE.FEMALE}
                   onClick={onFieldsChange}
                 >
-                  <BiFemale />
+                  <BiFemale size={32} />
                 </Button>
               </Col>
               <Col className="col-4 d-flex justify-content-center">
@@ -69,7 +69,7 @@ const FilterModal = ({ show, state, handleModalClose, handleModalSubmit }) => {
                   value={TOILET_TYPE.HANDICAPPED}
                   onClick={onFieldsChange}
                 >
-                  <BiHandicap />
+                  <BiHandicap size={32} />
                 </Button>
               </Col>
             </Row>

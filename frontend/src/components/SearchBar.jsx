@@ -63,7 +63,7 @@ const SearchBar = () => {
     <>
       <Container>
         <Row>
-          <Col xs={11}>
+          <Col xs={10}>
             <InputGroup
               onChange={handleOnChange}
               onFocus={() => setIsShowList(true)}
@@ -76,7 +76,7 @@ const SearchBar = () => {
               <Form.Control placeholder="Where are you? Eg: UTown, COM1" />
             </InputGroup>
           </Col>
-          <Col className="p-0">
+          <Col className="px-2">
             <Button onClick={() => setIsShowModal(true)}>
               <BsFilter height={24} />
             </Button>
