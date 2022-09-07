@@ -1,45 +1,64 @@
 import { Router, Request, Response } from "express";
-import * as toiletController from "../controllers/toilet";
+import { Utils } from 'sequelize/types';
+import * as toiletController from '../controllers/toilet';
 import {
-    CreateToiletDTO,
-    FilterToiletsDTO,
-    UpdateToiletDTO,
-} from "../data_tranfer/toilet.dto";
+  CreateToiletDTO,
+  FilterToiletsDTO,
+  UpdateToiletDTO,
+} from '../data_tranfer/toilet.dto';
+import Util from '../util/Util';
 
 const toiletsRouter = Router();
 
-toiletsRouter.post("/", async (req: Request, res: Response) => {
+toiletsRouter.post('/', async (req: Request, res: Response) => {
+  try {
     const payload: CreateToiletDTO = req.body;
     const result = await toiletController.create(payload);
-    return res.status(200).json(result);
+    return Util.sendSuccess(res, 201, 'Added toilet', result);
+  } catch (error) {
+    return Util.sendFailure(res, 400, error);
+  }
 });
 
-toiletsRouter.put("/:toilet_code", async (req: Request, res: Response) => {
+toiletsRouter.put('/:toilet_code', async (req: Request, res: Response) => {
+  try {
     const toilet_code = req.params.toilet_code;
     const payload: UpdateToiletDTO = req.body;
     const result = await toiletController.update(toilet_code, payload);
-    return res.status(201).json(result);
+    return Util.sendSuccess(res, 200, 'Updated toilet', result);
+  } catch (error) {
+    return Util.sendFailure(res, 400, error);
+  }
 });
 
-toiletsRouter.delete("/:toilet_code", async (req: Request, res: Response) => {
+toiletsRouter.delete('/:toilet_code', async (req: Request, res: Response) => {
+  try {
     const toilet_code = req.params.toilet_code;
     const result = await toiletController.deleteById(toilet_code);
-    console.log(`result ${result}`);
-    return res.status(200).json({
-        success: result,
-    });
+    return Util.sendSuccess(res, 200, 'Deleted toilet', result);
+  } catch (error) {
+    return Util.sendFailure(res, 400, error);
+  }
 });
 
-toiletsRouter.get("/:toilet_code", async (req: Request, res: Response) => {
+toiletsRouter.get('/:toilet_code', async (req: Request, res: Response) => {
+  try {
     const toilet_code = req.params.toilet_code;
     const result = await toiletController.getById(toilet_code);
-    return res.status(200).json(result);
+    return Util.sendSuccess(res, 200, 'Retrieved toilet', result);
+  } catch (error) {
+    return Util.sendFailure(res, 400, error);
+  }
 });
 
-toiletsRouter.get("/", async (req: Request, res: Response) => {
+toiletsRouter.get('/', async (req: Request, res: Response) => {
+  try {
     const filters: FilterToiletsDTO = req.query;
     const results = await toiletController.getAll(filters);
-    return res.status(200).json(results);
+    return Util.sendSuccess(res, 200, 'Retrieved all toilets', results);
+  } catch (error) {
+    return Util.sendFailure(res, 400, error);
+  }
 });
 
 export default toiletsRouter;
