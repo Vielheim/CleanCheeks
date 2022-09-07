@@ -29,6 +29,7 @@
         "@types/sequelize": "^4.28.14",
         "concurrently": "^7.3.0",
         "nodemon": "^2.0.19",
+        "prettier": "2.7.1",
         "rimraf": "^3.0.2"
     }
 }
