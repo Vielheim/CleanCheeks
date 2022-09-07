@@ -7,18 +7,18 @@ export const create = (payload: IToiletInput): Promise<IToiletOutput> => {
 };
 
 export const update = (
-    toilet_code: string,
-    payload: Partial<IToiletInput>
+  id: string,
+  payload: Partial<IToiletInput>
 ): Promise<IToiletOutput> => {
-    return toiletDataAccess.update(toilet_code, payload);
+  return toiletDataAccess.update(id, payload);
 };
 
-export const deleteById = (toilet_code: string): Promise<boolean> => {
-    return toiletDataAccess.deleteById(toilet_code);
+export const deleteById = (id: string): Promise<boolean> => {
+  return toiletDataAccess.deleteById(id);
 };
 
-export const getById = (toilet_code: string): Promise<IToiletOutput> => {
-    return toiletDataAccess.getById(toilet_code);
+export const getById = (id: string): Promise<IToiletOutput> => {
+  return toiletDataAccess.getById(id);
 };
 
 export const getAll = (
