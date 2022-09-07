@@ -1,5 +1,4 @@
-import { Router, Request, Response } from "express";
-import { Utils } from 'sequelize/types';
+import { Request, Response, Router } from 'express';
 import * as toiletController from '../controllers/toilet';
 import {
   CreateToiletDTO,

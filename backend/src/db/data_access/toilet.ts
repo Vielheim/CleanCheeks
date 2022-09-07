@@ -8,35 +8,35 @@ export const create = async (payload: IToiletInput): Promise<IToiletOutput> => {
 };
 
 export const update = async (
-    toilet_code: string,
-    payload: Partial<IToiletInput>
+  id: string,
+  payload: Partial<IToiletInput>
 ): Promise<IToiletOutput> => {
-    const toilet = await Toilet.findByPk(toilet_code);
+  const toilet = await Toilet.findByPk(id);
 
-    if (!toilet) {
-        throw new Error("Toilet not found!");
-    }
+  if (toilet == null) {
+    throw new Error(`Toilet with id ${id} not found!`);
+  }
 
-    const updatedToilet = await toilet.update(payload);
-    return updatedToilet;
+  const updatedToilet = await toilet.update(payload);
+  return updatedToilet;
 };
 
-export const deleteById = async (toilet_code: string): Promise<boolean> => {
-    const deletedToiletCount = await Toilet.destroy({
-      where: { id: toilet_code },
-    });
+export const deleteById = async (id: string): Promise<boolean> => {
+  const deletedToiletCount = await Toilet.destroy({
+    where: { id: id },
+  });
 
-    return !!deletedToiletCount;
+  return !!deletedToiletCount;
 };
 
-export const getById = async (toilet_code: string): Promise<IToiletOutput> => {
-    const toilet = await Toilet.findByPk(toilet_code);
+export const getById = async (id: string): Promise<IToiletOutput> => {
+  const toilet = await Toilet.findByPk(id);
 
-    if (!toilet) {
-        throw new Error("Toilet not found!");
-    }
+  if (!toilet) {
+    throw new Error(`Toilet with id ${id} not found!`);
+  }
 
-    return toilet;
+  return toilet;
 };
 
 // TODO update to filter via filters

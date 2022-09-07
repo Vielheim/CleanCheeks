@@ -14,7 +14,13 @@ export default class Util {
     });
   }
 
-  static sendFailure(res: Response, statusCode: number, message: any) {
+  static sendFailure(res: Response, statusCode: number, error: unknown) {
+    let message;
+    if (typeof error === 'string') {
+      message = error;
+    } else if (error instanceof Error) {
+      message = error.message;
+    }
     return res.status(statusCode).json({
       status: 'failure',
       message: message,
