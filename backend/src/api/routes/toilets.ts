@@ -19,7 +19,7 @@ toiletsRouter.post('/', async (req: Request, res: Response) => {
   }
 });
 
-toiletsRouter.put('/:id', async (req: Request, res: Response) => {
+toiletsRouter.patch('/:id', async (req: Request, res: Response) => {
   try {
     const id = req.params.id;
     const payload: UpdateToiletDTO = req.body;
