@@ -2,7 +2,6 @@ import { Optional } from 'sequelize';
 import { ToiletType, Utilities } from '../../enums';
 
 export type CreateToiletDTO = {
-  id: number;
   building: string;
   description: string;
   floor: number;
