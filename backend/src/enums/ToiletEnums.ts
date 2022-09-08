@@ -1,7 +1,7 @@
 export enum ToiletType {
   MALE,
   FEMALE,
-  HANDICAPPED,
+  HANDICAP,
 }
 
 export enum Utilities {
