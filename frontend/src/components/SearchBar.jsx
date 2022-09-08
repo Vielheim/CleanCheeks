@@ -72,7 +72,7 @@ const SearchBar = () => {
       <Container className="py-2">
         <Row>
           <Col xs={10}>
-            <InputGroup className="mb-1 search-row">
+            <InputGroup>
               <InputGroup.Text>
                 <BsSearch height={24} />
               </InputGroup.Text>
@@ -85,9 +85,9 @@ const SearchBar = () => {
               />
             </InputGroup>
           </Col>
-          <Col className="px-2">
+          <Col className="d-flex justify-content-end" xs={2}>
             <Button onClick={() => setIsShowModal(true)}>
-              <BsFilter height={24} />
+              <BsFilter height={22} />
             </Button>
           </Col>
         </Row>
