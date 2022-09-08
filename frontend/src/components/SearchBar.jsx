@@ -92,7 +92,7 @@ const SearchBar = () => {
           </Col>
         </Row>
         {isShowList && (
-          <Row>
+          <Row className="mt-1">
             <Col>
               <ListGroup
                 onFocus={onListFocus}
