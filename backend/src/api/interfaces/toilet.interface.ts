@@ -1,6 +1,6 @@
-import { ToiletType, Utilities } from "../../enums";
+import { ToiletType, Utilities } from '../../enums';
 export interface IToilet {
-  id: string;
+  id: number;
   building: string;
   description: string;
   floor: number;

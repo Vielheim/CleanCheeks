@@ -8,7 +8,17 @@
     "build": "rimraf ./dist && tsc",
     "lint": "npx prettier --write ./src/*",
     "predev": "npm run build",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "db:create": "sequelize-cli db:create",
+    "db:migrate": "sequelize-cli db:migrate",
+    "db:drop": "sequelize-cli db:drop",
+    "db:migrate:undo": "sequelize-cli db:migrate:undo:all",
+    "db:g:migration": "sequelize-cli migration:generate --name",
+    "db:g:seed": "sequelize-cli seed:generate --name",
+    "db:seed": "sequelize-cli db:seed:all",
+    "db:unseed": "sequelize-cli db:seed:undo:all",
+    "db:reset": "node scripts/resetDb.js && npm run db:seed",
+    "db:reseed": "npm run db:migrate:undo && npm run db:migrate && npm run db:seed"
   },
   "author": "",
   "license": "ISC",
@@ -31,6 +41,7 @@
     "concurrently": "^7.3.0",
     "nodemon": "^2.0.19",
     "prettier": "2.7.1",
-    "rimraf": "^3.0.2"
+    "rimraf": "^3.0.2",
+    "sequelize-cli": "^6.4.1"
   }
 }

@@ -1,0 +1,26 @@
+[
+  {
+    "building": "BIZ1",
+    "description": "Beside the Labs",
+    "floor": 1,
+    "longitude": 1.2924024167154038,
+    "latitude": 103.77438630260782,
+    "num_seats": 3,
+    "num_squats": 3,
+    "cleanliness": 0,
+    "type": "MALE",
+    "utilities": ["SHOWERS"]
+  },
+  {
+    "building": "BIZ1",
+    "description": "Beside the piano",
+    "floor": 2,
+    "longitude": 1.2924024167154038,
+    "latitude": 103.77438630260782,
+    "num_seats": 3,
+    "num_squats": 3,
+    "cleanliness": 0,
+    "type": "MALE",
+    "utilities": ["HOOKS"]
+  }
+]
