@@ -1,5 +1,5 @@
-import { IToiletOutput } from "../../../db/models/Toilet";
-import { IToilet } from "../../interfaces";
+import { IToiletOutput } from '../../../db/models/Toilet';
+import { IToilet } from '../../interfaces';
 
 // maps data from db layer to api layer
 export const toToilet = ({

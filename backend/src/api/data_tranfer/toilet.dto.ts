@@ -1,8 +1,8 @@
-import { Optional } from "sequelize";
-import { ToiletType, Utilities } from "../../enums";
+import { Optional } from 'sequelize';
+import { ToiletType, Utilities } from '../../enums';
 
 export type CreateToiletDTO = {
-  id: string;
+  id: number;
   building: string;
   description: string;
   floor: number;
@@ -17,18 +17,18 @@ export type CreateToiletDTO = {
 };
 
 export type UpdateToiletDTO = Optional<
-    CreateToiletDTO,
-    | "building"
-    | "description"
-    | "floor"
-    | "longitude"
-    | "latitude"
-    | "picture"
-    | "num_seats"
-    | "num_squats"
-    | "cleanliness"
-    | "type"
-    | "utilities"
+  CreateToiletDTO,
+  | 'building'
+  | 'description'
+  | 'floor'
+  | 'longitude'
+  | 'latitude'
+  | 'picture'
+  | 'num_seats'
+  | 'num_squats'
+  | 'cleanliness'
+  | 'type'
+  | 'utilities'
 >;
 
 // TODO update filtersDTO

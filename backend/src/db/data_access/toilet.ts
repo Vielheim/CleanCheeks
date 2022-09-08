@@ -1,14 +1,14 @@
-import { Toilet } from "../models";
-import { IToiletInput, IToiletOutput } from "../models/Toilet";
-import { GetAllToiletsFilters } from "./types";
+import { Toilet } from '../models';
+import { IToiletInput, IToiletOutput } from '../models/Toilet';
+import { GetAllToiletsFilters } from './types';
 
 export const create = async (payload: IToiletInput): Promise<IToiletOutput> => {
-    const toilet = await Toilet.create(payload);
-    return toilet;
+  const toilet = await Toilet.create(payload);
+  return toilet;
 };
 
 export const update = async (
-  id: string,
+  id: number,
   payload: Partial<IToiletInput>
 ): Promise<IToiletOutput> => {
   const toilet = await Toilet.findByPk(id);
@@ -21,7 +21,7 @@ export const update = async (
   return updatedToilet;
 };
 
-export const deleteById = async (id: string): Promise<boolean> => {
+export const deleteById = async (id: number): Promise<boolean> => {
   const deletedToiletCount = await Toilet.destroy({
     where: { id: id },
   });
@@ -29,7 +29,7 @@ export const deleteById = async (id: string): Promise<boolean> => {
   return !!deletedToiletCount;
 };
 
-export const getById = async (id: string): Promise<IToiletOutput> => {
+export const getById = async (id: number): Promise<IToiletOutput> => {
   const toilet = await Toilet.findByPk(id);
 
   if (!toilet) {
@@ -41,7 +41,7 @@ export const getById = async (id: string): Promise<IToiletOutput> => {
 
 // TODO update to filter via filters
 export const getAll = async (
-    filters?: GetAllToiletsFilters
+  filters?: GetAllToiletsFilters
 ): Promise<IToiletOutput[]> => {
-    return Toilet.findAll();
+  return Toilet.findAll();
 };
