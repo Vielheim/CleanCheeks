@@ -30,17 +30,17 @@ const SearchBar = () => {
     setIsShowModal(false);
   };
 
-  const handleOnChange = ({ target: { value } }) => {
-    setForm({
-      ...form,
-      search: value,
-    });
-  };
-
   const handleModalOnSubmit = (modalState) => {
     setForm({
       ...form,
       modal: modalState,
+    });
+  };
+
+  const onSearchChange = ({ target: { value } }) => {
+    setForm({
+      ...form,
+      search: value,
     });
   };
 
@@ -54,6 +54,14 @@ const SearchBar = () => {
     }
   };
 
+  const onListItemClick = ({ target: { value } }) => {
+    setForm({
+      ...form,
+      search: value,
+    });
+    setIsShowList(false);
+  };
+
   const filterVenues = (venues) =>
     venues.filter((venue) =>
       venue.toLowerCase().includes(form.search.toLowerCase())
@@ -61,19 +69,20 @@ const SearchBar = () => {
 
   return (
     <>
-      <Container>
+      <Container className="py-2">
         <Row>
           <Col xs={10}>
-            <InputGroup
-              onChange={handleOnChange}
-              onFocus={() => setIsShowList(true)}
-              onBlur={onFormBlur}
-              className="mb-1 search-row"
-            >
+            <InputGroup className="mb-1 search-row">
               <InputGroup.Text>
                 <BsSearch height={24} />
               </InputGroup.Text>
-              <Form.Control placeholder="Where are you? Eg: UTown, COM1" />
+              <Form.Control
+                placeholder="Where are you? Eg: UTown"
+                onChange={onSearchChange}
+                onFocus={() => setIsShowList(true)}
+                onBlur={onFormBlur}
+                value={form.search}
+              />
             </InputGroup>
           </Col>
           <Col className="px-2">
@@ -90,7 +99,12 @@ const SearchBar = () => {
                 onBlur={() => setIsShowList(false)}
               >
                 {filterVenues(VENUES_MOCK).map((venue) => (
-                  <ListGroup.Item key={venue} action>
+                  <ListGroup.Item
+                    key={venue}
+                    action
+                    onClick={onListItemClick}
+                    value={venue}
+                  >
                     {venue}
                   </ListGroup.Item>
                 ))}

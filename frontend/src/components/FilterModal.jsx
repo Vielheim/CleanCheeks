@@ -36,7 +36,7 @@ const FilterModal = ({ show, state, handleModalClose, handleModalSubmit }) => {
     <Modal show={show}>
       <Modal.Dialog>
         <Modal.Header>
-          <Modal.Title>Filters</Modal.Title>
+          <Modal.Title>Apply Filters</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Container>
