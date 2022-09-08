@@ -21,7 +21,10 @@ interface IToiletAttributes {
 
 // IToiletInput defines the type of object passed to model.create()
 export interface IToiletInput
-  extends Optional<IToiletAttributes, 'picture' | 'createdAt' | 'updatedAt'> {}
+  extends Optional<
+    IToiletAttributes,
+    'id' | 'picture' | 'createdAt' | 'updatedAt'
+  > {}
 
 // IToiletOutput defines the return object from model.create(), model.update(), model.findOne() etc.
 export interface IToiletOutput extends Required<IToiletAttributes> {}
