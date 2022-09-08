@@ -15,15 +15,15 @@ const CLEANLINESS = 0;
 const NUM_SEATS = 3;
 const NUM_SQUATS = 3;
 const TOILET_TYPE = {
-  MALE: 0,
-  FEMALE: 1,
-  HANDICAP: 2,
+  MALE: "MALE",
+  FEMALE: "FEMALE",
+  HANDICAP: "HANDICAP",
 };
 const UTILITIES = {
-  SHOWERS: 0,
-  FRAGRANCE: 1,
-  BIDETS: 2,
-  HOOKS: 3,
+  SHOWERS: "SHOWERS",
+  FRAGRANCE: "FRAGRANCE",
+  BIDETS: "BIDETS",
+  HOOKS: "HOOKS",
 };
 
 const toilets = [];
