@@ -1,3 +1,4 @@
 import { IToilet } from "./toilet.interface";
+import { IUser } from './user.interface';
 
-export { IToilet };
+export { IToilet, IUser };
