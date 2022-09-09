@@ -1,10 +1,10 @@
 import React from 'react';
-import SearchBar from './components/SearchBar';
+import MapPage from './pages/MapPage';
 
 function App() {
   return (
-    <div className="App">
-      <SearchBar />
+    <div className="app">
+      <MapPage />
     </div>
   );
 }
