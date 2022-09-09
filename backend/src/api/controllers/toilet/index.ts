@@ -4,11 +4,19 @@ import {
   FilterToiletsDTO,
   UpdateToiletDTO,
 } from '../../data_tranfer/toilet.dto';
+import {
+  validateCreateToiletDTO,
+  validateUpdateToiletDTO,
+} from '../../data_tranfer/validateDTO';
 import { IToilet } from '../../interfaces';
 import * as mapper from './mapper';
 
 export const create = async (payload: CreateToiletDTO): Promise<IToilet> => {
-  const toiletOutput = await service.create({ ...payload });
+  // validate or throw error
+  validateCreateToiletDTO(payload);
+
+  const toiletInput = mapper.toIToiletInput(payload);
+  const toiletOutput = await service.create(toiletInput);
   return mapper.toToilet(toiletOutput);
 };
 
@@ -16,7 +24,11 @@ export const update = async (
   id: string,
   payload: UpdateToiletDTO
 ): Promise<IToilet> => {
-  const toiletOutput = await service.update(id, { ...payload });
+  // validate or throw error
+  validateUpdateToiletDTO(payload);
+
+  const partialToiletInput = mapper.toPartialIToiletInput(payload);
+  const toiletOutput = await service.update(id, partialToiletInput);
   return mapper.toToilet(toiletOutput);
 };
 
