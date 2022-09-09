@@ -23,3 +23,31 @@ export const getById = (id: string): Promise<IUserOutput> => {
 export const getAll = (): Promise<IUserOutput[]> => {
   return userDataAccess.getAll();
 };
+
+export const favouriteToilet = async (
+  user_id: string,
+  toilet_id: string
+): Promise<boolean> => {
+  return await userDataAccess.favouriteToilet(user_id, toilet_id);
+};
+
+export const unfavouriteToilet = async (
+  user_id: string,
+  toilet_id: string
+): Promise<boolean> => {
+  return await userDataAccess.unfavouriteToilet(user_id, toilet_id);
+};
+
+export const blacklistToilet = async (
+  user_id: string,
+  toilet_id: string
+): Promise<boolean> => {
+  return await userDataAccess.blacklistToilet(user_id, toilet_id);
+};
+
+export const unblacklistToilet = async (
+  user_id: string,
+  toilet_id: string
+): Promise<boolean> => {
+  return await userDataAccess.unblacklistToilet(user_id, toilet_id);
+};
