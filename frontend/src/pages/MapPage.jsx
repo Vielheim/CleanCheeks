@@ -33,6 +33,18 @@ const TOILETS = [
     description: 'Beside the library',
     floor: 3,
     longitude: 1.2924024167154038,
+    latitude: 103.77438630260782,
+    num_seats: 3,
+    num_squats: 3,
+    cleanliness: 0,
+    type: 'MALE',
+    utilities: ['FRAGRANCE', 'BIDETS', 'HOOKS'],
+  },
+  {
+    building: 'BIZ1',
+    description: 'Beside the library',
+    floor: 3,
+    longitude: 1.2924024167154038,
     latitude: 103,
     num_seats: 3,
     num_squats: 3,
@@ -51,19 +63,22 @@ const getCloseToilets = (index, coordinates, toilets) => {
 
 const MapPage = () => {
   const [toiletIndex, setToiletIndex] = useState(new NeighboursIndex(TOILETS));
+  const [toilets, setToilets] = useState(TOILETS);
 
   useEffect(() => {
-    if (localStorage.getItem('toilets') === null) {
+    const cachedToilets = localStorage.getItem('toilets');
+    if (cachedToilets === null) {
       // Fetch from API then store
       localStorage.setItem('toilets', JSON.stringify(TOILETS));
     } else {
+      setToilets(JSON.parse(cachedToilets));
     }
   }, []);
 
   return (
     <Map
       location={LOCATION}
-      toilets={getCloseToilets(toiletIndex, LOCATION, TOILETS)}
+      toilets={getCloseToilets(toiletIndex, LOCATION, toilets)}
     />
   );
 };
