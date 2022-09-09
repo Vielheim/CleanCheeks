@@ -12,7 +12,7 @@ const validateNumSeats = (num_seats: number) => {
   const isValidated = 0 <= num_seats && Number.isInteger(num_seats);
   validate(
     isValidated,
-    'num_seats should be an integer and greater than or equal to 0'
+    'num_seats must be an integer and greater than or equal to 0'
   );
 };
 
@@ -20,20 +20,20 @@ const validateNumSquats = (num_squats: number) => {
   const isValidated = 0 <= num_squats && Number.isInteger(num_squats);
   validate(
     isValidated,
-    'num_squats should be an integer and greater than or equal to 0'
+    'num_squats must be an integer and greater than or equal to 0'
   );
 };
 
 const validateCleanliness = (cleanliness: number) => {
   const isValidated = -1 <= cleanliness && cleanliness <= 1;
-  validate(isValidated, 'cleanliness should be a number between -1 and 1');
+  validate(isValidated, 'cleanliness must be a number between -1 and 1');
 };
 
 const validateToiletType = (type: string) => {
   const isValidated = (<any>ToiletType)[type] !== undefined;
   validate(
     isValidated,
-    `type ${type} should be one of: ${Object.keys(ToiletType)}`
+    `type ${type} must be one of: ${Object.keys(ToiletType)}`
   );
 };
 
@@ -42,7 +42,7 @@ const validateUtilities = (utilities: string[]) => {
     const isValidated = (<any>Utilities)[utility] !== undefined;
     validate(
       isValidated,
-      `Utility ${utility} should be one of: ${Object.keys(Utilities)}`
+      `Utility ${utility} must be one of: ${Object.keys(Utilities)}`
     );
   });
 };

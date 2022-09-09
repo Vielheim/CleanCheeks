@@ -1,7 +1,7 @@
-import { DataTypes, Model, Optional } from 'sequelize';
+import { DataTypes, Model, Optional, Sequelize } from 'sequelize';
 import sequelizeConnection from '../config';
 import { ToiletType, Utilities } from '../../enums';
-import { v4 as uuidv4 } from 'uuid';
+import { UUIDV4 } from 'sequelize';
 
 interface IToiletAttributes {
   id: string;
@@ -55,9 +55,9 @@ class Toilet
 Toilet.init(
   {
     id: {
-      type: DataTypes.STRING,
+      type: DataTypes.UUID,
       primaryKey: true,
-      defaultValue: uuidv4, // use the UUID fn to generate a new id
+      defaultValue: UUIDV4, // use the UUID fn to generate a new id
       validate: {
         isUUID: 4,
       },
@@ -113,8 +113,9 @@ Toilet.init(
       allowNull: false,
     },
     utilities: {
-      type: DataTypes.ARRAY(DataTypes.ENUM(...Object.keys(Utilities))),
+      type: DataTypes.ARRAY(DataTypes.STRING),
       allowNull: false,
+      values: [...Object.keys(Utilities)],
     },
   },
   {
