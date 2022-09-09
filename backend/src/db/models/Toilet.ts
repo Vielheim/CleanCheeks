@@ -1,9 +1,9 @@
-import { DataTypes, Model, Optional } from "sequelize";
-import sequelizeConnection from "../config";
-import { ToiletType, Utilities } from "../../enums";
+import { DataTypes, Model, Optional } from 'sequelize';
+import sequelizeConnection from '../config';
+import { ToiletType, Utilities } from '../../enums';
 
 interface IToiletAttributes {
-  id: string;
+  id: number;
   building: string;
   description: string;
   floor: number;
@@ -21,10 +21,10 @@ interface IToiletAttributes {
 
 // IToiletInput defines the type of object passed to model.create()
 export interface IToiletInput
-    extends Optional<
-        IToiletAttributes,
-        "picture" | "createdAt" | "updatedAt"
-    > {}
+  extends Optional<
+    IToiletAttributes,
+    'id' | 'picture' | 'createdAt' | 'updatedAt'
+  > {}
 
 // IToiletOutput defines the return object from model.create(), model.update(), model.findOne() etc.
 export interface IToiletOutput extends Required<IToiletAttributes> {}
@@ -33,7 +33,7 @@ class Toilet
   extends Model<IToiletAttributes, IToiletInput>
   implements IToiletAttributes
 {
-  public id!: string;
+  public id!: number;
   public building!: string;
   public description!: string;
   public floor!: number;
@@ -54,8 +54,9 @@ class Toilet
 Toilet.init(
   {
     id: {
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
       primaryKey: true,
+      autoIncrement: true,
     },
     building: {
       type: DataTypes.STRING,
