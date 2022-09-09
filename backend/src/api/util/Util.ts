@@ -1,4 +1,5 @@
 import { Response } from 'express';
+import { DataNotFoundError } from '../../errors/Errors';
 
 export default class Util {
   static sendSuccess(
@@ -14,14 +15,20 @@ export default class Util {
     });
   }
 
-  static sendFailure(res: Response, statusCode: number, error: unknown) {
+  static sendFailure(res: Response, error: unknown) {
     let message;
+    let statusCode;
     if (typeof error === 'string') {
       message = error;
     } else if (error instanceof Error) {
       message = error.message;
     }
-    return res.status(statusCode).json({
+
+    if (error instanceof DataNotFoundError) {
+      statusCode = 404;
+    }
+
+    return res.status(statusCode ?? 400).json({
       status: 'failure',
       message: message,
     });

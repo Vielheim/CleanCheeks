@@ -1,4 +1,5 @@
 import sequelize from 'sequelize';
+import { DataNotFoundError } from '../../errors/Errors';
 import { User } from '../models';
 import { IUserInput, IUserOutput } from '../models/User';
 
@@ -13,7 +14,7 @@ export const update = async (
   const user = await User.findByPk(id);
 
   if (user == null) {
-    throw new Error(`User with id ${id} not found`);
+    throw new DataNotFoundError(`User with id ${id} not found`);
   }
 
   return await user.update(payload);
@@ -30,8 +31,8 @@ export const deleteById = async (id: string): Promise<boolean> => {
 export const getById = async (id: string): Promise<IUserOutput> => {
   const user = await User.findByPk(id);
 
-  if (!user) {
-    throw new Error(`User with id ${id} not found!`);
+  if (user == null) {
+    throw new DataNotFoundError(`User with id ${id} not found!`);
   }
 
   return user;

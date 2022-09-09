@@ -14,7 +14,7 @@ usersRouter.post('/', async (req: Request, res: Response) => {
     const result = await userController.create(payload);
     return Util.sendSuccess(res, 201, 'Added user', result);
   } catch (error: unknown) {
-    return Util.sendFailure(res, 400, error);
+    return Util.sendFailure(res, error);
   }
 });
 
@@ -24,7 +24,7 @@ usersRouter.get('/:id', async (req: Request, res: Response) => {
     const result = await userController.getById(id);
     return Util.sendSuccess(res, 200, 'Retrieved user', result);
   } catch (error: unknown) {
-    return Util.sendFailure(res, 400, error);
+    return Util.sendFailure(res, error);
   }
 });
 
@@ -33,7 +33,7 @@ usersRouter.get('/', async (_, res: Response) => {
     const result = await userController.getAll();
     return Util.sendSuccess(res, 200, 'Retrieved all users', result);
   } catch (error: unknown) {
-    return Util.sendFailure(res, 400, error);
+    return Util.sendFailure(res, error);
   }
 });
 
@@ -45,7 +45,7 @@ usersRouter.put('/favouriteToilet', async (req: Request, res: Response) => {
     const result = await userController.favouriteToilet(userId, payload);
     return Util.sendSuccess(res, 200, 'Favourited toilet', result);
   } catch (error: unknown) {
-    return Util.sendFailure(res, 400, error);
+    return Util.sendFailure(res, error);
   }
 });
 
@@ -57,7 +57,7 @@ usersRouter.put('/unfavouriteToilet', async (req: Request, res: Response) => {
     const result = await userController.unfavouriteToilet(userId, payload);
     return Util.sendSuccess(res, 200, 'Unfavourited toilet', result);
   } catch (error: unknown) {
-    return Util.sendFailure(res, 400, error);
+    return Util.sendFailure(res, error);
   }
 });
 
@@ -69,7 +69,7 @@ usersRouter.put('/blacklistToilet', async (req: Request, res: Response) => {
     const result = await userController.blacklistToilet(userId, payload);
     return Util.sendSuccess(res, 200, 'Blacklisted toilet', result);
   } catch (error: unknown) {
-    return Util.sendFailure(res, 400, error);
+    return Util.sendFailure(res, error);
   }
 });
 
@@ -81,7 +81,7 @@ usersRouter.put('/unblacklistToilet', async (req: Request, res: Response) => {
     const result = await userController.unblacklistToilet(userId, payload);
     return Util.sendSuccess(res, 200, 'Unblacklisted toilet', result);
   } catch (error: unknown) {
-    return Util.sendFailure(res, 400, error);
+    return Util.sendFailure(res, error);
   }
 });
 
