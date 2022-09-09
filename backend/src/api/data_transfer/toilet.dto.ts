@@ -1,5 +1,4 @@
 import { Optional } from 'sequelize';
-import { ToiletType, Utilities } from '../../enums';
 
 export type CreateToiletDTO = {
   building: string;
@@ -11,8 +10,8 @@ export type CreateToiletDTO = {
   num_seats: number;
   num_squats: number;
   cleanliness: number;
-  type: ToiletType;
-  utilities: Utilities[];
+  type: string;
+  utilities: string[];
 };
 
 export type UpdateToiletDTO = Optional<
