@@ -15,7 +15,7 @@ usersRouter.post('/', async (req: Request, res: Response) => {
   }
 });
 
-usersRouter.put('/:id', async (req: Request, res: Response) => {
+usersRouter.patch('/:id', async (req: Request, res: Response) => {
   try {
     const id = req.params.id;
     const payload: UpdateUserDTO = req.body;
