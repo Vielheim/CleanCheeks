@@ -57,7 +57,10 @@ Toilet.init(
     id: {
       type: DataTypes.STRING,
       primaryKey: true,
-      defaultValue: uuidv4(),
+      defaultValue: uuidv4, // use the UUID fn to generate a new id
+      validate: {
+        isUUID: 4,
+      },
     },
     building: {
       type: DataTypes.STRING,
@@ -86,21 +89,31 @@ Toilet.init(
     num_seats: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      validate: {
+        min: 0,
+      },
     },
     num_squats: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      validate: {
+        min: 0,
+      },
     },
     cleanliness: {
       type: DataTypes.DOUBLE,
       allowNull: false,
+      validate: {
+        max: 1,
+        min: -1,
+      },
     },
     type: {
-      type: DataTypes.STRING,
+      type: DataTypes.ENUM(...Object.keys(ToiletType)),
       allowNull: false,
     },
     utilities: {
-      type: DataTypes.ARRAY(DataTypes.STRING),
+      type: DataTypes.ARRAY(DataTypes.ENUM(...Object.keys(Utilities))),
       allowNull: false,
     },
   },
