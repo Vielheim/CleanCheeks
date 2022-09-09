@@ -4,7 +4,7 @@ import {
   CreateToiletDTO,
   FilterToiletsDTO,
   UpdateToiletDTO,
-} from '../data_tranfer/toilet.dto';
+} from '../data_transfer/toilet.dto';
 import Util from '../util/Util';
 
 const toiletsRouter = Router();

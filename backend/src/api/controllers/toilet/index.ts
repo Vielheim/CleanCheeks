@@ -3,7 +3,7 @@ import {
   CreateToiletDTO,
   FilterToiletsDTO,
   UpdateToiletDTO,
-} from '../../data_tranfer/toilet.dto';
+} from '../../data_transfer/toilet.dto';
 import { IToilet } from '../../interfaces';
 import * as mapper from './mapper';
 
