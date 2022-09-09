@@ -7,7 +7,7 @@
     "dev": "concurrently \"tsc --watch\" \"nodemon -q dist/index.js\"",
     "build": "rimraf ./dist && tsc",
     "lint": "npx prettier --write ./src/*",
-    "predev": "npm run build",
+    "predev": "sequelize-cli db:migrate:undo:all && sequelize-cli db:migrate && sequelize-cli db:seed:all && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1",
     "db:create": "sequelize-cli db:create",
     "db:migrate": "sequelize-cli db:migrate",

@@ -6,16 +6,7 @@ module.exports = {
     let toiletsArray = [];
     toilets.forEach((t) => {
       toiletsArray.push({
-        building: t['building'],
-        description: t['description'],
-        floor: t['floor'],
-        longitude: t['longitude'],
-        latitude: t['latitude'],
-        num_seats: t['num_seats'],
-        num_squats: t['num_squats'],
-        cleanliness: t['cleanliness'],
-        type: t['type'],
-        utilities: t['utilities'],
+        ...t,
         createdAt: new Date(),
         updatedAt: new Date(),
       });
