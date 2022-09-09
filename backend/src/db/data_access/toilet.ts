@@ -8,7 +8,7 @@ export const create = async (payload: IToiletInput): Promise<IToiletOutput> => {
 };
 
 export const update = async (
-  id: number,
+  id: string,
   payload: Partial<IToiletInput>
 ): Promise<IToiletOutput> => {
   const toilet = await Toilet.findByPk(id);
@@ -21,7 +21,7 @@ export const update = async (
   return updatedToilet;
 };
 
-export const deleteById = async (id: number): Promise<boolean> => {
+export const deleteById = async (id: string): Promise<boolean> => {
   const deletedToiletCount = await Toilet.destroy({
     where: { id: id },
   });
@@ -29,7 +29,7 @@ export const deleteById = async (id: number): Promise<boolean> => {
   return !!deletedToiletCount;
 };
 
-export const getById = async (id: number): Promise<IToiletOutput> => {
+export const getById = async (id: string): Promise<IToiletOutput> => {
   const toilet = await Toilet.findByPk(id);
 
   if (!toilet) {
