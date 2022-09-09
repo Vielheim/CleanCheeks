@@ -19,3 +19,7 @@ export const deleteById = (id: string): Promise<boolean> => {
 export const getById = (id: string): Promise<IUserOutput> => {
   return userDataAccess.getById(id);
 };
+
+export const getAll = (): Promise<IUserOutput[]> => {
+  return userDataAccess.getAll();
+};

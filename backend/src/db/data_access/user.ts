@@ -35,3 +35,7 @@ export const getById = async (id: string): Promise<IUserOutput> => {
 
   return user;
 };
+
+export const getAll = async (): Promise<IUserOutput[]> => {
+  return User.findAll();
+};

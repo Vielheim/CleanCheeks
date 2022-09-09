@@ -1,5 +1,5 @@
 import * as service from '../../../db/services/UserService';
-import { CreateUserDTO, UpdateUserDTO } from '../../data_tranfer/user.dto';
+import { CreateUserDTO, UpdateUserDTO } from '../../data_transfer/user.dto';
 import { IUser } from '../../interfaces';
 import * as mapper from './mapper';
 
@@ -23,4 +23,8 @@ export const deleteById = async (id: string): Promise<boolean> => {
 export const getById = async (id: string): Promise<IUser> => {
   const userOutput = await service.getById(id);
   return mapper.toUser(userOutput);
+};
+
+export const getAll = async (): Promise<IUser[]> => {
+  return (await service.getAll()).map(mapper.toUser);
 };

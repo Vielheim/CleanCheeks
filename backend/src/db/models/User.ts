@@ -3,8 +3,8 @@ import sequelizeConnection from '../config';
 
 interface IUserAttributes {
   id: string;
-  blacklisted_toilets: String[];
-  favourited_toilets: String[];
+  blacklisted_toilets: number[];
+  favourited_toilets: number[];
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -22,8 +22,8 @@ class User
   implements IUserAttributes
 {
   public id!: string;
-  public blacklisted_toilets!: String[];
-  public favourited_toilets!: String[];
+  public blacklisted_toilets!: number[];
+  public favourited_toilets!: number[];
 
   // timestamps! (Will be updated by sequelize)
   public createdAt!: Date;
@@ -33,17 +33,16 @@ class User
 User.init(
   {
     id: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
+      type: DataTypes.STRING,
       primaryKey: true,
     },
     blacklisted_toilets: {
-      type: DataTypes.ARRAY(DataTypes.UUIDV4),
+      type: DataTypes.ARRAY(DataTypes.INTEGER),
       defaultValue: [],
       allowNull: false,
     },
     favourited_toilets: {
-      type: DataTypes.ARRAY(DataTypes.UUIDV4),
+      type: DataTypes.ARRAY(DataTypes.INTEGER),
       defaultValue: [],
       allowNull: false,
     },
