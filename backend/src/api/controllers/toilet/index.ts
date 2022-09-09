@@ -13,18 +13,18 @@ export const create = async (payload: CreateToiletDTO): Promise<IToilet> => {
 };
 
 export const update = async (
-  id: number,
+  id: string,
   payload: UpdateToiletDTO
 ): Promise<IToilet> => {
   const toiletOutput = await service.update(id, { ...payload });
   return mapper.toToilet(toiletOutput);
 };
 
-export const deleteById = async (id: number): Promise<boolean> => {
+export const deleteById = async (id: string): Promise<boolean> => {
   return await service.deleteById(id);
 };
 
-export const getById = async (id: number): Promise<IToilet> => {
+export const getById = async (id: string): Promise<IToilet> => {
   const toiletOutput = await service.getById(id);
   return mapper.toToilet(toiletOutput);
 };

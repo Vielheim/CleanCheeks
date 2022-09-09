@@ -7,17 +7,17 @@ export const create = (payload: IToiletInput): Promise<IToiletOutput> => {
 };
 
 export const update = (
-  id: number,
+  id: string,
   payload: Partial<IToiletInput>
 ): Promise<IToiletOutput> => {
   return toiletDataAccess.update(id, payload);
 };
 
-export const deleteById = (id: number): Promise<boolean> => {
+export const deleteById = (id: string): Promise<boolean> => {
   return toiletDataAccess.deleteById(id);
 };
 
-export const getById = (id: number): Promise<IToiletOutput> => {
+export const getById = (id: string): Promise<IToiletOutput> => {
   return toiletDataAccess.getById(id);
 };
 

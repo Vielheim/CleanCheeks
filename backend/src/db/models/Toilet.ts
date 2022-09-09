@@ -1,9 +1,10 @@
 import { DataTypes, Model, Optional } from 'sequelize';
 import sequelizeConnection from '../config';
 import { ToiletType, Utilities } from '../../enums';
+import { v4 as uuidv4 } from 'uuid';
 
 interface IToiletAttributes {
-  id: number;
+  id: string;
   building: string;
   description: string;
   floor: number;
@@ -33,7 +34,7 @@ class Toilet
   extends Model<IToiletAttributes, IToiletInput>
   implements IToiletAttributes
 {
-  public id!: number;
+  public id!: string;
   public building!: string;
   public description!: string;
   public floor!: number;
@@ -54,9 +55,9 @@ class Toilet
 Toilet.init(
   {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       primaryKey: true,
-      autoIncrement: true,
+      defaultValue: uuidv4(),
     },
     building: {
       type: DataTypes.STRING,
