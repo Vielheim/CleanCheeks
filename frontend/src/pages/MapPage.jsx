@@ -55,7 +55,7 @@ const TOILETS = [
 ];
 
 // Will be a local state updated by the SearchBar component once linked up
-const LOCATION = [1.2924024167154038, 103.77438630260782];
+const LOCATION = [1.2924024167154038, 103.774386302609];
 const getCloseToilets = (index, coordinates, toilets) => {
   const [longitude, latitude] = coordinates;
   return index.query(longitude, latitude).map((i) => toilets[i]);
