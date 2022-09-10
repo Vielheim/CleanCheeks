@@ -41,7 +41,15 @@ export const favouriteToilet = async (
   const user = await queryUserBy(user_id);
 
   if (user.favourited_toilets.includes(toilet_id)) {
-    throw new Error(`Toilet ${toilet_id} is already favourited!`);
+    throw new Error(
+      `Toilet ${toilet_id} is already favourited by user ${user_id}!`
+    );
+  }
+
+  if (user.blacklisted_toilets.includes(toilet_id)) {
+    throw new Error(
+      `Blacklisted toilet ${toilet_id} cannot be favourited by user ${user_id}!`
+    );
   }
 
   const updatedUserCount = await User.update(
@@ -65,7 +73,9 @@ export const unfavouriteToilet = async (
   const user = await queryUserBy(user_id);
 
   if (!user.favourited_toilets.includes(toilet_id)) {
-    throw new Error(`Toilet ${toilet_id} is not favourited by the user!`);
+    throw new Error(
+      `Toilet ${toilet_id} has not been favourited by the user ${user_id}!`
+    );
   }
 
   const updatedUserCount = await User.update(
@@ -89,7 +99,15 @@ export const blacklistToilet = async (
   const user = await queryUserBy(user_id);
 
   if (user.blacklisted_toilets.includes(toilet_id)) {
-    throw new Error(`Toilet ${toilet_id} is already blacklisted!`);
+    throw new Error(
+      `Toilet ${toilet_id} is already blacklisted by user ${user_id}!`
+    );
+  }
+
+  if (user.favourited_toilets.includes(toilet_id)) {
+    throw new Error(
+      `Favourited toilet ${toilet_id} is cannot be blacklisted by user ${user_id}!`
+    );
   }
 
   const updatedUserCount = await User.update(
