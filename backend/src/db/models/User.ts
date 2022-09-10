@@ -37,12 +37,12 @@ User.init(
       primaryKey: true,
     },
     blacklisted_toilets: {
-      type: DataTypes.ARRAY(DataTypes.INTEGER),
+      type: DataTypes.ARRAY(DataTypes.UUID),
       defaultValue: [],
       allowNull: false,
     },
     favourited_toilets: {
-      type: DataTypes.ARRAY(DataTypes.INTEGER),
+      type: DataTypes.ARRAY(DataTypes.UUID),
       defaultValue: [],
       allowNull: false,
     },

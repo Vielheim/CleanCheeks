@@ -3,7 +3,7 @@ import * as userController from '../controllers/user';
 import {
   CreateUserDTO,
   UpdateToiletPreferencesDTO,
-} from '../data_transfer/user.dto';
+} from '../data_transfer/user/user.dto';
 import Util from '../util/Util';
 
 const usersRouter = Router();

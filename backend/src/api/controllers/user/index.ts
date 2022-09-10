@@ -2,7 +2,7 @@ import * as service from '../../../db/services/UserService';
 import {
   CreateUserDTO,
   UpdateToiletPreferencesDTO,
-} from '../../data_transfer/user.dto';
+} from '../../data_transfer/user/user.dto';
 import { IUser } from '../../interfaces';
 import * as mapper from './mapper';
 
