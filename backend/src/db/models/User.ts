@@ -3,8 +3,8 @@ import sequelizeConnection from '../config';
 
 interface IUserAttributes {
   id: string;
-  blacklisted_toilets: number[];
-  favourited_toilets: number[];
+  blacklisted_toilets: string[];
+  favourited_toilets: string[];
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -22,8 +22,8 @@ class User
   implements IUserAttributes
 {
   public id!: string;
-  public blacklisted_toilets!: number[];
-  public favourited_toilets!: number[];
+  public blacklisted_toilets!: string[];
+  public favourited_toilets!: string[];
 
   // timestamps! (Will be updated by sequelize)
   public createdAt!: Date;
