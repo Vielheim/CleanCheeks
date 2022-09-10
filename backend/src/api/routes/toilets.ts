@@ -21,7 +21,7 @@ toiletsRouter.post('/', async (req: Request, res: Response) => {
 
 toiletsRouter.patch('/:id', async (req: Request, res: Response) => {
   try {
-    const id = Number(req.params.id);
+    const id = req.params.id;
     const payload: UpdateToiletDTO = req.body;
     const result = await toiletController.update(id, payload);
     return Util.sendSuccess(res, 200, 'Updated toilet', result);
@@ -32,7 +32,7 @@ toiletsRouter.patch('/:id', async (req: Request, res: Response) => {
 
 toiletsRouter.delete('/:id', async (req: Request, res: Response) => {
   try {
-    const id = Number(req.params.id);
+    const id = req.params.id;
     const result = await toiletController.deleteById(id);
     return Util.sendSuccess(res, 200, 'Deleted toilet', result);
   } catch (error: unknown) {
@@ -42,7 +42,7 @@ toiletsRouter.delete('/:id', async (req: Request, res: Response) => {
 
 toiletsRouter.get('/:id', async (req: Request, res: Response) => {
   try {
-    const id = Number(req.params.id);
+    const id = req.params.id;
     const result = await toiletController.getById(id);
     return Util.sendSuccess(res, 200, 'Retrieved toilet', result);
   } catch (error: unknown) {

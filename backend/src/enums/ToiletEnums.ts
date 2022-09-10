@@ -1,13 +1,13 @@
 export enum ToiletType {
-  MALE,
-  FEMALE,
-  HANDICAP,
+  MALE = 'MALE',
+  FEMALE = 'FEMALE',
+  HANDICAP = 'HANDICAP',
 }
 
 export enum Utilities {
-  SHOWERS,
-  FRAGRANCE,
-  BIDETS,
-  HOOKS,
-  WATERCOOLER,
+  SHOWERS = 'SHOWERS',
+  FRAGRANCE = 'FRAGRANCE',
+  BIDETS = 'BIDETS',
+  HOOKS = 'HOOKS',
+  WATERCOOLER = 'WATERCOOLER',
 }

@@ -1,9 +1,10 @@
-import { DataTypes, Model, Optional } from 'sequelize';
+import { DataTypes, Model, Optional, Sequelize } from 'sequelize';
 import sequelizeConnection from '../config';
 import { ToiletType, Utilities } from '../../enums';
+import { UUIDV4 } from 'sequelize';
 
 interface IToiletAttributes {
-  id: number;
+  id: string;
   building: string;
   description: string;
   floor: number;
@@ -33,7 +34,7 @@ class Toilet
   extends Model<IToiletAttributes, IToiletInput>
   implements IToiletAttributes
 {
-  public id!: number;
+  public id!: string;
   public building!: string;
   public description!: string;
   public floor!: number;
@@ -54,9 +55,12 @@ class Toilet
 Toilet.init(
   {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       primaryKey: true,
-      autoIncrement: true,
+      defaultValue: UUIDV4, // use the UUID fn to generate a new id
+      validate: {
+        isUUID: 4,
+      },
     },
     building: {
       type: DataTypes.STRING,
@@ -85,22 +89,33 @@ Toilet.init(
     num_seats: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      validate: {
+        min: 0,
+      },
     },
     num_squats: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      validate: {
+        min: 0,
+      },
     },
     cleanliness: {
       type: DataTypes.DOUBLE,
       allowNull: false,
+      validate: {
+        max: 1,
+        min: -1,
+      },
     },
     type: {
-      type: DataTypes.STRING,
+      type: DataTypes.ENUM(...Object.keys(ToiletType)),
       allowNull: false,
     },
     utilities: {
       type: DataTypes.ARRAY(DataTypes.STRING),
       allowNull: false,
+      values: [...Object.keys(Utilities)],
     },
   },
   {
