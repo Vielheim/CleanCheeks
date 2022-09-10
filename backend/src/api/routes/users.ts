@@ -65,7 +65,7 @@ usersRouter.put('/unfavouriteToilet', async (req: Request, res: Response) => {
 usersRouter.put('/blacklistToilet', async (req: Request, res: Response) => {
   try {
     const payload: UpdateToiletPreferencesDTO = req.body;
-    const userId: string = '';
+    const userId: string = 'testuser';
     const result = await userController.blacklistToilet(userId, payload);
     return Util.sendSuccess(res, 200, 'Blacklisted toilet', result);
   } catch (error: unknown) {
@@ -77,7 +77,7 @@ usersRouter.put('/blacklistToilet', async (req: Request, res: Response) => {
 usersRouter.put('/unblacklistToilet', async (req: Request, res: Response) => {
   try {
     const payload: UpdateToiletPreferencesDTO = req.body;
-    const userId: string = '';
+    const userId: string = 'testuser';
     const result = await userController.unblacklistToilet(userId, payload);
     return Util.sendSuccess(res, 200, 'Unblacklisted toilet', result);
   } catch (error: unknown) {
