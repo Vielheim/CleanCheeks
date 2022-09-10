@@ -1,5 +1,5 @@
 import { IUserInput, IUserOutput } from '../models/User';
-import * as userDataAccess from '../data_access/user/user';
+import * as userDataAccess from '../data_access/user';
 
 export const create = (payload: IUserInput): Promise<IUserOutput> => {
   return userDataAccess.create(payload);
