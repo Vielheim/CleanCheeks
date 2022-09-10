@@ -49,30 +49,36 @@ usersRouter.put('/favouriteToilet', async (req: Request, res: Response) => {
   }
 });
 
+// TODO: Retrieve user from request from jwt decode
 usersRouter.put('/unfavouriteToilet', async (req: Request, res: Response) => {
   try {
     const payload: UpdateToiletPreferencesDTO = req.body;
-    const result = await userController.unfavouriteToilet('', payload);
+    const userId: string = '';
+    const result = await userController.unfavouriteToilet(userId, payload);
     return Util.sendSuccess(res, 200, 'Unfavourited toilet', result);
   } catch (error: unknown) {
     return Util.sendFailure(res, 400, error);
   }
 });
 
+// TODO: Retrieve user from request from jwt decode
 usersRouter.put('/blacklistToilet', async (req: Request, res: Response) => {
   try {
     const payload: UpdateToiletPreferencesDTO = req.body;
-    const result = await userController.blacklistToilet('', payload);
+    const userId: string = '';
+    const result = await userController.blacklistToilet(userId, payload);
     return Util.sendSuccess(res, 200, 'Blacklisted toilet', result);
   } catch (error: unknown) {
     return Util.sendFailure(res, 400, error);
   }
 });
 
+// TODO: Retrieve user from request from jwt decode
 usersRouter.put('/unblacklistToilet', async (req: Request, res: Response) => {
   try {
     const payload: UpdateToiletPreferencesDTO = req.body;
-    const result = await userController.unblacklistToilet('', payload);
+    const userId: string = '';
+    const result = await userController.unblacklistToilet(userId, payload);
     return Util.sendSuccess(res, 200, 'Unblacklisted toilet', result);
   } catch (error: unknown) {
     return Util.sendFailure(res, 400, error);
