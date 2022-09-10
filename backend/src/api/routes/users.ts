@@ -41,7 +41,7 @@ usersRouter.get('/', async (_, res: Response) => {
 usersRouter.put('/favouriteToilet', async (req: Request, res: Response) => {
   try {
     const payload: UpdateToiletPreferencesDTO = req.body;
-    const userId: string = '';
+    const userId: string = 'testuser';
     const result = await userController.favouriteToilet(userId, payload);
     return Util.sendSuccess(res, 200, 'Favourited toilet', result);
   } catch (error: unknown) {
@@ -53,7 +53,7 @@ usersRouter.put('/favouriteToilet', async (req: Request, res: Response) => {
 usersRouter.put('/unfavouriteToilet', async (req: Request, res: Response) => {
   try {
     const payload: UpdateToiletPreferencesDTO = req.body;
-    const userId: string = '';
+    const userId: string = 'testuser';
     const result = await userController.unfavouriteToilet(userId, payload);
     return Util.sendSuccess(res, 200, 'Unfavourited toilet', result);
   } catch (error: unknown) {

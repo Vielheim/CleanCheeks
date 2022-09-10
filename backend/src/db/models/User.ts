@@ -40,11 +40,32 @@ User.init(
       type: DataTypes.ARRAY(DataTypes.UUID),
       defaultValue: [],
       allowNull: false,
+      validate: {
+        allUnique(value: any) {
+          const arr = Array.isArray(value) ? value : [value];
+          if (!isUnique(arr)) {
+            throw new Error(
+              'No duplicate values allowed in blacklisted_toilets!'
+            );
+          }
+        },
+      },
     },
     favourited_toilets: {
       type: DataTypes.ARRAY(DataTypes.UUID),
       defaultValue: [],
       allowNull: false,
+      validate: {
+        allUnique(value: any) {
+          console.log(value);
+          const arr = Array.isArray(value) ? value : [value];
+          if (!isUnique(arr)) {
+            throw new Error(
+              'No duplicate values allowed in favourited_toilets!'
+            );
+          }
+        },
+      },
     },
   },
   {
@@ -52,5 +73,10 @@ User.init(
     timestamps: true, // auto-update timestamps
   }
 );
+
+const isUnique = (array: Array<any>): boolean => {
+  const set = new Set(array);
+  return set.size == array.length;
+};
 
 export default User;
