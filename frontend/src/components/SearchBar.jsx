@@ -1,28 +1,20 @@
-import React, { useState } from "react";
-import FilterModal from "./FilterModal";
+import React, { useState } from 'react';
+import FilterModal from './FilterModal';
 
-import Button from "react-bootstrap/Button";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Form from "react-bootstrap/Form";
-import InputGroup from "react-bootstrap/InputGroup";
-import ListGroup from "react-bootstrap/ListGroup";
-import { BsFilter, BsSearch } from "react-icons/bs";
+import Button from 'react-bootstrap/Button';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
+import ListGroup from 'react-bootstrap/ListGroup';
+import { BsFilter, BsSearch } from 'react-icons/bs';
 
-import { TOILET_TYPE, VENUES_MOCK } from "./constants";
+import './SearchBar.scss';
 
-const INITIAL_FORM_STATE = {
-  search: "",
-  modal: {
-    gender: TOILET_TYPE.MALE,
-    haveShowers: false,
-  },
-};
-
-const SearchBar = () => {
+const SearchBar = ({ filters, setFilters, venues }) => {
   let searchTimeoutId = 0;
-  const [form, setForm] = useState(INITIAL_FORM_STATE);
+  const [tempSearch, setTempSearch] = useState('');
   const [isShowList, setIsShowList] = useState(false);
   const [isShowModal, setIsShowModal] = useState(false);
 
@@ -30,18 +22,16 @@ const SearchBar = () => {
     setIsShowModal(false);
   };
 
-  const handleModalOnSubmit = (modalState) => {
-    setForm({
-      ...form,
-      modal: modalState,
+  const handleModalSubmit = ({ gender, haveShowers }) => {
+    setFilters({
+      ...filters,
+      gender,
+      haveShowers,
     });
   };
 
   const onSearchChange = ({ target: { value } }) => {
-    setForm({
-      ...form,
-      search: value,
-    });
+    setTempSearch(value);
   };
 
   const onFormBlur = () => {
@@ -55,21 +45,24 @@ const SearchBar = () => {
   };
 
   const onListItemClick = ({ target: { value } }) => {
-    setForm({
-      ...form,
+    setFilters({
+      ...filters,
       search: value,
     });
+    setTempSearch(value);
     setIsShowList(false);
   };
 
   const filterVenues = (venues) =>
-    venues.filter((venue) =>
-      venue.toLowerCase().includes(form.search.toLowerCase())
+    Object.keys(venues).filter(
+      (id) =>
+        id.toLowerCase().includes(tempSearch.toLowerCase()) ||
+        venues[id].roomName.toLowerCase().includes(tempSearch.toLowerCase())
     );
 
   return (
     <>
-      <Container className="py-2">
+      <Container className="filter-row">
         <Row>
           <Col xs={10}>
             <InputGroup>
@@ -81,11 +74,14 @@ const SearchBar = () => {
                 onChange={onSearchChange}
                 onFocus={() => setIsShowList(true)}
                 onBlur={onFormBlur}
-                value={form.search}
+                value={tempSearch}
               />
             </InputGroup>
           </Col>
-          <Col className="d-flex justify-content-end" xs={2}>
+          <Col
+            className="d-flex justify-content-end filter-modal-button"
+            xs={2}
+          >
             <Button onClick={() => setIsShowModal(true)}>
               <BsFilter height={22} />
             </Button>
@@ -98,14 +94,14 @@ const SearchBar = () => {
                 onFocus={onListFocus}
                 onBlur={() => setIsShowList(false)}
               >
-                {filterVenues(VENUES_MOCK).map((venue) => (
+                {filterVenues(venues).map((id) => (
                   <ListGroup.Item
-                    key={venue}
+                    key={id}
                     action
                     onClick={onListItemClick}
-                    value={venue}
+                    value={id}
                   >
-                    {venue}
+                    {`${id} (${venues[id].roomName})`}
                   </ListGroup.Item>
                 ))}
               </ListGroup>
@@ -116,8 +112,8 @@ const SearchBar = () => {
       <FilterModal
         show={isShowModal}
         handleModalClose={handleModalClose}
-        handleModalSubmit={handleModalOnSubmit}
-        state={form.modal}
+        handleModalSubmit={handleModalSubmit}
+        state={filters}
       />
     </>
   );
