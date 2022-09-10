@@ -1,85 +1,110 @@
 import React, { useState, useEffect } from 'react';
-import Map from '../components/Map';
+import {
+  MapContainer,
+  Popup,
+  Marker,
+  TileLayer,
+  Circle,
+  Polyline,
+  ZoomControl,
+} from 'react-leaflet';
+import SearchBar from '../components/SearchBar';
+import icon from '../components/markerIcon';
 import { NeighboursIndex } from '../utilities/utilities';
+import { INITIAL_FILTER_STATE, OFFLINE_TOILETS } from '../components/constants';
+import VENUES from '../data/venues.json';
 
-// Fetch from localStorage in the future
-const TOILETS = [
-  {
-    building: 'BIZ1',
-    description: 'Behind the air-con units',
-    floor: 1,
-    longitude: 1.2924024167154038,
-    latitude: 103.77438630260782,
-    num_seats: 3,
-    num_squats: 3,
-    cleanliness: 0,
-    type: 'MALE',
-    utilities: ['FRAGRANCE', 'BIDETS', 'HOOKS'],
-  },
-  {
-    building: 'BIZ1',
-    description: 'Behind the vending machines',
-    floor: 2,
-    longitude: 1.2924024167154038,
-    latitude: 103.77438630260782,
-    num_seats: 3,
-    num_squats: 3,
-    cleanliness: 0,
-    type: 'MALE',
-    utilities: ['FRAGRANCE', 'BIDETS', 'HOOKS'],
-  },
-  {
-    building: 'BIZ1',
-    description: 'Beside the library',
-    floor: 3,
-    longitude: 1.2924024167154038,
-    latitude: 103.77438630260782,
-    num_seats: 3,
-    num_squats: 3,
-    cleanliness: 0,
-    type: 'MALE',
-    utilities: ['FRAGRANCE', 'BIDETS', 'HOOKS'],
-  },
-  {
-    building: 'BIZ1',
-    description: 'Beside the library',
-    floor: 3,
-    longitude: 1.2924024167154038,
-    latitude: 103,
-    num_seats: 3,
-    num_squats: 3,
-    cleanliness: 0,
-    type: 'MALE',
-    utilities: ['FRAGRANCE', 'BIDETS', 'HOOKS'],
-  },
-];
+import './MapPage.scss';
 
-// Will be a local state updated by the SearchBar component once linked up
-const LOCATION = [1.2924024167154038, 103.774386302609];
-const getCloseToilets = (index, coordinates, toilets) => {
-  const [longitude, latitude] = coordinates;
-  return index.query(longitude, latitude).map((i) => toilets[i]);
+const CIRCLE_FILL_OPTIONS = { fillColor: '#4242a9', color: 'red' };
+const POLYLINE_FILL_OPTIONS = { color: '#4242a9' };
+
+const getLocation = ({ location }) => {
+  const { x: longitude, y: latitude } = location;
+  return [latitude, longitude];
 };
 
 const MapPage = () => {
-  const [toiletIndex, setToiletIndex] = useState(new NeighboursIndex(TOILETS));
-  const [toilets, setToilets] = useState(TOILETS);
+  const [toiletIndex, setToiletIndex] = useState(
+    new NeighboursIndex(OFFLINE_TOILETS)
+  );
+  const [toilets, setToilets] = useState(OFFLINE_TOILETS);
+  const [venue, setVenue] = useState(VENUES['UT-AUD1']);
+  const [filters, setFilters] = useState(INITIAL_FILTER_STATE);
+  const [map, setMap] = useState(null);
+
+  const getCloseToilets = (index, venue, toilets) => {
+    const [latitude, longitude] = getLocation(venue);
+    return index
+      .query(latitude, longitude)
+      .map((i) => toilets[i])
+      .filter(({ type }) => {
+        return type === filters.gender;
+      });
+  };
 
   useEffect(() => {
     const cachedToilets = localStorage.getItem('toilets');
     if (cachedToilets === null) {
       // Fetch from API then store
-      localStorage.setItem('toilets', JSON.stringify(TOILETS));
+      localStorage.setItem('toilets', JSON.stringify(OFFLINE_TOILETS));
     } else {
       setToilets(JSON.parse(cachedToilets));
     }
   }, []);
 
+  useEffect(() => {
+    setVenue(VENUES[filters.search]);
+  }, [filters.search]);
+
+  useEffect(() => {
+    if (map) {
+      map.setView(getLocation(venue), 20);
+    }
+  }, [venue, map]);
+
   return (
-    <Map
-      location={LOCATION}
-      toilets={getCloseToilets(toiletIndex, LOCATION, toilets)}
-    />
+    <div id="map">
+      <MapContainer
+        center={getLocation(venue)}
+        zoom={20}
+        zoomControl={false}
+        scrollWheelZoom={false}
+        ref={setMap}
+      >
+        <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+        <SearchBar
+          className="leaflet-top searchbar-row"
+          setFilters={setFilters}
+          filters={filters}
+          venues={VENUES}
+        />
+        <Circle
+          center={getLocation(venue)}
+          pathOptions={CIRCLE_FILL_OPTIONS}
+          radius={10}
+        />
+        {getCloseToilets(toiletIndex, venue, toilets).map(
+          ({ latitude, longitude, description }, i) => {
+            return (
+              <React.Fragment key={i}>
+                <Polyline
+                  pathOptions={POLYLINE_FILL_OPTIONS}
+                  positions={[getLocation(venue), [latitude, longitude]]}
+                />
+                <Marker position={[latitude, longitude]} icon={icon}>
+                  <Popup>{description}</Popup>
+                </Marker>
+              </React.Fragment>
+            );
+          }
+        )}
+        <ZoomControl position="bottomright" />
+      </MapContainer>
+    </div>
   );
 };
 
