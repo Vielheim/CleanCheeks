@@ -29,5 +29,7 @@ export type UpdateToiletDTO = Optional<
   | 'utilities'
 >;
 
-// TODO update filtersDTO
-export type FilterToiletsDTO = {};
+export type FilterToiletsDTO = {
+  type?: string[];
+  utilities?: string[];
+};

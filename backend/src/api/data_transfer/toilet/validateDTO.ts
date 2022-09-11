@@ -1,9 +1,19 @@
 import { ToiletType, Utilities } from '../../../enums';
-import { CreateToiletDTO, UpdateToiletDTO } from './toilet.dto';
+import {
+  CreateToiletDTO,
+  UpdateToiletDTO,
+  FilterToiletsDTO,
+} from './toilet.dto';
 
 const validate = (isValidated: boolean, message: string) => {
   if (!isValidated) {
     throw Error(message);
+  }
+};
+
+const validateNonEmptyArray = (array_name: string, array: Array<any>) => {
+  if (!array.length) {
+    throw Error(`${array_name} must not be empty!`);
   }
 };
 
@@ -74,6 +84,22 @@ export const validateUpdateToiletDTO = (payload: UpdateToiletDTO) => {
   }
 
   if (payload.utilities) {
+    validateUtilities(payload.utilities);
+  }
+};
+
+// Filters must be non-empty and are the correct type
+export const validateFilterToiletsDTO = (payload: FilterToiletsDTO) => {
+  if (payload.type) {
+    validateNonEmptyArray('type', payload.type);
+
+    payload.type.forEach((type) => {
+      validateToiletType(type);
+    });
+  }
+
+  if (payload.utilities) {
+    validateNonEmptyArray('utilities', payload.utilities);
     validateUtilities(payload.utilities);
   }
 };

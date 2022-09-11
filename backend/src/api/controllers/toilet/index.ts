@@ -1,3 +1,4 @@
+import { GetAllToiletsFilters } from '../../../db/data_access/types';
 import * as service from '../../../db/services/ToiletService';
 import {
   CreateToiletDTO,
@@ -6,6 +7,7 @@ import {
 } from '../../data_transfer/toilet/toilet.dto';
 import {
   validateCreateToiletDTO,
+  validateFilterToiletsDTO,
   validateUpdateToiletDTO,
 } from '../../data_transfer/toilet/validateDTO';
 import { IToilet } from '../../interfaces';
@@ -42,5 +44,10 @@ export const getById = async (id: string): Promise<IToilet> => {
 };
 
 export const getAll = async (filters: FilterToiletsDTO): Promise<IToilet[]> => {
-  return (await service.getAll(filters)).map(mapper.toToilet);
+  // validate or throw error
+  validateFilterToiletsDTO(filters);
+
+  const getAllToiletFilters: GetAllToiletsFilters =
+    mapper.toGetAllToiletFilters(filters);
+  return (await service.getAll(getAllToiletFilters)).map(mapper.toToilet);
 };

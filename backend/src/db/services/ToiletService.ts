@@ -22,7 +22,7 @@ export const getById = (id: string): Promise<IToiletOutput> => {
 };
 
 export const getAll = (
-  filters?: GetAllToiletsFilters
+  filters: GetAllToiletsFilters
 ): Promise<IToiletOutput[]> => {
   return toiletDataAccess.getAll(filters);
 };
