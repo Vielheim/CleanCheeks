@@ -116,7 +116,7 @@ export const toPartialIToiletInput = ({
   };
 };
 
-// Map FilterToiletsDTO to GetAllToiletFilters
+// Map FilterToiletsDTO to GetAllToiletFilters if filters exist
 export const toGetAllToiletFilters = ({
   type,
   utilities,

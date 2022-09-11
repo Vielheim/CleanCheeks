@@ -60,6 +60,7 @@ toiletsRouter.get('/', async (req: Request, res: Response) => {
   }
 });
 
+// Extract filters that exist
 const getFilterToiletsDTOFromReq = (req: Request): FilterToiletsDTO => {
   const filters: FilterToiletsDTO = {};
   if (req.query.type) {

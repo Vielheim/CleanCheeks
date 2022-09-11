@@ -49,6 +49,8 @@ export const getAll = async (
     return Toilet.findAll();
   }
 
+  // Extract existing filters and perform query
+
   // The ToiletType is in the filters array
   let typesFilter = {};
   if (filters.type) {
