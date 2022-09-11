@@ -3,11 +3,11 @@ import {
   CreateToiletDTO,
   FilterToiletsDTO,
   UpdateToiletDTO,
-} from '../../data_transfer/toilet.dto';
+} from '../../data_transfer/toilet/toilet.dto';
 import {
   validateCreateToiletDTO,
   validateUpdateToiletDTO,
-} from '../../data_transfer/validateDTO';
+} from '../../data_transfer/toilet/validateDTO';
 import { IToilet } from '../../interfaces';
 import * as mapper from './mapper';
 

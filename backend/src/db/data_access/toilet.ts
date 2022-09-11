@@ -1,3 +1,4 @@
+import { DataNotFoundError } from '../../errors/Errors';
 import { Toilet } from '../models';
 import { IToiletInput, IToiletOutput } from '../models/Toilet';
 import { GetAllToiletsFilters } from './types';
@@ -14,7 +15,7 @@ export const update = async (
   const toilet = await Toilet.findByPk(id);
 
   if (toilet == null) {
-    throw new Error(`Toilet with id ${id} not found!`);
+    throw new DataNotFoundError(`Toilet with id ${id} not found!`);
   }
 
   const updatedToilet = await toilet.update(payload);
@@ -33,7 +34,7 @@ export const getById = async (id: string): Promise<IToiletOutput> => {
   const toilet = await Toilet.findByPk(id);
 
   if (!toilet) {
-    throw new Error(`Toilet with id ${id} not found!`);
+    throw new DataNotFoundError(`Toilet with id ${id} not found!`);
   }
 
   return toilet;

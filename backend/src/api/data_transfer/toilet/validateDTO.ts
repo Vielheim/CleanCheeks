@@ -1,4 +1,4 @@
-import { ToiletType, Utilities } from '../../enums';
+import { ToiletType, Utilities } from '../../../enums';
 import { CreateToiletDTO, UpdateToiletDTO } from './toilet.dto';
 
 const validate = (isValidated: boolean, message: string) => {

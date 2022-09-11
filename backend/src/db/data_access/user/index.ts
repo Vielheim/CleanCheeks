@@ -1,6 +1,7 @@
 import sequelize from 'sequelize';
-import { User } from '../models';
-import { IUserInput, IUserOutput } from '../models/User';
+import { User } from '../../models';
+import { IUserInput, IUserOutput } from '../../models/User';
+import { queryUserBy } from './util';
 
 export const create = async (payload: IUserInput): Promise<IUserOutput> => {
   return await User.create(payload);
@@ -10,11 +11,7 @@ export const update = async (
   id: string,
   payload: Partial<IUserInput>
 ): Promise<IUserOutput> => {
-  const user = await User.findByPk(id);
-
-  if (user == null) {
-    throw new Error(`User with id ${id} not found`);
-  }
+  const user = await queryUserBy(id);
 
   return await user.update(payload);
 };
@@ -28,11 +25,7 @@ export const deleteById = async (id: string): Promise<boolean> => {
 };
 
 export const getById = async (id: string): Promise<IUserOutput> => {
-  const user = await User.findByPk(id);
-
-  if (!user) {
-    throw new Error(`User with id ${id} not found!`);
-  }
+  const user = await queryUserBy(id);
 
   return user;
 };
@@ -45,6 +38,20 @@ export const favouriteToilet = async (
   user_id: string,
   toilet_id: string
 ): Promise<boolean> => {
+  const user = await queryUserBy(user_id);
+
+  if (user.favourited_toilets.includes(toilet_id)) {
+    throw new Error(
+      `Toilet ${toilet_id} is already favourited by user ${user_id}!`
+    );
+  }
+
+  if (user.blacklisted_toilets.includes(toilet_id)) {
+    throw new Error(
+      `Blacklisted toilet ${toilet_id} cannot be favourited by user ${user_id}!`
+    );
+  }
+
   const updatedUserCount = await User.update(
     {
       favourited_toilets: sequelize.fn(
@@ -63,6 +70,14 @@ export const unfavouriteToilet = async (
   user_id: string,
   toilet_id: string
 ): Promise<boolean> => {
+  const user = await queryUserBy(user_id);
+
+  if (!user.favourited_toilets.includes(toilet_id)) {
+    throw new Error(
+      `Toilet ${toilet_id} has not been favourited by the user ${user_id}!`
+    );
+  }
+
   const updatedUserCount = await User.update(
     {
       favourited_toilets: sequelize.fn(
@@ -81,6 +96,20 @@ export const blacklistToilet = async (
   user_id: string,
   toilet_id: string
 ): Promise<boolean> => {
+  const user = await queryUserBy(user_id);
+
+  if (user.blacklisted_toilets.includes(toilet_id)) {
+    throw new Error(
+      `Toilet ${toilet_id} is already blacklisted by user ${user_id}!`
+    );
+  }
+
+  if (user.favourited_toilets.includes(toilet_id)) {
+    throw new Error(
+      `Favourited toilet ${toilet_id} is cannot be blacklisted by user ${user_id}!`
+    );
+  }
+
   const updatedUserCount = await User.update(
     {
       blacklisted_toilets: sequelize.fn(
@@ -99,6 +128,12 @@ export const unblacklistToilet = async (
   user_id: string,
   toilet_id: string
 ): Promise<boolean> => {
+  const user = await queryUserBy(user_id);
+
+  if (!user.blacklisted_toilets.includes(toilet_id)) {
+    throw new Error(`Toilet ${toilet_id} is not blacklisted by the user!`);
+  }
+
   const updatedUserCount = await User.update(
     {
       blacklisted_toilets: sequelize.fn(

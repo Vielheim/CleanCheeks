@@ -3,7 +3,7 @@ import { ToiletType, Utilities } from '../../../enums';
 import {
   CreateToiletDTO,
   UpdateToiletDTO,
-} from '../../data_transfer/toilet.dto';
+} from '../../data_transfer/toilet/toilet.dto';
 import { IToilet } from '../../interfaces';
 
 // maps data from db layer to api layer

@@ -1,7 +1,7 @@
 export interface IUser {
   id: string;
-  blacklisted_toilets: number[];
-  favourited_toilets: number[];
+  blacklisted_toilets: string[];
+  favourited_toilets: string[];
   createdAt: Date;
   updatedAt: Date;
 }
