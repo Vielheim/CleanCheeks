@@ -91,6 +91,7 @@ const SearchBar = ({ filters, setFilters, venues }) => {
           <Row className="mt-1">
             <Col>
               <ListGroup
+                className="list-group"
                 onFocus={onListFocus}
                 onBlur={() => setIsShowList(false)}
               >

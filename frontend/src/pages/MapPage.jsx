@@ -59,7 +59,7 @@ const MapPage = () => {
 
   useEffect(() => {
     if (map) {
-      map.setView(getLocation(venue), 20);
+      map.setView(getLocation(venue), 18);
     }
   }, [venue, map]);
 
@@ -67,7 +67,7 @@ const MapPage = () => {
     <div id="map">
       <MapContainer
         center={getLocation(venue)}
-        zoom={20}
+        zoom={18}
         zoomControl={false}
         scrollWheelZoom={false}
         ref={setMap}
