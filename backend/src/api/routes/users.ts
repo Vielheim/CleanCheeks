@@ -36,7 +36,7 @@ usersRouter.get('/', async (_, res: Response) => {
 });
 
 // TODO: Check that acting user is the same as user_id field
-usersRouter.post(
+usersRouter.put(
   '/:user_id/favouriteToilet/:toilet_id',
   async (req: Request, res: Response) => {
     try {
@@ -72,7 +72,7 @@ usersRouter.delete(
 );
 
 // TODO: Check that acting user is the same as user_id field
-usersRouter.post(
+usersRouter.put(
   '/:user_id/blacklistToilet/:toilet_id',
   async (req: Request, res: Response) => {
     try {
