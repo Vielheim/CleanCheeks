@@ -1,8 +1,5 @@
 import * as service from '../../../db/services/UserService';
-import {
-  CreateUserDTO,
-  UpdateToiletPreferencesDTO,
-} from '../../data_transfer/user/user.dto';
+import { CreateUserDTO } from '../../data_transfer/user/user.dto';
 import { IUser } from '../../interfaces';
 import * as mapper from './mapper';
 
@@ -26,28 +23,28 @@ export const getAll = async (): Promise<IUser[]> => {
 
 export const favouriteToilet = async (
   user_id: string,
-  payload: UpdateToiletPreferencesDTO
+  toilet_id: string
 ): Promise<boolean> => {
-  return await service.favouriteToilet(user_id, payload.toilet_id);
+  return await service.favouriteToilet(user_id, toilet_id);
 };
 
 export const unfavouriteToilet = async (
   user_id: string,
-  payload: UpdateToiletPreferencesDTO
+  toilet_id: string
 ): Promise<boolean> => {
-  return await service.unfavouriteToilet(user_id, payload.toilet_id);
+  return await service.unfavouriteToilet(user_id, toilet_id);
 };
 
 export const blacklistToilet = async (
   user_id: string,
-  payload: UpdateToiletPreferencesDTO
+  toilet_id: string
 ): Promise<boolean> => {
-  return await service.blacklistToilet(user_id, payload.toilet_id);
+  return await service.blacklistToilet(user_id, toilet_id);
 };
 
 export const unblacklistToilet = async (
   user_id: string,
-  payload: UpdateToiletPreferencesDTO
+  toilet_id: string
 ): Promise<boolean> => {
-  return await service.unblacklistToilet(user_id, payload.toilet_id);
+  return await service.unblacklistToilet(user_id, toilet_id);
 };
