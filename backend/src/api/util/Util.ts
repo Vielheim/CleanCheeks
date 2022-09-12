@@ -22,6 +22,7 @@ export default class Util {
       message = error;
     } else if (error instanceof Error) {
       message = error.message;
+      console.error(error.stack);
     }
 
     if (error instanceof DataNotFoundError) {

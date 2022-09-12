@@ -2,6 +2,7 @@ import { DataTypes, Model, Optional, Sequelize } from 'sequelize';
 import sequelizeConnection from '../config';
 import { ToiletType, Utilities } from '../../enums';
 import { UUIDV4 } from 'sequelize';
+import UserToiletPreference from './UserToiletPreference';
 
 interface IToiletAttributes {
   id: string;

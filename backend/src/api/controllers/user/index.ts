@@ -20,31 +20,3 @@ export const getById = async (id: string): Promise<IUser> => {
 export const getAll = async (): Promise<IUser[]> => {
   return (await service.getAll()).map(mapper.toUser);
 };
-
-export const favouriteToilet = async (
-  user_id: string,
-  toilet_id: string
-): Promise<boolean> => {
-  return await service.favouriteToilet(user_id, toilet_id);
-};
-
-export const unfavouriteToilet = async (
-  user_id: string,
-  toilet_id: string
-): Promise<boolean> => {
-  return await service.unfavouriteToilet(user_id, toilet_id);
-};
-
-export const blacklistToilet = async (
-  user_id: string,
-  toilet_id: string
-): Promise<boolean> => {
-  return await service.blacklistToilet(user_id, toilet_id);
-};
-
-export const unblacklistToilet = async (
-  user_id: string,
-  toilet_id: string
-): Promise<boolean> => {
-  return await service.unblacklistToilet(user_id, toilet_id);
-};
