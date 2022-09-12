@@ -5,9 +5,21 @@ import UserToiletPreference, {
 
 export const upsert = async (
   payload: IUserToiletPreferenceInput
-): Promise<IUserToiletPreferenceOutput> => {
-  const [result] = await UserToiletPreference.upsert(payload);
-  return result;
+): Promise<[IUserToiletPreferenceOutput, boolean]> => {
+  const toiletPref = await UserToiletPreference.findOne({
+    where: {
+      user_id: payload.user_id,
+      toilet_id: payload.toilet_id,
+    },
+  });
+
+  if (toiletPref == null) {
+    const newToiletPref = await UserToiletPreference.create(payload);
+    return [newToiletPref, true];
+  }
+
+  const updatedToiletPref = await toiletPref.update(payload);
+  return [updatedToiletPref, false];
 };
 
 export const remove = async (

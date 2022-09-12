@@ -42,11 +42,19 @@ usersRouter.put(
     try {
       const toiletId = req.params.toilet_id;
       const userId = req.params.user_id;
-      const result = await userToiletPreferenceController.favouriteToilet(
-        userId,
-        toiletId
+      const [result, isCreated] =
+        await userToiletPreferenceController.favouriteToilet(userId, toiletId);
+
+      if (isCreated) {
+        return Util.sendSuccess(res, 201, 'Favourited new toilet', result);
+      }
+
+      return Util.sendSuccess(
+        res,
+        200,
+        'Update existing toilet to favourite',
+        result
       );
-      return Util.sendSuccess(res, 201, 'Favourited toilet', result);
     } catch (error: unknown) {
       return Util.sendFailure(res, error);
     }
@@ -78,11 +86,19 @@ usersRouter.put(
     try {
       const toiletId = req.params.toilet_id;
       const userId = req.params.user_id;
-      const result = await userToiletPreferenceController.blacklistToilet(
-        userId,
-        toiletId
+      const [result, isCreated] =
+        await userToiletPreferenceController.blacklistToilet(userId, toiletId);
+
+      if (isCreated) {
+        return Util.sendSuccess(res, 201, 'Blacklisted new toilet', result);
+      }
+
+      return Util.sendSuccess(
+        res,
+        200,
+        'Update existing toilet to blacklist',
+        result
       );
-      return Util.sendSuccess(res, 201, 'Blacklisted toilet', result);
     } catch (error: unknown) {
       return Util.sendFailure(res, error);
     }

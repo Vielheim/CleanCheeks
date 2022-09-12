@@ -1,13 +1,12 @@
-import { PreferenceType } from '../../enums/UserToiletPreferenceEnums';
 import * as db from '../data_access/user_toilet_preference';
 import {
-  IUserToiletPreferenceOutput,
   IUserToiletPreferenceInput,
+  IUserToiletPreferenceOutput,
 } from '../models/UserToiletPreference';
 
 export const favouriteToilet = async (
   payload: IUserToiletPreferenceInput
-): Promise<IUserToiletPreferenceOutput> => {
+): Promise<[IUserToiletPreferenceOutput, boolean]> => {
   return await db.upsert(payload);
 };
 
@@ -19,7 +18,7 @@ export const unfavouriteToilet = async (
 
 export const blacklistToilet = async (
   payload: IUserToiletPreferenceInput
-): Promise<IUserToiletPreferenceOutput> => {
+): Promise<[IUserToiletPreferenceOutput, boolean]> => {
   return await db.upsert(payload);
 };
 

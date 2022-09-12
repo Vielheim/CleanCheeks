@@ -5,7 +5,7 @@ import * as mapper from './mapper';
 export const favouriteToilet = async (
   user_id: string,
   toilet_id: string
-): Promise<IUserToiletPreferenceOutput> => {
+): Promise<[IUserToiletPreferenceOutput, boolean]> => {
   return await service.favouriteToilet(
     mapper.toFavouriteToiletInput(user_id, toilet_id)
   );
@@ -23,7 +23,7 @@ export const unfavouriteToilet = async (
 export const blacklistToilet = async (
   user_id: string,
   toilet_id: string
-): Promise<IUserToiletPreferenceOutput> => {
+): Promise<[IUserToiletPreferenceOutput, boolean]> => {
   return await service.blacklistToilet(
     mapper.toBlacklistToiletInput(user_id, toilet_id)
   );
