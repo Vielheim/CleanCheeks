@@ -6,6 +6,7 @@ import UserToiletPreference, {
 export const upsert = async (
   payload: IUserToiletPreferenceInput
 ): Promise<[IUserToiletPreferenceOutput, boolean]> => {
+  // Upsert does not distinguish between creation and update for postgres https://sequelize.org/docs/v6/other-topics/upgrade/#:~:text=created%20value%20will%20always%20be%20null.
   const toiletPref = await UserToiletPreference.findOne({
     where: {
       user_id: payload.user_id,
