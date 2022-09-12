@@ -1,4 +1,3 @@
-import toiletsRouter from '../../../api/routes/toilets';
 import UserToiletPreference, {
   IUserToiletPreferenceInput,
   IUserToiletPreferenceOutput,
@@ -7,19 +6,8 @@ import UserToiletPreference, {
 export const upsert = async (
   payload: IUserToiletPreferenceInput
 ): Promise<IUserToiletPreferenceOutput> => {
-  console.log(payload);
-  const toiletPreference = await UserToiletPreference.findOne({
-    where: {
-      user_id: payload.user_id,
-      toilet_id: payload.toilet_id,
-    },
-  });
-
-  if (toiletPreference == null) {
-    return await UserToiletPreference.create(payload);
-  }
-
-  return await toiletPreference.update(payload);
+  const [result] = await UserToiletPreference.upsert(payload);
+  return result;
 };
 
 export const remove = async (

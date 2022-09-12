@@ -1,7 +1,7 @@
 import { DataTypes, Model, Optional } from 'sequelize';
 import { PreferenceType } from '../../enums/UserToiletPreferenceEnums';
 import sequelizeConnection from '../config';
-import Toilet, { IToiletInput } from './Toilet';
+import Toilet from './Toilet';
 import User from './User';
 
 interface IUserToiletPreferenceAttributes {
@@ -25,9 +25,9 @@ class UserToiletPreference
   extends Model<IUserToiletPreferenceAttributes, IUserToiletPreferenceInput>
   implements IUserToiletPreferenceAttributes
 {
-  public type!: PreferenceType;
   public user_id!: string;
   public toilet_id!: string;
+  public type!: PreferenceType;
 
   // timestamps! (Will be updated by sequelize)
   public createdAt!: Date;
@@ -55,8 +55,8 @@ UserToiletPreference.init(
   }
 );
 
-Toilet.hasMany(UserToiletPreference);
-User.hasMany(UserToiletPreference);
+Toilet.hasMany(UserToiletPreference, { foreignKey: 'toilet_id' });
+User.hasMany(UserToiletPreference, { foreignKey: 'user_id' });
 
 UserToiletPreference.belongsTo(User, {
   foreignKey: 'user_id',

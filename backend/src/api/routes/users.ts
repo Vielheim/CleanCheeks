@@ -78,8 +78,6 @@ usersRouter.post(
     try {
       const toiletId = req.params.toilet_id;
       const userId = req.params.user_id;
-      console.log(toiletId);
-      console.log(userId);
       const result = await userToiletPreferenceController.blacklistToilet(
         userId,
         toiletId
