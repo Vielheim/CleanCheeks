@@ -1,5 +1,5 @@
 import Toilet from "./Toilet";
 import User from './User';
-import UserToiletPreference from './UserToiletPreference';
+import ToiletPreference from './ToiletPreference';
 
-export { Toilet, User, UserToiletPreference };
+export { Toilet, User, ToiletPreference };

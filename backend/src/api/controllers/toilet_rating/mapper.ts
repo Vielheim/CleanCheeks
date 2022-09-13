@@ -3,7 +3,7 @@ import {
   IToiletRatingOutput,
 } from '../../../db/models/ToiletRating';
 import { RatingType } from '../../../enums/ToiletRatingEnums';
-import { CreateRatingDTO } from '../../data_transfer/user_toilet_rating/rating.dto';
+import { CreateRatingDTO } from '../../data_transfer/toilet_rating/rating.dto';
 import { IRating } from '../../interfaces/rating.interface';
 
 // Map CreateRatingDTO to IToiletRatingInput
@@ -12,11 +12,11 @@ export const toIToiletRatingInput = (
 ): IToiletRatingInput => {
   return {
     ...ratingDTO,
-    type: (<any>RatingType)[ratingDTO.type],
+    type: (<any>RatingType)[ratingDTO.type.toUpperCase()],
   };
 };
 
-export const toIRatingOutput = ({
+export const toIRating = ({
   id,
   toilet_id,
   user_id,

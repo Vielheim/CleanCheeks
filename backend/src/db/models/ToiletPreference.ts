@@ -1,10 +1,10 @@
 import { DataTypes, Model, Optional } from 'sequelize';
-import { PreferenceType } from '../../enums/UserToiletPreferenceEnums';
+import { PreferenceType } from '../../enums/ToiletPreferenceEnums';
 import sequelizeConnection from '../config';
 import Toilet from './Toilet';
 import User from './User';
 
-interface IUserToiletPreferenceAttributes {
+interface IToiletPreferenceAttributes {
   user_id: string;
   toilet_id: string;
   type: PreferenceType;
@@ -12,18 +12,15 @@ interface IUserToiletPreferenceAttributes {
   updatedAt?: Date;
 }
 
-export interface IUserToiletPreferenceInput
-  extends Optional<
-    IUserToiletPreferenceAttributes,
-    'createdAt' | 'updatedAt'
-  > {}
+export interface IToiletPreferenceInput
+  extends Optional<IToiletPreferenceAttributes, 'createdAt' | 'updatedAt'> {}
 
-export interface IUserToiletPreferenceOutput
-  extends Required<IUserToiletPreferenceAttributes> {}
+export interface IToiletPreferenceOutput
+  extends Required<IToiletPreferenceAttributes> {}
 
-class UserToiletPreference
-  extends Model<IUserToiletPreferenceAttributes, IUserToiletPreferenceInput>
-  implements IUserToiletPreferenceAttributes
+class ToiletPreference
+  extends Model<IToiletPreferenceAttributes, IToiletPreferenceInput>
+  implements IToiletPreferenceAttributes
 {
   public user_id!: string;
   public toilet_id!: string;
@@ -34,7 +31,7 @@ class UserToiletPreference
   public updatedAt!: Date;
 }
 
-UserToiletPreference.init(
+ToiletPreference.init(
   {
     user_id: {
       type: DataTypes.STRING,
@@ -55,14 +52,14 @@ UserToiletPreference.init(
   }
 );
 
-Toilet.hasMany(UserToiletPreference, { foreignKey: 'toilet_id' });
-User.hasMany(UserToiletPreference, { foreignKey: 'user_id' });
+Toilet.hasMany(ToiletPreference, { foreignKey: 'toilet_id' });
+User.hasMany(ToiletPreference, { foreignKey: 'user_id' });
 
-UserToiletPreference.belongsTo(User, {
+ToiletPreference.belongsTo(User, {
   foreignKey: 'user_id',
 });
-UserToiletPreference.belongsTo(Toilet, {
+ToiletPreference.belongsTo(Toilet, {
   foreignKey: 'toilet_id',
 });
 
-export default UserToiletPreference;
+export default ToiletPreference;

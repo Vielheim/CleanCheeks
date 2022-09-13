@@ -1,4 +1,4 @@
-import * as db from '../data_access/user_toilet_rating';
+import * as db from '../data_access/toilet_rating';
 import {
   IToiletRatingInput,
   IToiletRatingOutput,

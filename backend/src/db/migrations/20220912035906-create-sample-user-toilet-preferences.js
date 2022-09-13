@@ -6,7 +6,7 @@ module.exports = {
     await queryInterface.sequelize.query(
       `CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`
     ),
-      await queryInterface.createTable('UserToiletPreferences', {
+      await queryInterface.createTable('ToiletPreferences', {
         user_id: {
           type: Sequelize.STRING,
           primaryKey: true,
@@ -28,9 +28,8 @@ module.exports = {
           },
         },
         type: {
-          type: Sequelize.ENUM('FAVOURITE, BLACKLIST'),
+          type: Sequelize.ENUM('FAVOURITE', 'BLACKLIST'),
           allowNull: false,
-          values: ['FAVOURITE', 'BLACKLIST'],
         },
         createdAt: {
           allowNull: false,
@@ -43,6 +42,6 @@ module.exports = {
       });
   },
   async down(queryInterface) {
-    await queryInterface.dropTable('UserToiletPreferences');
+    await queryInterface.dropTable('ToiletPreferences');
   },
 };

@@ -1,6 +1,6 @@
 import { DataTypes, Model, Optional } from 'sequelize';
 import sequelizeConnection from '../config';
-import UserToiletPreference from './UserToiletPreference';
+import ToiletPreference from './ToiletPreference';
 
 interface IUserAttributes {
   id: string;

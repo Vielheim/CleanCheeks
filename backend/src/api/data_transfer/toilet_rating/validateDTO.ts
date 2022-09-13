@@ -7,7 +7,7 @@ export const validateCreateRatingDTO = (payload: CreateRatingDTO) => {
 };
 
 const validateToiletType = (type: string) => {
-  const isValidated = (<any>RatingType)[type] !== undefined;
+  const isValidated = (<any>RatingType)[type.toUpperCase()] !== undefined;
   validate(
     isValidated,
     `type ${type} must be one of ${Object.keys(RatingType)}`
