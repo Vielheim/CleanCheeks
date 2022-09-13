@@ -1,4 +1,3 @@
-import sequelize from 'sequelize';
 import { User } from '../../models';
 import { IUserInput, IUserOutput } from '../../models/User';
 import { queryUserBy } from './util';
