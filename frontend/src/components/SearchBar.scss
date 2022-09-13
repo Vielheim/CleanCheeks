@@ -1,0 +1,13 @@
+.filter-row {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.filter-modal-button {
+  z-index: 0;
+}
+
+.list-group {
+  max-height: calc(100vh - 10rem);
+  overflow: scroll;
+}

@@ -6,13 +6,13 @@ export class NeighboursIndex {
 	
 	constructor(toilets) {
 		this.toiletsIndex = new Flatbush(toilets.length);
-  	toilets.forEach(({ longitude, latitude }) => {
-			this.toiletsIndex.add(longitude, latitude, longitude, latitude);
+  	toilets.forEach(({ latitude, longitude }) => {
+			this.toiletsIndex.add(latitude, longitude, latitude, longitude);
 		});
   	this.toiletsIndex.finish();
 	}
 
-	query(longitude, latitude) {
-		return this.toiletsIndex.neighbors(longitude, latitude, Infinity, this.MAX_DISTANCE);
+	query(latitude, longitude) {
+		return this.toiletsIndex.neighbors(latitude, longitude, Infinity, this.MAX_DISTANCE);
 	}
 }
