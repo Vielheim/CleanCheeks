@@ -1,7 +1,8 @@
 import { DataNotFoundError } from '../../errors/Errors';
 import { Toilet } from '../models';
 import { IToiletInput, IToiletOutput } from '../models/Toilet';
-import { GetAllToiletsFilters } from './types';
+import { GetAllToiletsFilters, isEmptyGetAllToiletFilters } from './types';
+import { Op, Sequelize } from 'sequelize';
 
 export const create = async (payload: IToiletInput): Promise<IToiletOutput> => {
   const toilet = await Toilet.create(payload);
@@ -40,9 +41,37 @@ export const getById = async (id: string): Promise<IToiletOutput> => {
   return toilet;
 };
 
-// TODO update to filter via filters
 export const getAll = async (
-  filters?: GetAllToiletsFilters
+  filters: GetAllToiletsFilters
 ): Promise<IToiletOutput[]> => {
-  return Toilet.findAll();
+  // No filters specified; return all
+  if (isEmptyGetAllToiletFilters(filters)) {
+    return Toilet.findAll();
+  }
+
+  // Extract existing filters and perform query
+
+  // The ToiletType is in the filters array
+  let typesFilter = {};
+  if (filters.type) {
+    typesFilter = {
+      type: {
+        [Op.in]: filters.type,
+      },
+    };
+  }
+
+  // One of the Utilities is in in the filters array
+  let utilitiesFilter = {};
+  if (filters.utilities) {
+    utilitiesFilter = {
+      utilities: {
+        [Op.overlap]: filters.utilities,
+      },
+    };
+  }
+
+  return Toilet.findAll({
+    where: Sequelize.or(typesFilter, utilitiesFilter),
+  });
 };

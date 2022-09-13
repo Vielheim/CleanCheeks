@@ -52,12 +52,26 @@ toiletsRouter.get('/:id', async (req: Request, res: Response) => {
 
 toiletsRouter.get('/', async (req: Request, res: Response) => {
   try {
-    const filters: FilterToiletsDTO = req.query;
+    const filters = getFilterToiletsDTOFromReq(req);
     const results = await toiletController.getAll(filters);
     return Util.sendSuccess(res, 200, 'Retrieved all toilets', results);
   } catch (error: unknown) {
     return Util.sendFailure(res, error);
   }
 });
+
+// Extract filters that exist
+const getFilterToiletsDTOFromReq = (req: Request): FilterToiletsDTO => {
+  const filters: FilterToiletsDTO = {};
+  if (req.query.type) {
+    filters.type = JSON.parse(req.query.type as string);
+  }
+
+  if (req.query.utilities) {
+    filters.utilities = JSON.parse(req.query.utilities as string);
+  }
+
+  return filters;
+};
 
 export default toiletsRouter;

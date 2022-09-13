@@ -1,8 +1,10 @@
-import { IToiletInput, IToiletOutput } from '../../../db/models/Toilet';
+import { GetAllToiletsFilters } from '../../../db/data_access/types';
+import Toilet, { IToiletInput, IToiletOutput } from '../../../db/models/Toilet';
 import { ToiletType, Utilities } from '../../../enums';
 import {
   CreateToiletDTO,
   UpdateToiletDTO,
+  FilterToiletsDTO,
 } from '../../data_transfer/toilet/toilet.dto';
 import { IToilet } from '../../interfaces';
 
@@ -112,4 +114,24 @@ export const toPartialIToiletInput = ({
     type: mappedType,
     utilities: mappedUtilities,
   };
+};
+
+// Map FilterToiletsDTO to GetAllToiletFilters if filters exist
+export const toGetAllToiletFilters = ({
+  type,
+  utilities,
+}: FilterToiletsDTO): GetAllToiletsFilters => {
+  const getAllToiletFilters: GetAllToiletsFilters = {};
+
+  if (type) {
+    getAllToiletFilters.type = type.map((type) => (<any>ToiletType)[type]);
+  }
+
+  if (utilities) {
+    getAllToiletFilters.utilities = utilities.map(
+      (utility) => (<any>Utilities)[utility]
+    );
+  }
+
+  return getAllToiletFilters;
 };
