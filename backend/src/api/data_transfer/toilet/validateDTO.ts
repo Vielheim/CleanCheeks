@@ -1,15 +1,10 @@
 import { ToiletType, Utilities } from '../../../enums';
+import { validate } from '../validate/Util';
 import {
   CreateToiletDTO,
   UpdateToiletDTO,
   FilterToiletsDTO,
 } from './toilet.dto';
-
-const validate = (isValidated: boolean, message: string) => {
-  if (!isValidated) {
-    throw Error(message);
-  }
-};
 
 const validateNonEmptyArray = (array_name: string, array: Array<any>) => {
   if (!array.length) {

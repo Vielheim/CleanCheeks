@@ -1,9 +1,6 @@
 import { Request, Response, Router } from 'express';
 import * as userController from '../controllers/user';
-import {
-  CreateUserDTO,
-  UpdateToiletPreferencesDTO,
-} from '../data_transfer/user/user.dto';
+import { CreateUserDTO } from '../data_transfer/user/user.dto';
 import Util from '../util/Util';
 
 const usersRouter = Router();
@@ -32,54 +29,6 @@ usersRouter.get('/', async (_, res: Response) => {
   try {
     const result = await userController.getAll();
     return Util.sendSuccess(res, 200, 'Retrieved all users', result);
-  } catch (error: unknown) {
-    return Util.sendFailure(res, error);
-  }
-});
-
-// TODO: Retrieve user from request from jwt decode
-usersRouter.put('/favouriteToilet', async (req: Request, res: Response) => {
-  try {
-    const payload: UpdateToiletPreferencesDTO = req.body;
-    const userId: string = 'testuser';
-    const result = await userController.favouriteToilet(userId, payload);
-    return Util.sendSuccess(res, 200, 'Favourited toilet', result);
-  } catch (error: unknown) {
-    return Util.sendFailure(res, error);
-  }
-});
-
-// TODO: Retrieve user from request from jwt decode
-usersRouter.put('/unfavouriteToilet', async (req: Request, res: Response) => {
-  try {
-    const payload: UpdateToiletPreferencesDTO = req.body;
-    const userId: string = 'testuser';
-    const result = await userController.unfavouriteToilet(userId, payload);
-    return Util.sendSuccess(res, 200, 'Unfavourited toilet', result);
-  } catch (error: unknown) {
-    return Util.sendFailure(res, error);
-  }
-});
-
-// TODO: Retrieve user from request from jwt decode
-usersRouter.put('/blacklistToilet', async (req: Request, res: Response) => {
-  try {
-    const payload: UpdateToiletPreferencesDTO = req.body;
-    const userId: string = 'testuser';
-    const result = await userController.blacklistToilet(userId, payload);
-    return Util.sendSuccess(res, 200, 'Blacklisted toilet', result);
-  } catch (error: unknown) {
-    return Util.sendFailure(res, error);
-  }
-});
-
-// TODO: Retrieve user from request from jwt decode
-usersRouter.put('/unblacklistToilet', async (req: Request, res: Response) => {
-  try {
-    const payload: UpdateToiletPreferencesDTO = req.body;
-    const userId: string = 'testuser';
-    const result = await userController.unblacklistToilet(userId, payload);
-    return Util.sendSuccess(res, 200, 'Unblacklisted toilet', result);
   } catch (error: unknown) {
     return Util.sendFailure(res, error);
   }

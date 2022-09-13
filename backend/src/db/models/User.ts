@@ -1,19 +1,15 @@
 import { DataTypes, Model, Optional } from 'sequelize';
 import sequelizeConnection from '../config';
+import ToiletPreference from './ToiletPreference';
 
 interface IUserAttributes {
   id: string;
-  blacklisted_toilets: string[];
-  favourited_toilets: string[];
   createdAt?: Date;
   updatedAt?: Date;
 }
 
 export interface IUserInput
-  extends Optional<
-    IUserAttributes,
-    'createdAt' | 'updatedAt' | 'blacklisted_toilets' | 'favourited_toilets'
-  > {}
+  extends Optional<IUserAttributes, 'createdAt' | 'updatedAt'> {}
 
 export interface IUserOutput extends Required<IUserAttributes> {}
 
@@ -22,8 +18,6 @@ class User
   implements IUserAttributes
 {
   public id!: string;
-  public blacklisted_toilets!: string[];
-  public favourited_toilets!: string[];
 
   // timestamps! (Will be updated by sequelize)
   public createdAt!: Date;
@@ -35,16 +29,6 @@ User.init(
     id: {
       type: DataTypes.STRING,
       primaryKey: true,
-    },
-    blacklisted_toilets: {
-      type: DataTypes.ARRAY(DataTypes.UUID),
-      defaultValue: [],
-      allowNull: false,
-    },
-    favourited_toilets: {
-      type: DataTypes.ARRAY(DataTypes.UUID),
-      defaultValue: [],
-      allowNull: false,
     },
   },
   {
