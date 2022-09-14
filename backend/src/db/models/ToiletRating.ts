@@ -1,6 +1,6 @@
 import { DataTypes, Model, Optional, UUIDV4 } from 'sequelize';
 import { RatingType } from '../../enums/ToiletRatingEnums';
-import sequelizeConnection from '../config';
+import sequelize from '../index';
 import Toilet from './Toilet';
 import User from './User';
 
@@ -57,7 +57,7 @@ ToiletRating.init(
     },
   },
   {
-    sequelize: sequelizeConnection,
+    sequelize: sequelize,
     timestamps: true, // auto-update timestamps
   }
 );

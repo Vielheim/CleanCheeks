@@ -1,7 +1,6 @@
 import { DataTypes, Model, Optional, UUIDV4 } from 'sequelize';
 import { ToiletType, Utilities } from '../../enums';
-import sequelizeConnection from '../config';
-
+import sequelize from '../index';
 interface IToiletAttributes {
   id: string;
   building: string;
@@ -118,7 +117,7 @@ Toilet.init(
     },
   },
   {
-    sequelize: sequelizeConnection,
+    sequelize: sequelize,
     timestamps: true, // auto-update timestamps
   }
 );
