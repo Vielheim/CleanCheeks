@@ -12,7 +12,7 @@ import ClusterDetails from '../components/ClusterDetails';
 import icon from '../components/markerIcon';
 import { NeighboursIndex } from '../utilities/utilities';
 import { INITIAL_FILTER_STATE, OFFLINE_TOILETS } from '../components/constants';
-import VENUES from '../data/venues.json';
+import VENUES from '../assets/venues.json';
 
 import './MapPage.scss';
 
