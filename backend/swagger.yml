@@ -15,6 +15,47 @@ tags:
     description: User
     
 paths:
+  /api/v1/toilets:
+    get:
+      tags:
+        - Toilets
+      summary: Get all toilets
+      description: Get all toilets
+      responses:
+        '200':
+          description: Success
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetToiletResponseArray'
+        '400':
+          description: Bad request
+  /api/v1/toilets/{toiletId}:
+    get:
+      tags:
+        - Toilets
+      summary: Get toilet by ID
+      description: Get a single toilet
+      parameters:
+        - name: toiletId
+          in: path
+          description: ID of toilet to return
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Success
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetToiletResponse'
+        '400':
+          description: Bad request
+        '404':
+          description: Toilet not found
+
   /api/v1/toilet_ratings:
     post:
       tags:
@@ -233,26 +274,35 @@ components:
       properties:
         toilet_id:
           type: string
+          example: 7c2e5a75-286f-4c17-bbb4-21e645678e28
         user_id:
           type: string
+          example: 448d37ef-c7ed-495b-972f-81995bb25c2d
         type:
           type: string
           enum: [CLEAN, DIRTY]
+          example: CLEAN
     Rating:
       type: object
       properties:
         id:
           type: string
+          example: c58fb93f-63d2-421f-a7dc-66c2bf903710
         toilet_id:
           type: string
+          example: 7c2e5a75-286f-4c17-bbb4-21e645678e28
         user_id:
           type: string
+          example: 448d37ef-c7ed-495b-972f-81995bb25c2d
         type:
           type: string
+          example: CLEAN
         createdAt:
           type: string
+          example: 2022-09-14T09:36:51.277Z
         updatedAt:
           type: string
+          example: 2022-09-14T09:36:51.277Z
     CreateRatingResponse:
       type: object
       properties:
@@ -286,24 +336,32 @@ components:
       properties:
         toilet_id:
           type: string
+          example: 7c2e5a75-286f-4c17-bbb4-21e645678e28
         user_id:
           type: string
+          example: 448d37ef-c7ed-495b-972f-81995bb25c2d
         type:
           type: string
           enum: [BLACKLIST, FAVOURITE]
+          example: FAVOURITE
     Preference:
       type: object
       properties:
         toilet_id:
           type: string
+          example: 7c2e5a75-286f-4c17-bbb4-21e645678e28
         user_id:
           type: string
+          example: 448d37ef-c7ed-495b-972f-81995bb25c2d
         type:
           type: string
+          example: FAVOURITE
         createdAt:
           type: string
+          example: 2022-09-14T09:36:51.277Z
         updatedAt:
           type: string
+          example: 2022-09-14T09:36:51.277Z
     CreatePreferenceResponse:
       type: object
       properties:
@@ -358,15 +416,21 @@ components:
       properties:
         id:
           type: string
+          format: string
+          example: 7c2e5a75-286f-4c17-bbb4-21e645678e28
     User:
       type: object
       properties:
         id:
           type: string
+          format: string
+          example: 7c2e5a75-286f-4c17-bbb4-21e645678e28
         createdAt:
           type: string
+          example: 2022-09-14T09:36:51.277Z
         updatedAt:
           type: string
+          example: 2022-09-14T09:36:51.277Z
     CreateUserResponse:
       type: object
       properties:
@@ -402,4 +466,75 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/User'
+    Toilet:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: aa39c1e1-7591-47a9-a11c-1566e0b29e9e
+        building:
+          type: string
+          example: COM2
+        description:
+          type: string
+          example: Beside the library
+        floor:
+          type: integer
+          example: 1
+        longitude:
+          type: number
+          example: 1.2924024167154038
+        latitude:
+          type: number
+          example: 103.77438630260782
+        num_seats:
+          type: integer
+          example: 3
+        num_squats:
+          type: integer
+          example: 3
+        cleanliness:
+          type: number
+          example: 0
+        type:
+          type: string
+          enum: [MALE, FEMALE, HANDICAP]
+          example: FEMALE
+        utilities:
+          type: array
+          items: 
+            type: string
+            enum: [SHOWERS, FRAGRANCE, BIDETS, HOOKS, WATERCOOLER]
+          example: [BIDETS, HOOKS]
+        createdAt:
+          type: string
+          example: 2022-09-14T09:36:51.277Z
+        updatedAt:
+          type: string
+          example: 2022-09-14T09:36:51.277Z
+    GetToiletResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Retrieved toilet
+        data:
+          $ref: '#/components/schemas/Toilet'
+    GetToiletResponseArray:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Retrieved all toilets
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Toilet'
 
