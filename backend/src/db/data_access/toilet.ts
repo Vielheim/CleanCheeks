@@ -3,6 +3,7 @@ import { Toilet } from '../models';
 import { IToiletInput, IToiletOutput } from '../models/Toilet';
 import { GetAllToiletsFilters, isEmptyGetAllToiletFilters } from './types';
 import { Op, Sequelize } from 'sequelize';
+import { ICoordinates } from '../../api/interfaces/coordinates.interface';
 
 export const create = async (payload: IToiletInput): Promise<IToiletOutput> => {
   const toilet = await Toilet.create(payload);
@@ -74,4 +75,10 @@ export const getAll = async (
   return Toilet.findAll({
     where: Sequelize.or(typesFilter, utilitiesFilter),
   });
+};
+
+export const getAllNeighbouringToiletsByCoordinates = async (
+  coordinates: ICoordinates
+): Promise<IToiletOutput[]> => {
+  return [];
 };
