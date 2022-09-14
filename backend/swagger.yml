@@ -111,6 +111,7 @@ paths:
           explode: true
           schema:
             type: string
+            format: uuid
       responses:
         '200':
           description: Success
@@ -133,6 +134,7 @@ paths:
           explode: true
           schema:
             type: string
+            format: uuid
         - name: toiletId
           in: query
           description: Id of favourited / blacklisted toilet
@@ -140,6 +142,7 @@ paths:
           explode: true
           schema:
             type: string
+            format: uuid
       responses:
         '200':
           description: Success
@@ -149,6 +152,76 @@ paths:
                 $ref: '#/components/schemas/DeletePreferenceResponse'
         '400':
           description: Bad request
+  /api/v1/users:
+    post:
+      tags:
+        - Users
+      summary: Create a user
+      description: Creates a user.
+      requestBody:
+        content: 
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserDTO'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/CreateUserDTO'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CreateUserDTO'
+        required: true
+      responses:
+        '200':
+          description: Success
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateUserResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/CreateUserResponse'
+        '400':
+          description: Bad request
+    get:
+      tags:
+        - Users
+      summary: Get all users
+      description: Get all users
+      responses:
+        '200':
+          description: Success
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUserResponseArray'
+        '400':
+          description: Bad request
+  /api/v1/users/{userId}:
+    get:
+      tags:
+        - Users
+      summary: Get user by ID
+      description: Get a single user
+      parameters:
+        - name: userId
+          in: path
+          description: ID of user to return
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Success
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUserResponse'
+        '400':
+          description: Bad request
+        '404':
+          description: User not found
+
 components:
   schemas:
     CreateRatingDTO:
@@ -278,4 +351,55 @@ components:
         data:
           type: boolean
           example: true
+    CreateUserDTO:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+    CreateUserResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Added user
+        data:
+          $ref: '#/components/schemas/User'
+    GetUserResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Retrieved user
+        data:
+          $ref: '#/components/schemas/User'
+    GetUserResponseArray:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Retrieved all users
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
 
