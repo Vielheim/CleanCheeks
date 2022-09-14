@@ -9,7 +9,7 @@ import {
   validateCreateToiletDTO,
   validateFilterToiletsDTO,
   validateUpdateToiletDTO,
-} from '../../data_transfer/toilet/validateDTO';
+} from '../../data_transfer/toilet/validate.dto';
 import { IToilet } from '../../interfaces';
 import * as mapper from './mapper';
 
