@@ -80,5 +80,8 @@ export const getAll = async (
 export const getAllNeighbouringToiletsByCoordinates = async (
   coordinates: ICoordinates
 ): Promise<IToiletOutput[]> => {
+  const DEFAULT_RADIUS = 0.004;
+  const radius = coordinates.radius || DEFAULT_RADIUS;
+
   return [];
 };

@@ -11,6 +11,6 @@ export const validateCoordinates = (coordinates: ICoordinates) => {
 
   validate(
     isValidated,
-    'The longitude and latitude of a coordinate must be present!'
+    'The longitude and latitude of a coordinate must be present! Radius is optional'
   );
 };
