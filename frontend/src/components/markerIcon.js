@@ -3,7 +3,6 @@ import L from 'leaflet';
 import './markerIcon.scss';
 
 const getSvgCircle = (numSections, numGreen) => {
-  console.log(numGreen)
   const RADIUS = 4;
   const PI = 3.14;
   const DIAMETER = 2 * PI * RADIUS;
