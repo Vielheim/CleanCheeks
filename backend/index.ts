@@ -2,23 +2,28 @@ import express, { Express, Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import router from './src/api/routes';
 import sequelize from './src/db/index';
+import swaggerUI from 'swagger-ui-express';
+import YAML from 'yamljs';
 
 const port = 8000; // Can replace with input from .env file
+const current_api = '/api/v1';
 
 export const getApp = () => {
   const app: Express = express();
-  const current_api = '/api/v1';
+  const swaggerDoc = YAML.load('./swagger.yml');
 
   // middleware
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
 
   // endpoints
-  app.get('/', (req: Request, res: Response) => {
+  app.get('/', (_, res: Response) => {
     res.send(
-      `Welcome to cleancheeks API!\n Endpoints are available at http://localhost${port}${current_api}`
+      `Welcome to cleancheeks API!\n Endpoints are available at http://localhost:${port}${current_api}`
     );
   });
+
+  app.use(current_api + '/docs', swaggerUI.serve, swaggerUI.setup(swaggerDoc));
 
   app.use(current_api, router);
 
