@@ -6,15 +6,6 @@ export const create = async (payload: IUserInput): Promise<IUserOutput> => {
   return await User.create(payload);
 };
 
-export const update = async (
-  id: string,
-  payload: Partial<IUserInput>
-): Promise<IUserOutput> => {
-  const user = await queryUserBy(id);
-
-  return await user.update(payload);
-};
-
 export const deleteById = async (id: string): Promise<boolean> => {
   const deletedUserCount = await User.destroy({
     where: { id: id },
