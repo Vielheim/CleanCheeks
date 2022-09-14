@@ -6,16 +6,16 @@ info:
   version: 1.0.0
 tags:
   - name: Toilets
-    description: Toilets Database
+    description: Toilets
   - name: Ratings
     description: Ratings for each toilet
   - name: Preferences
     description: Preferences for each toilet
-  - name: user
-    description: User Operations
+  - name: Users
+    description: User
     
 paths:
-  /api/v1/ratings:
+  /api/v1/toilet_ratings:
     post:
       tags:
         - Ratings
@@ -39,27 +39,116 @@ paths:
           content: 
             application/json:
               schema:
-                $ref: '#/components/schemas/Rating'
+                $ref: '#/components/schemas/CreateRatingResponse'
             application/xml:
               schema:
-                $ref: '#/components/schemas/Rating'
+                $ref: '#/components/schemas/CreateRatingResponse'
         '400':
           description: Bad request
     get:
       tags:
         - Ratings
       summary: Get all toilet ratings
-      description: Creating a toilet rating
+      description: Get all toilet ratings for all users
       responses:
         '200':
           description: Success
           content: 
             application/json:
               schema:
-                $ref: '#/components/schemas/RatingResponseArray'
+                $ref: '#/components/schemas/GetRatingResponseArray'
         '400':
           description: Bad request
-              
+  /api/v1/toilet_preferences:
+    put:
+      tags:
+        - Preferences
+      summary: Upsert a toilet preference
+      description: Upsert a toilet preference to be favourited or blacklisted.
+      requestBody:
+        content: 
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpsertPreferenceDTO'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/UpsertPreferenceDTO'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UpsertPreferenceDTO'
+        required: true
+      responses:
+        '200':
+          description: Success - Created toilet preference
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatePreferenceResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/CreatePreferenceResponse'
+        '201':
+          description: Success - Updated toilet preference
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdatePreferenceResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/UpdatePreferenceResponse'
+        '400':
+          description: Bad request
+    get:
+      tags:
+        - Preferences
+      summary: Get a user's toilet preferences
+      description: Get toilet preferences for a specific user. Get for all users for internal use.
+      parameters:
+        - name: userId
+          in: query
+          description: Id of current user
+          required: false
+          explode: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetPreferenceResponseArray'
+        '400':
+          description: Bad request
+    delete:
+      tags:
+        - Preferences
+      summary: Delete a toilet preference
+      description: Delete a toilet preference
+      parameters:
+        - name: userId
+          in: query
+          description: Id of current user
+          required: true
+          explode: true
+          schema:
+            type: string
+        - name: toiletId
+          in: query
+          description: Id of favourited / blacklisted toilet
+          required: true
+          explode: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeletePreferenceResponse'
+        '400':
+          description: Bad request
 components:
   schemas:
     CreateRatingDTO:
@@ -79,6 +168,21 @@ components:
     Rating:
       type: object
       properties:
+        id:
+          type: string
+        toilet_id:
+          type: string
+        user_id:
+          type: string
+        type:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+    CreateRatingResponse:
+      type: object
+      properties:
         status:
           type: string
           example: success
@@ -86,21 +190,92 @@ components:
           type: string
           example: Added rating
         data:
-          type: object
-          properties:
-            id:
-              type: string
-            toilet_id:
-              type: string
-            user_id:
-              type: string
-            type:
-              type: string
-            updatedAt:
-              type: string
-            createdAt:
-              type: string
-    RatingResponseArray:
-      type: array
-      items:
-        $ref: '#/components/schemas/Rating'
+          $ref: '#/components/schemas/Rating'
+    GetRatingResponseArray:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Retrieved all ratings
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Rating'
+    UpsertPreferenceDTO:
+      type: object
+      required:
+        - toilet_id
+        - user_id
+        - type
+      properties:
+        toilet_id:
+          type: string
+        user_id:
+          type: string
+        type:
+          type: string
+          enum: [BLACKLIST, FAVOURITE]
+    Preference:
+      type: object
+      properties:
+        toilet_id:
+          type: string
+        user_id:
+          type: string
+        type:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+    CreatePreferenceResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Added new toilet preference
+        data:
+          $ref: '#/components/schemas/Preference'
+    UpdatePreferenceResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Update existing toilet preference
+        data:
+          $ref: '#/components/schemas/Preference'
+    GetPreferenceResponseArray:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Retrieved toilet preferences
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Preference'
+    DeletePreferenceResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Deleted toilet preference
+        data:
+          type: boolean
+          example: true
+
