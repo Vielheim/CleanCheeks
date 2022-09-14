@@ -5,13 +5,6 @@ export const create = (payload: IUserInput): Promise<IUserOutput> => {
   return userDataAccess.create(payload);
 };
 
-export const update = (
-  id: string,
-  payload: Partial<IUserInput>
-): Promise<IUserOutput> => {
-  return userDataAccess.update(id, payload);
-};
-
 export const deleteById = (id: string): Promise<boolean> => {
   return userDataAccess.deleteById(id);
 };
