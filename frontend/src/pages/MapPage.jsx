@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
   MapContainer,
-  Popup,
   Marker,
   TileLayer,
   Circle,
@@ -9,6 +8,7 @@ import {
   ZoomControl,
 } from 'react-leaflet';
 import SearchBar from '../components/SearchBar';
+import ClusterDetails from '../components/ClusterDetails';
 import icon from '../components/markerIcon';
 import { NeighboursIndex } from '../utilities/utilities';
 import { INITIAL_FILTER_STATE, OFFLINE_TOILETS } from '../components/constants';
@@ -24,11 +24,41 @@ const getLocation = ({ location }) => {
   return [latitude, longitude];
 };
 
+const clusteriseToilets = (toilets) => {
+  const coordsToClusters = {};
+  for (const { building, latitude, longitude, ...others } of toilets) {
+    const coordKey = `{latitude} + {longitude}`;
+    if (!coordsToClusters[coordKey]) {
+      coordsToClusters[coordKey] = {
+        building,
+        latitude,
+        longitude,
+        toilets: [],
+      };
+    }
+    coordsToClusters[coordKey].toilets.push({
+      ...others,
+    });
+  }
+  return Object.values(coordsToClusters);
+};
+
 const MapPage = () => {
+  const mapMarkerHandlers = {
+    click: (e) => {
+      const clusterIndex = e.target.options.data;
+      setIsShowCluster(true);
+      setSelectedCluster(filteredClusters[clusterIndex]);
+    },
+  };
+
   const [toiletIndex, setToiletIndex] = useState(
     new NeighboursIndex(OFFLINE_TOILETS)
   );
   const [toilets, setToilets] = useState(OFFLINE_TOILETS);
+  const [isShowCluster, setIsShowCluster] = useState(false);
+  const [filteredClusters, setFilteredClusters] = useState([]);
+  const [selectedCluster, setSelectedCluster] = useState(null);
   const [venue, setVenue] = useState(VENUES['UT-AUD1']);
   const [filters, setFilters] = useState(INITIAL_FILTER_STATE);
   const [map, setMap] = useState(null);
@@ -43,18 +73,14 @@ const MapPage = () => {
       });
   };
 
-  useEffect(() => {
-    const cachedToilets = localStorage.getItem('toilets');
-    if (cachedToilets === null) {
-      // Fetch from API then store
-      localStorage.setItem('toilets', JSON.stringify(OFFLINE_TOILETS));
-    } else {
-      setToilets(JSON.parse(cachedToilets));
-    }
-  }, []);
+  useEffect(() => {}, []);
 
   useEffect(() => {
-    setVenue(VENUES[filters.search]);
+    const newVenue = VENUES[filters.search];
+    const closeToilets = getCloseToilets(toiletIndex, newVenue, toilets);
+
+    setVenue(newVenue);
+    setFilteredClusters(clusteriseToilets(closeToilets));
   }, [filters.search]);
 
   useEffect(() => {
@@ -87,22 +113,30 @@ const MapPage = () => {
           pathOptions={CIRCLE_FILL_OPTIONS}
           radius={10}
         />
-        {getCloseToilets(toiletIndex, venue, toilets).map(
-          ({ latitude, longitude, description }, i) => {
-            return (
-              <React.Fragment key={i}>
-                <Polyline
-                  pathOptions={POLYLINE_FILL_OPTIONS}
-                  positions={[getLocation(venue), [latitude, longitude]]}
-                />
-                <Marker position={[latitude, longitude]} icon={icon}>
-                  <Popup>{description}</Popup>
-                </Marker>
-              </React.Fragment>
-            );
-          }
-        )}
+        {filteredClusters.map(({ latitude, longitude }, i) => {
+          return (
+            <React.Fragment key={i}>
+              <Polyline
+                pathOptions={POLYLINE_FILL_OPTIONS}
+                positions={[getLocation(venue), [latitude, longitude]]}
+              />
+              <Marker
+                position={[latitude, longitude]}
+                icon={icon}
+                data={i}
+                eventHandlers={mapMarkerHandlers}
+              />
+            </React.Fragment>
+          );
+        })}
         <ZoomControl position="bottomright" />
+        {selectedCluster && (
+          <ClusterDetails
+            cluster={selectedCluster}
+            isShow={isShowCluster}
+            setIsShow={setIsShowCluster}
+          />
+        )}
       </MapContainer>
     </div>
   );

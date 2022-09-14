@@ -15,7 +15,7 @@ export const OFFLINE_TOILETS = [
     num_squats: 3,
     cleanliness: 0,
     type: 'MALE',
-    utilities: ['FRAGRANCE', 'BIDETS', 'HOOKS'],
+    utilities: ['FRAGRANCE', 'BIDETS', 'WATERCOOLER'],
   },
   {
     building: 'BIZ1',
@@ -27,7 +27,7 @@ export const OFFLINE_TOILETS = [
     num_squats: 3,
     cleanliness: 0,
     type: 'MALE',
-    utilities: ['FRAGRANCE', 'BIDETS', 'HOOKS'],
+    utilities: ['FRAGRANCE', 'BIDETS'],
   },
   {
     building: 'BIZ1',
@@ -39,7 +39,7 @@ export const OFFLINE_TOILETS = [
     num_squats: 3,
     cleanliness: 0,
     type: 'MALE',
-    utilities: ['FRAGRANCE', 'BIDETS', 'HOOKS'],
+    utilities: ['FRAGRANCE', 'BIDETS', 'WATERCOOLER'],
   },
   {
     building: 'BIZ1',
@@ -51,7 +51,7 @@ export const OFFLINE_TOILETS = [
     num_squats: 3,
     cleanliness: 0,
     type: 'MALE',
-    utilities: ['FRAGRANCE', 'BIDETS', 'HOOKS'],
+    utilities: ['FRAGRANCE', 'BIDETS', 'WATERCOOLER'],
   },
 ];
 

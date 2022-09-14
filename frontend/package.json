@@ -9,6 +9,7 @@
     "bootstrap": "^5.2.0",
     "flatbush": "^4.0.0",
     "leaflet": "^1.8.0",
+    "lodash": "^4.17.21",
     "node-sass": "^7.0.1",
     "react": "^18.2.0",
     "react-bootstrap": "^2.5.0",
