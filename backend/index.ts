@@ -4,6 +4,9 @@ import router from './src/api/routes';
 import sequelize from './src/db/index';
 import swaggerUI from 'swagger-ui-express';
 import YAML from 'yamljs';
+import injection_container from './src/db/indices/config';
+import { NeighbouringToiletsIndex } from './src/db/indices';
+import TYPES from './src/db/indices/types';
 
 const port = 8000; // Can replace with input from .env file
 const current_api = '/api/v1';
@@ -40,6 +43,14 @@ export const startApp = () => {
   }
 };
 
+export const initialiseIndices = async () => {
+  const neighbouringToiletsIndex =
+    injection_container.get<NeighbouringToiletsIndex>(
+      TYPES.NeighbouringToiletsIndex
+    );
+  await neighbouringToiletsIndex.generateIndices();
+};
+
 export const startDb = () => {
   try {
     sequelize
@@ -51,8 +62,9 @@ export const startDb = () => {
 };
 
 // Start db and server
-export const start = () => {
+export const start = async () => {
   startDb();
+  await initialiseIndices();
   startApp();
 };
 
