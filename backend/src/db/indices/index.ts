@@ -4,13 +4,13 @@ import KDBush from 'kdbush';
 import { Toilet } from '../models';
 
 interface Point {
-  x: number;
-  y: number;
+  x: number; // latitude
+  y: number; // longitude
 }
 
 @injectable()
 class NeighbouringToiletsIndex {
-  DEFAULT_RADIUS = Number.MAX_SAFE_INTEGER;
+  DEFAULT_RADIUS_METRES = 400;
   toiletsIndex!: KDBush<Point>;
 
   async generateIndices() {
@@ -34,8 +34,13 @@ class NeighbouringToiletsIndex {
     let final_radius = radius;
 
     if (Number.isNaN(final_radius)) {
-      final_radius = this.DEFAULT_RADIUS;
+      final_radius = this.DEFAULT_RADIUS_METRES;
     }
+
+    // convert radius in metres to latitude/longitude distances
+    // every 1 lat/long ~ 111,000 metres
+
+    final_radius = (1 / 111000) * final_radius;
 
     return this.toiletsIndex.within(latitude, longitude, final_radius);
   }

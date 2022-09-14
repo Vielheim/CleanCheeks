@@ -7,10 +7,10 @@ export const validate = (isValidated: boolean, message: string) => {
 };
 
 export const validateCoordinates = (coordinates: ICoordinates) => {
-  const isValidated = !!coordinates.longitude && !!coordinates.latitude;
+  const isValidated = !!coordinates.latitude && !!coordinates.longitude;
 
   validate(
     isValidated,
-    'The longitude and latitude of a coordinate must be present! Radius is optional'
+    'The latitude and longitude of a coordinate must be present! Radius is optional'
   );
 };

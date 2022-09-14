@@ -9,7 +9,6 @@ import {
   getFilterToiletsDTOFromReq,
 } from './toilets.util';
 import Util from '../../util/Util';
-import { IToilet } from '../../interfaces';
 
 const toiletsRouter = Router();
 

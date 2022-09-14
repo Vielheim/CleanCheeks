@@ -17,13 +17,13 @@ export const getFilterToiletsDTOFromReq = (req: Request): FilterToiletsDTO => {
 };
 
 export const getCoordinatesFromReq = (req: Request): ICoordinates => {
-  const longitude: number = Number(req.query.longitude);
   const latitude: number = Number(req.query.latitude);
+  const longitude: number = Number(req.query.longitude);
   const radius: number = Number(req.query.radius);
 
   return {
-    longitude,
     latitude,
+    longitude,
     radius,
   };
 };

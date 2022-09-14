@@ -91,7 +91,7 @@ export const getAllNeighbouringToiletsByCoordinates = async (
     );
 
   const results = await neighbouringToiletsIndex
-    .query(coordinates.latitude, coordinates.latitude, coordinates.radius)
+    .query(coordinates.latitude, coordinates.longitude, coordinates.radius)
     .map((idx) => toilets[idx]);
 
   return results;
