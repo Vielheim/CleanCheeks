@@ -18,9 +18,7 @@ export const getApp = () => {
 
   // endpoints
   app.get('/', (_, res: Response) => {
-    res.send(
-      `Welcome to cleancheeks API!\n Endpoints are available at http://localhost:${port}${current_api}`
-    );
+    res.redirect('http://localhost:8000/api/v1/docs/');
   });
 
   app.use(current_api + '/docs', swaggerUI.serve, swaggerUI.setup(swaggerDoc));
