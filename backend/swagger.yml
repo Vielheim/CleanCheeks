@@ -47,31 +47,45 @@ paths:
                 $ref: '#/components/schemas/GetToiletResponseArray'
         '400':
           description: Bad request
-  /api/v1/toilets/{toiletId}:
+  /api/v1/toilets/neighbours:
     get:
       tags:
         - Toilets
-      summary: Get toilet by ID
-      description: Get a single toilet
+      summary: Get all neighbouring toilets at a coordinate
+      description: Get all neighbouring toilets at a given coordinate (latitude, longitude) with an optional radius in metres
       parameters:
-        - name: toiletId
-          in: path
-          description: ID of toilet to return
+        - name: latitude
+          in: query
+          description: Latitude of the location
           required: true
           schema:
-            type: string
-            format: uuid
+            type: number
+            format: double
+        - name: longitude
+          in: query
+          description: Longitude of the location
+          required: true
+          schema:
+            type: number
+            format: double
+        - name: radius
+          in: query
+          description: Radius (in metres) from location to retrieve toilets from
+          required: false
+          schema:
+            type: number
+            format: double
+            default: 400
+
       responses:
         '200':
           description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetToiletResponse'
+                $ref: '#/components/schemas/GetToiletResponseArray'
         '400':
           description: Bad request
-        '404':
-          description: Toilet not found
 
   /api/v1/toilet_ratings:
     post:
