@@ -9,10 +9,10 @@ import {
 } from 'react-leaflet';
 import SearchBar from '../components/SearchBar';
 import ClusterDetails from '../components/ClusterDetails';
-import icon from '../components/markerIcon';
+import getMarkerIcon from '../components/markerIcon';
 import { NeighboursIndex } from '../utilities/utilities';
 import { INITIAL_FILTER_STATE, OFFLINE_TOILETS } from '../components/constants';
-import VENUES from '../data/venues.json';
+import VENUES from '../assets/venues.json';
 
 import './MapPage.scss';
 
@@ -23,6 +23,12 @@ const getLocation = ({ location }) => {
   const { x: longitude, y: latitude } = location;
   return [latitude, longitude];
 };
+
+const getNumCleanToilets = (toilets) =>
+  toilets.reduce(
+    (prev, { cleanliness }) => (cleanliness >= 0 ? 1 + prev : prev),
+    0
+  );
 
 const clusteriseToilets = (toilets) => {
   const coordsToClusters = {};
@@ -113,7 +119,8 @@ const MapPage = () => {
           pathOptions={CIRCLE_FILL_OPTIONS}
           radius={10}
         />
-        {filteredClusters.map(({ latitude, longitude }, i) => {
+        {filteredClusters.map((cluster, i) => {
+          const { latitude, longitude, toilets } = cluster;
           return (
             <React.Fragment key={i}>
               <Polyline
@@ -122,7 +129,10 @@ const MapPage = () => {
               />
               <Marker
                 position={[latitude, longitude]}
-                icon={icon}
+                icon={getMarkerIcon(
+                  toilets.length,
+                  getNumCleanToilets(toilets)
+                )}
                 data={i}
                 eventHandlers={mapMarkerHandlers}
               />
