@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import preferencesRouter from './preferences';
 import ratingsRouter from './ratings';
-import toiletsRouter from './toilets';
+import toiletsRouter from './toilet/toilets';
 import usersRouter from './users';
 
 const router = Router();

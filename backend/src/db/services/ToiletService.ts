@@ -1,3 +1,4 @@
+import { ICoordinates } from '../../api/interfaces/coordinates.interface';
 import * as toiletDataAccess from '../data_access/toilet';
 import { GetAllToiletsFilters } from '../data_access/types';
 import { IToiletInput, IToiletOutput } from '../models/Toilet';
@@ -25,4 +26,10 @@ export const getAll = (
   filters: GetAllToiletsFilters
 ): Promise<IToiletOutput[]> => {
   return toiletDataAccess.getAll(filters);
+};
+
+export const getAllNeighbouringToilets = (
+  coordinates: ICoordinates
+): Promise<IToiletOutput[]> => {
+  return toiletDataAccess.getAllNeighbouringToiletsByCoordinates(coordinates);
 };

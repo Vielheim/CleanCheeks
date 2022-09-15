@@ -1,11 +1,14 @@
 import { Request, Response, Router } from 'express';
-import * as toiletController from '../controllers/toilet';
+import * as toiletController from '../../controllers/toilet';
 import {
   CreateToiletDTO,
-  FilterToiletsDTO,
   UpdateToiletDTO,
-} from '../data_transfer/toilet/toilet.dto';
-import Util from '../util/Util';
+} from '../../data_transfer/toilet/toilet.dto';
+import {
+  getCoordinatesFromReq,
+  getFilterToiletsDTOFromReq,
+} from './toilets.util';
+import Util from '../../util/Util';
 
 const toiletsRouter = Router();
 
@@ -40,6 +43,23 @@ toiletsRouter.delete('/:id', async (req: Request, res: Response) => {
   }
 });
 
+toiletsRouter.get('/neighbours', async (req: Request, res: Response) => {
+  try {
+    const coordinates = getCoordinatesFromReq(req);
+    const results = await toiletController.getAllNeighbouringToilets(
+      coordinates
+    );
+    return Util.sendSuccess(
+      res,
+      200,
+      'Retrieved all neighbouring toilets',
+      results
+    );
+  } catch (error: unknown) {
+    return Util.sendFailure(res, error);
+  }
+});
+
 toiletsRouter.get('/:id', async (req: Request, res: Response) => {
   try {
     const id = req.params.id;
@@ -59,19 +79,5 @@ toiletsRouter.get('/', async (req: Request, res: Response) => {
     return Util.sendFailure(res, error);
   }
 });
-
-// Extract filters that exist
-const getFilterToiletsDTOFromReq = (req: Request): FilterToiletsDTO => {
-  const filters: FilterToiletsDTO = {};
-  if (req.query.type) {
-    filters.type = JSON.parse(req.query.type as string);
-  }
-
-  if (req.query.utilities) {
-    filters.utilities = JSON.parse(req.query.utilities as string);
-  }
-
-  return filters;
-};
 
 export default toiletsRouter;

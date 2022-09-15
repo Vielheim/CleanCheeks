@@ -6,7 +6,6 @@ export interface IToilet {
   floor: number;
   longitude: number;
   latitude: number;
-  picture?: Blob;
   num_seats: number;
   num_squats: number;
   cleanliness: number;

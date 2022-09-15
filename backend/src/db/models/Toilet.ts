@@ -1,7 +1,6 @@
 import { DataTypes, Model, Optional, UUIDV4 } from 'sequelize';
 import { ToiletType, Utilities } from '../../enums';
-import sequelizeConnection from '../config';
-
+import sequelize from '../index';
 interface IToiletAttributes {
   id: string;
   building: string;
@@ -9,7 +8,6 @@ interface IToiletAttributes {
   floor: number;
   longitude: number;
   latitude: number;
-  picture?: Blob;
   num_seats: number;
   num_squats: number;
   cleanliness: number;
@@ -21,10 +19,7 @@ interface IToiletAttributes {
 
 // IToiletInput defines the type of object passed to model.create()
 export interface IToiletInput
-  extends Optional<
-    IToiletAttributes,
-    'id' | 'picture' | 'createdAt' | 'updatedAt'
-  > {}
+  extends Optional<IToiletAttributes, 'id' | 'createdAt' | 'updatedAt'> {}
 
 // IToiletOutput defines the return object from model.create(), model.update(), model.findOne() etc.
 export interface IToiletOutput extends Required<IToiletAttributes> {}
@@ -39,7 +34,6 @@ class Toilet
   public floor!: number;
   public longitude!: number;
   public latitude!: number;
-  public picture!: Blob;
   public num_seats!: number;
   public num_squats!: number;
   public cleanliness!: number;
@@ -81,10 +75,6 @@ Toilet.init(
       type: DataTypes.DOUBLE,
       allowNull: false,
     },
-    picture: {
-      type: DataTypes.BLOB,
-      allowNull: true,
-    },
     num_seats: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -118,7 +108,7 @@ Toilet.init(
     },
   },
   {
-    sequelize: sequelizeConnection,
+    sequelize: sequelize,
     timestamps: true, // auto-update timestamps
   }
 );

@@ -3,6 +3,10 @@ import { Toilet } from '../models';
 import { IToiletInput, IToiletOutput } from '../models/Toilet';
 import { GetAllToiletsFilters, isEmptyGetAllToiletFilters } from './types';
 import { Op, Sequelize } from 'sequelize';
+import { ICoordinates } from '../../api/interfaces/coordinates.interface';
+import injection_container from '../indices/config';
+import { NeighbouringToiletsIndex } from '../indices';
+import TYPES from '../indices/types';
 
 export const create = async (payload: IToiletInput): Promise<IToiletOutput> => {
   const toilet = await Toilet.create(payload);
@@ -74,4 +78,21 @@ export const getAll = async (
   return Toilet.findAll({
     where: Sequelize.or(typesFilter, utilitiesFilter),
   });
+};
+
+export const getAllNeighbouringToiletsByCoordinates = async (
+  coordinates: ICoordinates
+): Promise<IToiletOutput[]> => {
+  const toilets = await Toilet.findAll();
+
+  const neighbouringToiletsIndex: NeighbouringToiletsIndex =
+    injection_container.get<NeighbouringToiletsIndex>(
+      TYPES.NeighbouringToiletsIndex
+    );
+
+  const results = await neighbouringToiletsIndex
+    .query(coordinates.latitude, coordinates.longitude, coordinates.radius)
+    .map((idx) => toilets[idx]);
+
+  return results;
 };

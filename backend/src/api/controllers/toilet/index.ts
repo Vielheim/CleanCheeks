@@ -9,8 +9,10 @@ import {
   validateCreateToiletDTO,
   validateFilterToiletsDTO,
   validateUpdateToiletDTO,
-} from '../../data_transfer/toilet/validateDTO';
+} from '../../data_transfer/toilet/validate.dto';
+import { validateCoordinates } from '../../data_transfer/validate/Util';
 import { IToilet } from '../../interfaces';
+import { ICoordinates } from '../../interfaces/coordinates.interface';
 import * as mapper from './mapper';
 
 export const create = async (payload: CreateToiletDTO): Promise<IToilet> => {
@@ -50,4 +52,15 @@ export const getAll = async (filters: FilterToiletsDTO): Promise<IToilet[]> => {
   const getAllToiletFilters: GetAllToiletsFilters =
     mapper.toGetAllToiletFilters(filters);
   return (await service.getAll(getAllToiletFilters)).map(mapper.toToilet);
+};
+
+export const getAllNeighbouringToilets = async (
+  coordinates: ICoordinates
+): Promise<IToilet[]> => {
+  // validate or throw error
+  validateCoordinates(coordinates);
+
+  return (await service.getAllNeighbouringToilets(coordinates)).map(
+    mapper.toToilet
+  );
 };

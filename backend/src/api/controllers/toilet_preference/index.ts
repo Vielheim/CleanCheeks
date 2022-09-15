@@ -1,6 +1,6 @@
 import * as service from '../../../db/services/ToiletPreferenceService';
 import { UpsertPreferenceDTO } from '../../data_transfer/toilet_preference/preference.dto';
-import { validateUpsertPreferenceDTO } from '../../data_transfer/toilet_preference/validateDTO';
+import { validateUpsertPreferenceDTO } from '../../data_transfer/toilet_preference/validate.dto';
 import { IPreference } from '../../interfaces/preferences.interface';
 import * as mapper from './mapper';
 
