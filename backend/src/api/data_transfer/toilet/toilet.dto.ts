@@ -6,7 +6,6 @@ export type CreateToiletDTO = {
   floor: number;
   longitude: number;
   latitude: number;
-  picture?: Blob;
   num_seats: number;
   num_squats: number;
   cleanliness: number;
@@ -21,7 +20,6 @@ export type UpdateToiletDTO = Optional<
   | 'floor'
   | 'longitude'
   | 'latitude'
-  | 'picture'
   | 'num_seats'
   | 'num_squats'
   | 'cleanliness'

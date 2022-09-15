@@ -35,10 +35,6 @@ module.exports = {
           type: Sequelize.DOUBLE,
           allowNull: false,
         },
-        picture: {
-          type: Sequelize.BLOB,
-          allowNull: true,
-        },
         num_seats: {
           type: Sequelize.INTEGER,
           allowNull: false,
