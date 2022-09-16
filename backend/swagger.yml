@@ -531,6 +531,9 @@ components:
           type: number
           format: double
           example: 0
+        num_ratings:
+          type: integer
+          example: 0
         type:
           type: string
           enum: [MALE, FEMALE, HANDICAP]
