@@ -29,7 +29,11 @@ export const getAll = (
 };
 
 export const getAllNeighbouringToilets = (
-  coordinates: ICoordinates
+  coordinates: ICoordinates,
+  userId?: string
 ): Promise<IToiletOutput[]> => {
-  return toiletDataAccess.getAllNeighbouringToiletsByCoordinates(coordinates);
+  return toiletDataAccess.getAllNeighbouringToiletsByCoordinates(
+    coordinates,
+    userId
+  );
 };

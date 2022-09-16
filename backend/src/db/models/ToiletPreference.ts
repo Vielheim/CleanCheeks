@@ -52,7 +52,10 @@ ToiletPreference.init(
   }
 );
 
-Toilet.hasMany(ToiletPreference, { foreignKey: 'toilet_id' });
+Toilet.hasMany(ToiletPreference, {
+  foreignKey: 'toilet_id',
+  as: 'toiletPreferences', // referenced in joins with Toilets table
+});
 User.hasMany(ToiletPreference, { foreignKey: 'user_id' });
 
 ToiletPreference.belongsTo(User, {

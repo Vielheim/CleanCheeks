@@ -1,6 +1,7 @@
 import { DataTypes, Model, Optional, UUIDV4 } from 'sequelize';
 import { ToiletType, Utilities } from '../../enums';
 import sequelize from '../index';
+import ToiletPreference from './ToiletPreference';
 interface IToiletAttributes {
   id: string;
   building: string;
@@ -26,7 +27,9 @@ export interface IToiletInput
   > {}
 
 // IToiletOutput defines the return object from model.create(), model.update(), model.findOne() etc.
-export interface IToiletOutput extends Required<IToiletAttributes> {}
+export interface IToiletOutput extends Required<IToiletAttributes> {
+  toiletPreferences?: ToiletPreference[]; // from join with ToiletPreferences
+}
 
 class Toilet
   extends Model<IToiletAttributes, IToiletInput>
