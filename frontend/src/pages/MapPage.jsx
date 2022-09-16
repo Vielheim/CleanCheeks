@@ -118,7 +118,19 @@ const MapPage = () => {
   const [filters, setFilters] = useState(INITIAL_FILTER_STATE);
   const [map, setMap] = useState(null);
 
+  // runs only on first load
   useEffect(() => {
+    if (!navigator.onLine) {
+      const lastCenter = localStorage.getItem('lastCenter');
+      if (lastCenter !== null) {
+        const parsedCenter = JSON.parse(lastCenter);
+        setCenter({
+          current: parsedCenter,
+          map: parsedCenter,
+        });
+      }
+    }
+
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
         const latitude = position.coords.latitude;
@@ -128,6 +140,7 @@ const MapPage = () => {
           current: newCenter,
           map: newCenter,
         });
+        localStorage.setItem('lastCenter', JSON.stringify(newCenter));
       });
     }
 
