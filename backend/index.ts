@@ -2,6 +2,7 @@ import express, { Express, Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import router from './src/api/routes';
 import sequelize from './src/db/index';
+import cors from 'cors';
 
 const port = 8000; // Can replace with input from .env file
 
@@ -10,6 +11,7 @@ export const getApp = () => {
   const current_api = '/api/v1';
 
   // middleware
+  app.use(cors());
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
 
