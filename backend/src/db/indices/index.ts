@@ -24,7 +24,7 @@ class NeighbouringToiletsIndex {
     this.toiletsIndex = new KDBush(
       points,
       (p) => p.x,
-      (p) => p.y
+      (p) => p.y,
     );
 
     console.log(`Generated ${this.toiletsIndex.ids.length} indices`);
@@ -41,7 +41,6 @@ class NeighbouringToiletsIndex {
     // every 1 lat/long ~ 111,000 metres
 
     final_radius = (1 / 111000) * final_radius;
-
     return this.toiletsIndex.within(latitude, longitude, final_radius);
   }
 }

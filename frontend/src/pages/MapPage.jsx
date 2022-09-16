@@ -120,15 +120,13 @@ const MapPage = () => {
 
   // runs only on first load
   useEffect(() => {
-    if (!navigator.onLine) {
-      const lastCenter = localStorage.getItem('lastCenter');
-      if (lastCenter !== null) {
-        const parsedCenter = JSON.parse(lastCenter);
-        setCenter({
-          current: parsedCenter,
-          map: parsedCenter,
-        });
-      }
+    const lastCenter = localStorage.getItem('lastCenter');
+    if (lastCenter !== null) {
+      const parsedCenter = JSON.parse(lastCenter);
+      setCenter({
+        current: parsedCenter,
+        map: parsedCenter,
+      });
     }
 
     if (navigator.geolocation) {
