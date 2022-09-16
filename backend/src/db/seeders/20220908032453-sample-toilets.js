@@ -7,6 +7,7 @@ module.exports = {
     toilets.forEach((t) => {
       toiletsArray.push({
         ...t,
+        num_ratings: 0,
         createdAt: new Date(),
         updatedAt: new Date(),
       });

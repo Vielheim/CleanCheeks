@@ -1,4 +1,4 @@
-import { ToiletType, Utilities } from '../../enums';
+import { ToiletType, Utilities } from '../../../enums';
 
 export interface GetAllToiletsFilters {
   type?: ToiletType[];

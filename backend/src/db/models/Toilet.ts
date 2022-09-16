@@ -11,6 +11,7 @@ interface IToiletAttributes {
   num_seats: number;
   num_squats: number;
   cleanliness: number;
+  num_ratings: number;
   type: ToiletType;
   utilities: Utilities[];
   createdAt?: Date;
@@ -19,7 +20,10 @@ interface IToiletAttributes {
 
 // IToiletInput defines the type of object passed to model.create()
 export interface IToiletInput
-  extends Optional<IToiletAttributes, 'id' | 'createdAt' | 'updatedAt'> {}
+  extends Optional<
+    IToiletAttributes,
+    'id' | 'createdAt' | 'updatedAt' | 'num_ratings'
+  > {}
 
 // IToiletOutput defines the return object from model.create(), model.update(), model.findOne() etc.
 export interface IToiletOutput extends Required<IToiletAttributes> {}
@@ -37,6 +41,7 @@ class Toilet
   public num_seats!: number;
   public num_squats!: number;
   public cleanliness!: number;
+  public num_ratings!: number;
   public type!: ToiletType;
   public utilities!: Utilities[];
 
@@ -91,10 +96,19 @@ Toilet.init(
     },
     cleanliness: {
       type: DataTypes.DOUBLE,
+      defaultValue: 0,
       allowNull: false,
       validate: {
         max: 1,
         min: -1,
+      },
+    },
+    num_ratings: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+      allowNull: false,
+      validate: {
+        min: 0,
       },
     },
     type: {

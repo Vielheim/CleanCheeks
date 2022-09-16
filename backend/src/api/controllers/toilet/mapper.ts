@@ -1,10 +1,10 @@
-import { GetAllToiletsFilters } from '../../../db/data_access/types';
-import Toilet, { IToiletInput, IToiletOutput } from '../../../db/models/Toilet';
+import { GetAllToiletsFilters } from '../../../db/data_access/toilet/types';
+import { IToiletInput, IToiletOutput } from '../../../db/models/Toilet';
 import { ToiletType, Utilities } from '../../../enums';
 import {
   CreateToiletDTO,
-  UpdateToiletDTO,
   FilterToiletsDTO,
+  UpdateToiletDTO,
 } from '../../data_transfer/toilet/toilet.dto';
 import { IToilet } from '../../interfaces';
 
@@ -19,6 +19,7 @@ export const toToilet = ({
   num_seats,
   num_squats,
   cleanliness,
+  num_ratings,
   type,
   utilities,
   createdAt,
@@ -34,6 +35,7 @@ export const toToilet = ({
     num_seats,
     num_squats,
     cleanliness,
+    num_ratings,
     type,
     utilities,
     createdAt,
