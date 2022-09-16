@@ -183,7 +183,7 @@ paths:
           explode: true
           schema:
             type: string
-            format: uuid
+            format: uuidv4
       responses:
         '200':
           description: Success
@@ -206,7 +206,7 @@ paths:
           explode: true
           schema:
             type: string
-            format: uuid
+            format: uuidv4
         - name: toiletId
           in: query
           description: Id of favourited / blacklisted toilet
@@ -214,7 +214,7 @@ paths:
           explode: true
           schema:
             type: string
-            format: uuid
+            format: uuidv4
       responses:
         '200':
           description: Success
@@ -281,7 +281,7 @@ paths:
           required: true
           schema:
             type: string
-            format: uuid
+            format: uuidv4
       responses:
         '200':
           description: Success
@@ -502,7 +502,7 @@ components:
       properties:
         id:
           type: string
-          format: uuid
+          format: uuidv4
           example: aa39c1e1-7591-47a9-a11c-1566e0b29e9e
         building:
           type: string
@@ -515,9 +515,11 @@ components:
           example: 1
         longitude:
           type: number
+          format: double
           example: 1.2924024167154038
         latitude:
           type: number
+          format: double
           example: 103.77438630260782
         num_seats:
           type: integer
@@ -527,6 +529,10 @@ components:
           example: 3
         cleanliness:
           type: number
+          format: double
+          example: 0
+        num_ratings:
+          type: integer
           example: 0
         type:
           type: string

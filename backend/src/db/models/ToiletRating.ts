@@ -1,5 +1,6 @@
 import { DataTypes, Model, Optional, UUIDV4 } from 'sequelize';
-import { RatingType } from '../../enums/ToiletRatingEnums';
+import { RatingType, RatingTypeUtil } from '../../enums/ToiletRatingEnums';
+import { updateToiletRating } from '../data_access/toilet/toilet';
 import sequelize from '../index';
 import Toilet from './Toilet';
 import User from './User';
@@ -61,6 +62,10 @@ ToiletRating.init(
     timestamps: true, // auto-update timestamps
   }
 );
+
+ToiletRating.afterCreate(async (rating) => {
+  updateToiletRating(rating);
+});
 
 Toilet.hasMany(ToiletRating, { foreignKey: 'toilet_id' });
 User.hasMany(ToiletRating, { foreignKey: 'user_id' });

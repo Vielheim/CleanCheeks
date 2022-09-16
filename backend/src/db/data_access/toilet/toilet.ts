@@ -1,27 +1,43 @@
-import { DataNotFoundError } from '../../errors/Errors';
-import { Toilet } from '../models';
-import { IToiletInput, IToiletOutput } from '../models/Toilet';
+import { DataNotFoundError } from '../../../errors/Errors';
+import { Toilet } from '../../models';
+import { IToiletInput, IToiletOutput } from '../../models/Toilet';
 import { GetAllToiletsFilters, isEmptyGetAllToiletFilters } from './types';
 import { Op, Sequelize } from 'sequelize';
-import { ICoordinates } from '../../api/interfaces/coordinates.interface';
-import injection_container from '../indices/config';
-import { NeighbouringToiletsIndex } from '../indices';
-import TYPES from '../indices/types';
+import { ICoordinates } from '../../../api/interfaces/coordinates.interface';
+import injection_container from '../../indices/config';
+import { NeighbouringToiletsIndex } from '../../indices';
+import TYPES from '../../indices/types';
+import ToiletRating from '../../models/ToiletRating';
+import { RatingTypeUtil } from '../../../enums/ToiletRatingEnums';
 
 export const create = async (payload: IToiletInput): Promise<IToiletOutput> => {
   const toilet = await Toilet.create(payload);
   return toilet;
 };
 
+export const updateToiletRating = async ({
+  toilet_id,
+  type,
+}: ToiletRating): Promise<IToiletOutput> => {
+  const addedRating = RatingTypeUtil.getValue(type);
+
+  const toilet = await getById(toilet_id);
+  const newRatingCount = toilet.num_ratings + 1;
+  const newRating =
+    toilet.cleanliness * (toilet.num_ratings / newRatingCount) +
+    addedRating * (1 / newRatingCount);
+
+  return toilet.update({
+    cleanliness: Math.floor(newRating * 100) / 100,
+    num_ratings: newRatingCount,
+  });
+};
+
 export const update = async (
   id: string,
   payload: Partial<IToiletInput>
 ): Promise<IToiletOutput> => {
-  const toilet = await Toilet.findByPk(id);
-
-  if (toilet == null) {
-    throw new DataNotFoundError(`Toilet with id ${id} not found!`);
-  }
+  const toilet = await getById(id);
 
   const updatedToilet = await toilet.update(payload);
   return updatedToilet;
@@ -35,7 +51,7 @@ export const deleteById = async (id: string): Promise<boolean> => {
   return !!deletedToiletCount;
 };
 
-export const getById = async (id: string): Promise<IToiletOutput> => {
+export const getById = async (id: string): Promise<Toilet> => {
   const toilet = await Toilet.findByPk(id);
 
   if (!toilet) {

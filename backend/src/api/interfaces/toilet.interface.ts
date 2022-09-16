@@ -9,6 +9,7 @@ export interface IToilet {
   num_seats: number;
   num_squats: number;
   cleanliness: number;
+  num_ratings: number;
   type: ToiletType;
   utilities: Utilities[];
   createdAt?: Date;

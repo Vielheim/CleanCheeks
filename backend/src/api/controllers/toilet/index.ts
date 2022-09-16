@@ -1,4 +1,4 @@
-import { GetAllToiletsFilters } from '../../../db/data_access/types';
+import { GetAllToiletsFilters } from '../../../db/data_access/toilet/types';
 import * as service from '../../../db/services/ToiletService';
 import {
   CreateToiletDTO,
