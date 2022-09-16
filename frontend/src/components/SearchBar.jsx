@@ -9,6 +9,7 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import ListGroup from 'react-bootstrap/ListGroup';
 import { BsFilter, BsSearch } from 'react-icons/bs';
+import { throttle } from 'lodash';
 
 import './SearchBar.scss';
 
@@ -60,6 +61,8 @@ const SearchBar = ({ filters, setFilters, venues }) => {
         venues[id].roomName.toLowerCase().includes(tempSearch.toLowerCase())
     );
 
+  const thrFilterVenues = throttle(filterVenues, 1000);
+
   return (
     <>
       <Container className="filter-row">
@@ -95,7 +98,7 @@ const SearchBar = ({ filters, setFilters, venues }) => {
                 onFocus={onListFocus}
                 onBlur={() => setIsShowList(false)}
               >
-                {filterVenues(venues).map((id) => (
+                {thrFilterVenues(venues).map((id) => (
                   <ListGroup.Item
                     key={id}
                     action
