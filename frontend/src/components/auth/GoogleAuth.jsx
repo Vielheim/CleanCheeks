@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { isEmpty } from 'lodash';
 import { setLocalStorageValue } from '../../utilities/localStorage';
-import { accessTokenKey, userIdKey } from '../../consts/consts';
+import { ACCESS_TOKEN_KEY, USER_ID_KEY } from '../../constants';
 import './GoogleAuth.scss';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 
@@ -19,8 +19,8 @@ const GoogleAuth = () => {
           .post(`${process.env.REACT_APP_API_URL}/auth/google`, response)
           .then((res) => {
             const { user, accessToken } = res.data.data;
-            setLocalStorageValue(accessTokenKey, accessToken);
-            setLocalStorageValue(userIdKey, user.id);
+            setLocalStorageValue(ACCESS_TOKEN_KEY, accessToken);
+            setLocalStorageValue(USER_ID_KEY, user.id);
             navigate('/home');
           });
       }

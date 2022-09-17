@@ -1,7 +1,7 @@
 export const TOILET_TYPE = {
-  MALE: "MALE",
-  FEMALE: "FEMALE",
-  HANDICAPPED: "HANDICAPPED",
+  MALE: 'MALE',
+  FEMALE: 'FEMALE',
+  HANDICAPPED: 'HANDICAPPED',
 };
 
 export const OFFLINE_TOILETS = [
@@ -60,3 +60,6 @@ export const INITIAL_FILTER_STATE = {
   gender: TOILET_TYPE.MALE,
   haveShowers: false,
 };
+
+export const ACCESS_TOKEN_KEY = 'accessToken';
+export const USER_ID_KEY = 'userId';
