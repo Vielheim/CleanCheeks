@@ -1,6 +1,6 @@
 import { DataTypes, Model, Optional } from 'sequelize';
 import { PreferenceType } from '../../enums/ToiletPreferenceEnums';
-import sequelizeConnection from '../config';
+import sequelize from '../index';
 import Toilet from './Toilet';
 import User from './User';
 
@@ -47,12 +47,15 @@ ToiletPreference.init(
     },
   },
   {
-    sequelize: sequelizeConnection,
+    sequelize: sequelize,
     timestamps: true, // auto-update timestamps
   }
 );
 
-Toilet.hasMany(ToiletPreference, { foreignKey: 'toilet_id' });
+Toilet.hasMany(ToiletPreference, {
+  foreignKey: 'toilet_id',
+  as: 'toiletPreferences', // referenced in joins with Toilets table
+});
 User.hasMany(ToiletPreference, { foreignKey: 'user_id' });
 
 ToiletPreference.belongsTo(User, {

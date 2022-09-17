@@ -1,0 +1,576 @@
+openapi: 3.0.3
+info:
+  title: CleanCheeks REST APIs
+  description: |-
+    REST API for CleanCheeks backend
+  version: 1.0.0
+tags:
+  - name: Toilets
+    description: Toilets
+  - name: Ratings
+    description: Ratings for each toilet
+  - name: Preferences
+    description: Preferences for each toilet
+  - name: Users
+    description: User
+
+paths:
+  /api/v1/toilets:
+    get:
+      tags:
+        - Toilets
+      summary: Get all toilets with optional filters
+      description: Get all toilets with optional filters
+      parameters:
+        - name: type
+          in: query
+          description: Toilet Types to filter for
+          required: false
+          schema:
+            type: array
+            format: string
+            enum: ['MALE', 'FEMALE', 'HANDICAP']
+        - name: utilities
+          in: query
+          description: Utilities to filter for
+          required: false
+          schema:
+            type: array
+            format: string
+            enum: ['SHOWERS', 'HOOKS', 'BIDETS', 'WATERCOOLER', 'FRAGRANCE']
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetToiletResponseArray'
+        '400':
+          description: Bad request
+  /api/v1/toilets/neighbours:
+    get:
+      tags:
+        - Toilets
+      summary: Get all neighbouring toilets at a coordinate
+      description: Get all neighbouring toilets at a given coordinate (latitude, longitude) with an optional radius in metres
+      parameters:
+        - name: latitude
+          in: query
+          description: Latitude of the location
+          required: true
+          schema:
+            type: number
+            format: double
+        - name: longitude
+          in: query
+          description: Longitude of the location
+          required: true
+          schema:
+            type: number
+            format: double
+        - name: radius
+          in: query
+          description: Radius (in metres) from location to retrieve toilets from
+          required: false
+          schema:
+            type: number
+            format: double
+            default: 400
+
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetToiletResponseArray'
+        '400':
+          description: Bad request
+
+  /api/v1/toilet_ratings:
+    post:
+      tags:
+        - Ratings
+      summary: Create a toilet rating
+      description: Creating a toilet rating
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateRatingDTO'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/CreateRatingDTO'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CreateRatingDTO'
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateRatingResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/CreateRatingResponse'
+        '400':
+          description: Bad request
+    get:
+      tags:
+        - Ratings
+      summary: Get all toilet ratings
+      description: Get all toilet ratings for all users
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetRatingResponseArray'
+        '400':
+          description: Bad request
+  /api/v1/toilet_preferences:
+    put:
+      tags:
+        - Preferences
+      summary: Upsert a toilet preference
+      description: Upsert a toilet preference to be favourited or blacklisted.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpsertPreferenceDTO'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/UpsertPreferenceDTO'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UpsertPreferenceDTO'
+        required: true
+      responses:
+        '200':
+          description: Success - Created toilet preference
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatePreferenceResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/CreatePreferenceResponse'
+        '201':
+          description: Success - Updated toilet preference
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdatePreferenceResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/UpdatePreferenceResponse'
+        '400':
+          description: Bad request
+    get:
+      tags:
+        - Preferences
+      summary: Get a user's toilet preferences
+      description: Get toilet preferences for a specific user. Get for all users for internal use.
+      parameters:
+        - name: userId
+          in: query
+          description: Id of current user
+          required: false
+          explode: true
+          schema:
+            type: string
+            format: uuidv4
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetPreferenceResponseArray'
+        '400':
+          description: Bad request
+    delete:
+      tags:
+        - Preferences
+      summary: Delete a toilet preference
+      description: Delete a toilet preference
+      parameters:
+        - name: userId
+          in: query
+          description: Id of current user
+          required: true
+          explode: true
+          schema:
+            type: string
+            format: uuidv4
+        - name: toiletId
+          in: query
+          description: Id of favourited / blacklisted toilet
+          required: true
+          explode: true
+          schema:
+            type: string
+            format: uuidv4
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeletePreferenceResponse'
+        '400':
+          description: Bad request
+  /api/v1/users:
+    post:
+      tags:
+        - Users
+      summary: Create a user
+      description: Creates a user.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserDTO'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/CreateUserDTO'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CreateUserDTO'
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateUserResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/CreateUserResponse'
+        '400':
+          description: Bad request
+    get:
+      tags:
+        - Users
+      summary: Get all users
+      description: Get all users
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUserResponseArray'
+        '400':
+          description: Bad request
+  /api/v1/users/{userId}:
+    get:
+      tags:
+        - Users
+      summary: Get user by ID
+      description: Get a single user
+      parameters:
+        - name: userId
+          in: path
+          description: ID of user to return
+          required: true
+          schema:
+            type: string
+            format: uuidv4
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUserResponse'
+        '400':
+          description: Bad request
+        '404':
+          description: User not found
+
+components:
+  schemas:
+    CreateRatingDTO:
+      type: object
+      required:
+        - toilet_id
+        - user_id
+        - type
+      properties:
+        toilet_id:
+          type: string
+          example: 7c2e5a75-286f-4c17-bbb4-21e645678e28
+        user_id:
+          type: string
+          example: 448d37ef-c7ed-495b-972f-81995bb25c2d
+        type:
+          type: string
+          enum: [CLEAN, DIRTY]
+          example: CLEAN
+    Rating:
+      type: object
+      properties:
+        id:
+          type: string
+          example: c58fb93f-63d2-421f-a7dc-66c2bf903710
+        toilet_id:
+          type: string
+          example: 7c2e5a75-286f-4c17-bbb4-21e645678e28
+        user_id:
+          type: string
+          example: 448d37ef-c7ed-495b-972f-81995bb25c2d
+        type:
+          type: string
+          example: CLEAN
+        createdAt:
+          type: string
+          example: 2022-09-14T09:36:51.277Z
+        updatedAt:
+          type: string
+          example: 2022-09-14T09:36:51.277Z
+    CreateRatingResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Added rating
+        data:
+          $ref: '#/components/schemas/Rating'
+    GetRatingResponseArray:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Retrieved all ratings
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Rating'
+    UpsertPreferenceDTO:
+      type: object
+      required:
+        - toilet_id
+        - user_id
+        - type
+      properties:
+        toilet_id:
+          type: string
+          example: 7c2e5a75-286f-4c17-bbb4-21e645678e28
+        user_id:
+          type: string
+          example: 448d37ef-c7ed-495b-972f-81995bb25c2d
+        type:
+          type: string
+          enum: [BLACKLIST, FAVOURITE]
+          example: FAVOURITE
+    Preference:
+      type: object
+      properties:
+        toilet_id:
+          type: string
+          example: 7c2e5a75-286f-4c17-bbb4-21e645678e28
+        user_id:
+          type: string
+          example: 448d37ef-c7ed-495b-972f-81995bb25c2d
+        type:
+          type: string
+          example: FAVOURITE
+        createdAt:
+          type: string
+          example: 2022-09-14T09:36:51.277Z
+        updatedAt:
+          type: string
+          example: 2022-09-14T09:36:51.277Z
+    CreatePreferenceResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Added new toilet preference
+        data:
+          $ref: '#/components/schemas/Preference'
+    UpdatePreferenceResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Update existing toilet preference
+        data:
+          $ref: '#/components/schemas/Preference'
+    GetPreferenceResponseArray:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Retrieved toilet preferences
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Preference'
+    DeletePreferenceResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Deleted toilet preference
+        data:
+          type: boolean
+          example: true
+    CreateUserDTO:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          format: string
+          example: 7c2e5a75-286f-4c17-bbb4-21e645678e28
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: string
+          example: 7c2e5a75-286f-4c17-bbb4-21e645678e28
+        createdAt:
+          type: string
+          example: 2022-09-14T09:36:51.277Z
+        updatedAt:
+          type: string
+          example: 2022-09-14T09:36:51.277Z
+    CreateUserResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Added user
+        data:
+          $ref: '#/components/schemas/User'
+    GetUserResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Retrieved user
+        data:
+          $ref: '#/components/schemas/User'
+    GetUserResponseArray:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Retrieved all users
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+    Toilet:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuidv4
+          example: aa39c1e1-7591-47a9-a11c-1566e0b29e9e
+        building:
+          type: string
+          example: COM2
+        description:
+          type: string
+          example: Beside the library
+        floor:
+          type: integer
+          example: 1
+        longitude:
+          type: number
+          format: double
+          example: 1.2924024167154038
+        latitude:
+          type: number
+          format: double
+          example: 103.77438630260782
+        num_seats:
+          type: integer
+          example: 3
+        num_squats:
+          type: integer
+          example: 3
+        cleanliness:
+          type: number
+          format: double
+          example: 0
+        num_ratings:
+          type: integer
+          example: 0
+        type:
+          type: string
+          enum: [MALE, FEMALE, HANDICAP]
+          example: FEMALE
+        utilities:
+          type: array
+          items:
+            type: string
+            enum: [SHOWERS, FRAGRANCE, BIDETS, HOOKS, WATERCOOLER]
+          example: [BIDETS, HOOKS]
+        createdAt:
+          type: string
+          example: 2022-09-14T09:36:51.277Z
+        updatedAt:
+          type: string
+          example: 2022-09-14T09:36:51.277Z
+    GetToiletResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Retrieved toilet
+        data:
+          $ref: '#/components/schemas/Toilet'
+    GetToiletResponseArray:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Retrieved all toilets
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Toilet'

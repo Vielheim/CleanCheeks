@@ -1,7 +1,7 @@
 import { DataTypes, Model, Optional, UUIDV4 } from 'sequelize';
 import { ToiletType, Utilities } from '../../enums';
-import sequelizeConnection from '../config';
-
+import sequelize from '../index';
+import ToiletPreference from './ToiletPreference';
 interface IToiletAttributes {
   id: string;
   building: string;
@@ -9,10 +9,10 @@ interface IToiletAttributes {
   floor: number;
   longitude: number;
   latitude: number;
-  picture?: Blob;
   num_seats: number;
   num_squats: number;
   cleanliness: number;
+  num_ratings: number;
   type: ToiletType;
   utilities: Utilities[];
   createdAt?: Date;
@@ -23,11 +23,13 @@ interface IToiletAttributes {
 export interface IToiletInput
   extends Optional<
     IToiletAttributes,
-    'id' | 'picture' | 'createdAt' | 'updatedAt'
+    'id' | 'createdAt' | 'updatedAt' | 'num_ratings'
   > {}
 
 // IToiletOutput defines the return object from model.create(), model.update(), model.findOne() etc.
-export interface IToiletOutput extends Required<IToiletAttributes> {}
+export interface IToiletOutput extends Required<IToiletAttributes> {
+  toiletPreferences?: ToiletPreference[]; // from join with ToiletPreferences
+}
 
 class Toilet
   extends Model<IToiletAttributes, IToiletInput>
@@ -39,10 +41,10 @@ class Toilet
   public floor!: number;
   public longitude!: number;
   public latitude!: number;
-  public picture!: Blob;
   public num_seats!: number;
   public num_squats!: number;
   public cleanliness!: number;
+  public num_ratings!: number;
   public type!: ToiletType;
   public utilities!: Utilities[];
 
@@ -81,10 +83,6 @@ Toilet.init(
       type: DataTypes.DOUBLE,
       allowNull: false,
     },
-    picture: {
-      type: DataTypes.BLOB,
-      allowNull: true,
-    },
     num_seats: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -101,10 +99,19 @@ Toilet.init(
     },
     cleanliness: {
       type: DataTypes.DOUBLE,
+      defaultValue: 0,
       allowNull: false,
       validate: {
         max: 1,
         min: -1,
+      },
+    },
+    num_ratings: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+      allowNull: false,
+      validate: {
+        min: 0,
       },
     },
     type: {
@@ -118,7 +125,7 @@ Toilet.init(
     },
   },
   {
-    sequelize: sequelizeConnection,
+    sequelize: sequelize,
     timestamps: true, // auto-update timestamps
   }
 );

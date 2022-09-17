@@ -69,7 +69,7 @@ const generateToiletsFromFloors = (
 
 for (const { name, location, floors } of clusters) {
   const building = name;
-  const [longitude, latitude] = location;
+  const [latitude, longitude] = location;
   const { Male: male, Female: female, Handicap: handicap } = floors;
   if (male !== undefined)
     toilets.push(

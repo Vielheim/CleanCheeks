@@ -1,5 +1,6 @@
-import * as toiletDataAccess from '../data_access/toilet';
-import { GetAllToiletsFilters } from '../data_access/types';
+import { ICoordinates } from '../../api/interfaces/coordinates.interface';
+import * as toiletDataAccess from '../data_access/toilet/toilet';
+import { GetAllToiletsFilters } from '../data_access/toilet/types';
 import { IToiletInput, IToiletOutput } from '../models/Toilet';
 
 export const create = (payload: IToiletInput): Promise<IToiletOutput> => {
@@ -25,4 +26,14 @@ export const getAll = (
   filters: GetAllToiletsFilters
 ): Promise<IToiletOutput[]> => {
   return toiletDataAccess.getAll(filters);
+};
+
+export const getAllNeighbouringToilets = (
+  coordinates: ICoordinates,
+  userId?: string
+): Promise<IToiletOutput[]> => {
+  return toiletDataAccess.getAllNeighbouringToiletsByCoordinates(
+    coordinates,
+    userId
+  );
 };

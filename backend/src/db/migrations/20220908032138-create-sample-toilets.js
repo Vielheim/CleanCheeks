@@ -35,10 +35,6 @@ module.exports = {
           type: Sequelize.DOUBLE,
           allowNull: false,
         },
-        picture: {
-          type: Sequelize.BLOB,
-          allowNull: true,
-        },
         num_seats: {
           type: Sequelize.INTEGER,
           allowNull: false,
@@ -55,10 +51,19 @@ module.exports = {
         },
         cleanliness: {
           type: Sequelize.DOUBLE,
+          defaultValue: 0,
           allowNull: false,
           validate: {
             max: 1,
             min: -1,
+          },
+        },
+        num_ratings: {
+          type: Sequelize.INTEGER,
+          defaultValue: 0,
+          allowNull: false,
+          validate: {
+            min: 0,
           },
         },
         type: {

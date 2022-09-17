@@ -12,7 +12,7 @@
 ### Frontend
 
 1. Install npm packages using `npm i`.
-2. Run the backend service using `npm start`.
+2. Run the react app using `npm start`.
 
 ### Backend
 

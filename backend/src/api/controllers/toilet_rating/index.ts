@@ -1,6 +1,6 @@
 import * as service from '../../../db/services/ToiletRatingService';
 import { CreateRatingDTO } from '../../data_transfer/toilet_rating/rating.dto';
-import { validateCreateRatingDTO } from '../../data_transfer/toilet_rating/validateDTO';
+import { validateCreateRatingDTO } from '../../data_transfer/toilet_rating/validate.dto';
 import { IRating } from '../../interfaces/rating.interface';
 import * as mapper from './mapper';
 

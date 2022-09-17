@@ -1,5 +1,5 @@
 import { DataTypes, Model, Optional } from 'sequelize';
-import sequelizeConnection from '../config';
+import sequelize from '../index';
 import ToiletPreference from './ToiletPreference';
 
 interface IUserAttributes {
@@ -32,7 +32,7 @@ User.init(
     },
   },
   {
-    sequelize: sequelizeConnection,
+    sequelize: sequelize,
     timestamps: true, // auto-update timestamps
   }
 );
