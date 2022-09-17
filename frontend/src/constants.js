@@ -1,5 +1,10 @@
 import { ToiletType } from './enums/ToiletEnums';
 
+export const TOILET_RATING = {
+  CLEAN: 'CLEAN',
+  DIRTY: 'DIRTY',
+};
+
 export const OFFLINE_TOILETS = [
   {
     building: 'BIZ1',
