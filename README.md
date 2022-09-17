@@ -19,7 +19,9 @@
 1. Create a `.env` file in `/backend` to store credentials for postgres. Refer to [backend/.env.sample](backend/.env.sample) for more info.
 2. Install npm packages using `npm i`.
 3. Run `npm run db:create` to create the `postgres` database on your local machine.
-4. Run the backend service using `npm start`.
+4. There are two ways to run the backend service
+    1. For first-time initialisation, run `npm run clean-start`. This runs all the database commands to clear and populate the database. You can also run this if you want to reset the database to its initial state.
+    2. For subsequent initialisations, run `npm start` to start the backend service.
 
 **Note:**
 The API endpoint can be found at http://localhost:8000/api/v1.
