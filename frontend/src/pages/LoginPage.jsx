@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import logo from '../assets/logo.jpeg';
 import { MdArrowRight } from 'react-icons/md';
 import GoogleAuth from '../components/auth/GoogleAuth';
@@ -15,10 +16,10 @@ const LoginPage = () => {
         or
         <hr />
       </div>
-      <a href="/home" className="continueText">
+      <Link to="/home" className="continueText">
         Continue without logging in
         <MdArrowRight />
-      </a>
+      </Link>
     </div>
   );
 };

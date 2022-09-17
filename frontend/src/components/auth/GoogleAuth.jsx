@@ -11,6 +11,8 @@ import './GoogleAuth.scss';
 const GoogleAuth = () => {
   const navigate = useNavigate();
   const [errorMsg, setErrorMsg] = useState('');
+  const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+
   const responseGoogle = (response) => {
     const bodyObject = {
       authId: response.tokenId,
@@ -36,9 +38,8 @@ const GoogleAuth = () => {
   };
 
   useEffect(() => {
-    const clientId = `${process.env.REACT_APP_GOOGLE_CLIENT_ID}`;
     const start = () => {
-      gapi.auth2.init({ clientId: clientId, scope: '' });
+      gapi.auth2.init({ clientId, scope: '' });
     };
     gapi.load('client:auth2', start);
   });
@@ -46,7 +47,7 @@ const GoogleAuth = () => {
   return (
     <div className="googleAuthContainer">
       <GoogleLogin
-        clientId={`${process.env.REACT_APP_GOOGLE_CLIENT_ID}`}
+        clientId={clientId}
         onSuccess={responseGoogle}
         onFailure={onFailure}
       />

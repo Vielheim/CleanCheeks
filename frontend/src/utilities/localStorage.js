@@ -1,6 +1,6 @@
 export function getLocalStorageValue(key) {
   const res = localStorage.getItem(key);
-  return res ? JSON.parse(res) : null;
+  return res ?? JSON.parse(res);
 }
 
 export function setLocalStorageValue(key, value) {
