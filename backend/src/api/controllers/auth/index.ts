@@ -1,29 +1,32 @@
-import * as userController from '../user';
+import * as UserController from '../user';
 import { OAuth2Client } from 'google-auth-library';
+import JwtUtils from '../../util/JwtUtils';
 
 const googleClient = new OAuth2Client({
   clientId: `${process.env.GOOGLE_CLIENT_ID}`,
   clientSecret: `${process.env.GOOGLE_CLIENT_SECRET}`,
 });
 
-export const googleLogin = async (token: string) => {
+export const googleLogin = async (idToken: string) => {
   const ticket = await googleClient.verifyIdToken({
-    idToken: token,
+    idToken,
     audience: `${process.env.GOOGLE_CLIENT_ID}`,
   });
   const payload = ticket.getPayload()!;
-
   const userId = payload['sub'];
+
   let user;
   try {
-    user = await userController.getById(userId);
+    user = await UserController.getById(userId);
   } catch (e: any) {
-    user = await userController.create({ id: userId });
+    user = await UserController.create({ id: userId });
   }
 
+  const accessToken = JwtUtils.accessTokenGenerator(user, { expiresIn: '7d' });
   const result = {
-    user: user,
-    token: token,
+    user,
+    accessToken,
   };
+
   return result;
 };

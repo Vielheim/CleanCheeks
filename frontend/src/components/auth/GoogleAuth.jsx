@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import GoogleLogin from 'react-google-login';
 import axios from 'axios';
 import { isEmpty } from 'lodash';
-import { gapi } from 'gapi-script';
 import { setLocalStorageValue } from '../../utilities/localStorage';
-import { authTokenKey, userIdKey } from '../../consts/consts';
+import { accessTokenKey, userIdKey } from '../../consts/consts';
 import './GoogleAuth.scss';
+import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 
 const GoogleAuth = () => {
   const navigate = useNavigate();
@@ -14,16 +13,13 @@ const GoogleAuth = () => {
   const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 
   const responseGoogle = (response) => {
-    const bodyObject = {
-      authId: response.tokenId,
-    };
     try {
       if (isEmpty(response.errors)) {
         axios
-          .post(`${process.env.REACT_APP_API_URL}/auth/google`, bodyObject)
+          .post(`${process.env.REACT_APP_API_URL}/auth/google`, response)
           .then((res) => {
-            const { user, token } = res.data.data;
-            setLocalStorageValue(authTokenKey, token);
+            const { user, accessToken } = res.data.data;
+            setLocalStorageValue(accessTokenKey, accessToken);
             setLocalStorageValue(userIdKey, user.id);
             navigate('/home');
           });
@@ -37,22 +33,13 @@ const GoogleAuth = () => {
     setErrorMsg('Error signing in with Google. Try again.');
   };
 
-  useEffect(() => {
-    const start = () => {
-      gapi.auth2.init({ clientId, scope: '' });
-    };
-    gapi.load('client:auth2', start);
-  });
-
   return (
-    <div className="googleAuthContainer">
-      <GoogleLogin
-        clientId={clientId}
-        onSuccess={responseGoogle}
-        onFailure={onFailure}
-      />
-      <p>{errorMsg}</p>
-    </div>
+    <GoogleOAuthProvider clientId={clientId}>
+      <div className="googleAuthContainer">
+        <GoogleLogin onSuccess={responseGoogle} onFailure={onFailure} />
+        <p>{errorMsg}</p>
+      </div>
+    </GoogleOAuthProvider>
   );
 };
 

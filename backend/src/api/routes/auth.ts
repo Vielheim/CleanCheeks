@@ -6,8 +6,8 @@ const authRouter = Router();
 
 authRouter.post('/google', async (req: Request, res: Response) => {
   try {
-    const { authId } = req.body;
-    const result = await authController.googleLogin(authId);
+    const { credential } = req.body;
+    const result = await authController.googleLogin(credential);
     return Util.sendSuccess(res, 201, 'Successfully logged in', result);
   } catch (error: unknown) {
     return Util.sendFailure(res, error);

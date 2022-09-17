@@ -1,4 +1,4 @@
-const authTokenKey = 'authToken';
+const accessTokenKey = 'accessToken';
 const userIdKey = 'userId';
 
-export { authTokenKey, userIdKey };
+export { accessTokenKey, userIdKey };
