@@ -5,9 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "concurrently \"tsc --watch\" \"nodemon -q dist/index.js\"",
+    "clean-start": "sequelize-cli db:migrate:undo:all && sequelize-cli db:migrate && sequelize-cli db:seed:all && npm start",
     "build": "rimraf ./dist && tsc",
     "lint": "npx prettier --write ./src/*",
-    "prestart": "sequelize-cli db:migrate:undo:all && sequelize-cli db:migrate && sequelize-cli db:seed:all && npm run build",
+    "prestart": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1",
     "db:create": "sequelize-cli db:create",
     "db:migrate": "sequelize-cli db:migrate",
