@@ -1,4 +1,4 @@
-import { ToiletType, Utilities } from '../../enums';
+import { ToiletType, Utilities, PreferenceType } from '../../enums';
 export interface IToilet {
   id: string;
   building: string;
@@ -14,4 +14,5 @@ export interface IToilet {
   utilities: Utilities[];
   createdAt?: Date;
   updatedAt?: Date;
+  user_preference_type?: PreferenceType;
 }

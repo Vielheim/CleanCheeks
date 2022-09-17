@@ -1,5 +1,5 @@
 import { DataNotFoundError } from '../../../errors/Errors';
-import { Toilet } from '../../models';
+import { Toilet, ToiletPreference } from '../../models';
 import { IToiletInput, IToiletOutput } from '../../models/Toilet';
 import { GetAllToiletsFilters, isEmptyGetAllToiletFilters } from './types';
 import { Op, Sequelize } from 'sequelize';
@@ -96,19 +96,32 @@ export const getAll = async (
   });
 };
 
+// Get all toilets with optionally a user's preference of the toilet
 export const getAllNeighbouringToiletsByCoordinates = async (
-  coordinates: ICoordinates
+  coordinates: ICoordinates,
+  userId?: string
 ): Promise<IToiletOutput[]> => {
-  const toilets = await Toilet.findAll();
+  const toilets_with_preference: IToiletOutput[] = await Toilet.findAll({
+    include: {
+      model: ToiletPreference,
+      as: 'toiletPreferences',
+      where: {
+        user_id: {
+          [Op.eq]: userId, // ignored if undefined
+        },
+      },
+      required: false, // Use outer join to include all toilets
+    },
+  });
 
   const neighbouringToiletsIndex: NeighbouringToiletsIndex =
     injection_container.get<NeighbouringToiletsIndex>(
       TYPES.NeighbouringToiletsIndex
     );
 
-  const results = await neighbouringToiletsIndex
+  const results = neighbouringToiletsIndex
     .query(coordinates.latitude, coordinates.longitude, coordinates.radius)
-    .map((idx) => toilets[idx]);
+    .map((idx) => toilets_with_preference[idx]);
 
   return results;
 };

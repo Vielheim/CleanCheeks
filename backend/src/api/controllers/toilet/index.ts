@@ -55,12 +55,13 @@ export const getAll = async (filters: FilterToiletsDTO): Promise<IToilet[]> => {
 };
 
 export const getAllNeighbouringToilets = async (
-  coordinates: ICoordinates
+  coordinates: ICoordinates,
+  userId?: string
 ): Promise<IToilet[]> => {
   // validate or throw error
   validateCoordinates(coordinates);
 
-  return (await service.getAllNeighbouringToilets(coordinates)).map(
+  return (await service.getAllNeighbouringToilets(coordinates, userId)).map(
     mapper.toToilet
   );
 };

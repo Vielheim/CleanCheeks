@@ -1,6 +1,6 @@
 import { GetAllToiletsFilters } from '../../../db/data_access/toilet/types';
 import { IToiletInput, IToiletOutput } from '../../../db/models/Toilet';
-import { ToiletType, Utilities } from '../../../enums';
+import { PreferenceType, ToiletType, Utilities } from '../../../enums';
 import {
   CreateToiletDTO,
   FilterToiletsDTO,
@@ -24,7 +24,15 @@ export const toToilet = ({
   utilities,
   createdAt,
   updatedAt,
+  toiletPreferences,
 }: IToiletOutput): IToilet => {
+  let user_preference_type: PreferenceType | undefined = undefined;
+
+  // extract the first user's preference
+  if (toiletPreferences !== undefined && toiletPreferences?.length > 0) {
+    user_preference_type = toiletPreferences[0].type;
+  }
+
   return {
     id,
     building,
@@ -40,6 +48,7 @@ export const toToilet = ({
     utilities,
     createdAt,
     updatedAt,
+    user_preference_type,
   };
 };
 
