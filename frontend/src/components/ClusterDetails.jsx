@@ -11,30 +11,12 @@ import ToiletDetail from './ToiletDetail';
 
 import { ToiletUtilities } from '../enums/ToiletEnums';
 import './ClusterDetails.scss';
+import { getCleanlinessMetadata } from './ToiletDetail/Util';
 
 const UTILITIES = [
   [ToiletUtilities.SHOWERS, ToiletUtilities.BIDETS],
   [ToiletUtilities.WATERCOOLER, ToiletUtilities.FRAGRANCE],
 ];
-
-const getCleanlinessMetadata = (cleanliness) => {
-  if (cleanliness < -0.25) {
-    return {
-      text: 'BAD',
-      type: 'danger',
-    };
-  } else if (cleanliness > 0.25) {
-    return {
-      text: 'GOOD',
-      type: 'success',
-    };
-  } else {
-    return {
-      text: 'AVERAGE',
-      type: 'warning',
-    };
-  }
-};
 
 const fmtDistance = (distance) =>
   distance >= 1000 ? `${(distance / 1000).toFixed(1)}km` : `${distance}m`;
