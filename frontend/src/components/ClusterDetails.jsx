@@ -31,20 +31,20 @@ const ClusterDetails = ({ currLocation, cluster, isShow, setIsShow }) => {
     currLocation[1]
   );
 
-  const [selectedToiletIndex, setSelectedToiletIndex] = useState(null);
+  const [selectedToilet, setSelectedToilet] = useState(null);
 
   const onHide = () => {
-    setSelectedToiletIndex(null);
+    setSelectedToilet(null);
     setIsShow(false);
   };
 
-  if (selectedToiletIndex != null) {
+  if (selectedToilet != null) {
     return (
       <ToiletDetail
         building={building}
-        toilet={toilets[selectedToiletIndex]}
+        toilet={selectedToilet}
         isShow={isShow}
-        onBack={() => setSelectedToiletIndex(null)}
+        onBack={() => setSelectedToilet(null)}
         onHide={onHide}
       />
     );
@@ -84,7 +84,7 @@ const ClusterDetails = ({ currLocation, cluster, isShow, setIsShow }) => {
               <Card
                 key={i}
                 className="mb-3 offcanvas-inner-container"
-                onClick={() => setSelectedToiletIndex(i)}
+                onClick={() => setSelectedToilet(toilet)}
               >
                 <Card.Body>
                   <Card.Title>{`${building}, Level ${fmtedFloor}`}</Card.Title>
