@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import FilterOptions from './FilterOptions';
-
+import { useMap } from 'react-leaflet';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -16,22 +16,24 @@ import './SearchBar.scss';
 
 const SearchBar = ({ filters, setFilters, venues }) => {
   let searchTimeoutId = 0;
+  let filterTimeoutId = 0;
+  const map = useMap();
   const [tempSearch, setTempSearch] = useState('');
   const [isShowList, setIsShowList] = useState(false);
   const [isShowFilters, setIsShowFilters] = useState(false);
 
-  const handleModalChange = ({ gender, haveShowers }) => {
-    setFilters((filters) => ({
-      ...filters,
-      gender,
-      haveShowers,
-    }));
+  // filter options event handlers
+  const handleOptionsFocus = () => {
+    if (filterTimeoutId > 0) {
+      clearTimeout(filterTimeoutId);
+    }
   };
 
   const onSearchChange = ({ target: { value } }) => {
     setTempSearch(value);
   };
 
+  // form event handlers
   const onFormFocus = () => {
     if (searchTimeoutId > 0) {
       clearTimeout(searchTimeoutId);
@@ -44,6 +46,13 @@ const SearchBar = ({ filters, setFilters, venues }) => {
     searchTimeoutId = setTimeout(() => setIsShowList(false), 300);
   };
 
+  const onFormKeyDown = ({ key }) => {
+    if (key === 'Escape') {
+      onFormBlur();
+    }
+  };
+
+  // dropdown venues list event handlers
   const onListFocus = () => {
     if (searchTimeoutId > 0) {
       clearTimeout(searchTimeoutId);
@@ -59,6 +68,25 @@ const SearchBar = ({ filters, setFilters, venues }) => {
     setIsShowList(false);
   };
 
+  // filter button event handlers
+  const onFilterFocus = () => {
+    if (filterTimeoutId > 0) {
+      clearTimeout(filterTimeoutId);
+    }
+  };
+
+  const onFilterBlur = () => {
+    filterTimeoutId = setTimeout(() => setIsShowFilters(false), 300);
+  };
+
+  const handleFilterChange = ({ gender, haveShowers }) => {
+    setFilters((filters) => ({
+      ...filters,
+      gender,
+      haveShowers,
+    }));
+  };
+
   const filterVenues = (venues) =>
     Object.keys(venues).filter(
       (id) =>
@@ -67,6 +95,12 @@ const SearchBar = ({ filters, setFilters, venues }) => {
     );
 
   const thrFilterVenues = throttle(filterVenues, 1000);
+
+  // stops the map from being dragged underneath when drag and scroll
+  // venues list on mobile
+  const onCapture = (event) => {
+    event.stopPropagation();
+  };
 
   return (
     <Container className="filter-row">
@@ -82,6 +116,7 @@ const SearchBar = ({ filters, setFilters, venues }) => {
               onChange={onSearchChange}
               onFocus={onFormFocus}
               onBlur={onFormBlur}
+              onKeyDown={onFormKeyDown}
               value={tempSearch}
             />
             <Collapse in={!isShowList} dimension="width">
@@ -89,6 +124,8 @@ const SearchBar = ({ filters, setFilters, venues }) => {
                 <Button
                   className="filter-options-button"
                   onClick={() => setIsShowFilters(!isShowFilters)}
+                  onFocus={onFilterFocus}
+                  onBlur={onFilterBlur}
                 >
                   <BsFilter height={22} />
                 </Button>
@@ -105,7 +142,11 @@ const SearchBar = ({ filters, setFilters, venues }) => {
                 <ListGroup.Item
                   key={id}
                   action
+                  onBlur={() => setIsShowList(false)}
                   onClick={onListItemClick}
+                  onTouchMoveCapture={onCapture}
+                  onMouseDownCapture={() => map.dragging.disable()}
+                  onMouseUpCapture={() => map.dragging.enable()}
                   value={id}
                 >
                   {`${id} (${venues[id].roomName})`}
@@ -116,7 +157,8 @@ const SearchBar = ({ filters, setFilters, venues }) => {
           <Collapse in={isShowFilters}>
             <div>
               <FilterOptions
-                handleModalChange={handleModalChange}
+                handleFilterChange={handleFilterChange}
+                handleFilterFocus={handleOptionsFocus}
                 state={filters}
               />
             </div>

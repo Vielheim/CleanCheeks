@@ -11,16 +11,16 @@ import { BiMale, BiFemale, BiHandicap } from 'react-icons/bi';
 import { TOILET_TYPE } from '../constants';
 import './FilterOptions.scss';
 
-const FilterOptions = ({ state, handleModalChange }) => {
+const FilterOptions = ({ state, handleFilterChange, handleOptionsFocus }) => {
   const onFieldsChange = ({ currentTarget }) => {
     const { name, value } = currentTarget;
     if (name === 'haveShowers') {
-      handleModalChange({
+      handleFilterChange({
         ...state,
         haveShowers: !state.haveShowers,
       });
     } else {
-      handleModalChange({
+      handleFilterChange({
         ...state,
         gender: value,
       });
@@ -28,7 +28,7 @@ const FilterOptions = ({ state, handleModalChange }) => {
   };
 
   return (
-    <Card>
+    <Card onFocus={handleOptionsFocus}>
       <Card.Body>
         <Card.Title>Filters</Card.Title>
         <Container>
