@@ -1,8 +1,14 @@
-const API = '/api/v1';
+import axios from 'axios';
 
-export const fetchCloseToilets = async (coordinates, radius) =>
-fetch(
-  `${API}/toilets/neighbours?latitude=${coordinates[0]}&longitude=${coordinates[1]}&radius=${radius}`
-)
-  .then((response) => response.json())
-  .catch((error) => console.log(error));
+const BASE_URL = process.env.REACT_APP_API_URL;
+
+export default class Api {
+  static async makeApiRequest(axiosConfig) {
+    try {
+      const result = await axios({ ...axiosConfig, baseURL: BASE_URL });
+      return result.data;
+    } catch (error) {
+      return Promise.reject(error.response);
+    }
+  }
+}

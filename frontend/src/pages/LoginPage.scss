@@ -1,0 +1,50 @@
+@import '../custom.scss';
+
+.loginContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+}
+
+.loginContainer > img {
+  height: auto;
+  width: 100%;
+  max-width: 250px;
+  margin: 1em;
+}
+
+.loginContainer > h2 {
+  padding-bottom: 1em;
+}
+
+.divider {
+  display: grid;
+  grid-template-columns: 2fr 1fr 2fr;
+  justify-items: center;
+  align-items: center;
+}
+
+.divider > hr {
+  width: 15vh;
+  color: black;
+}
+
+.continueText {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  padding: 1em;
+  text-decoration: none;
+  color: darkgrey;
+}
+
+.continueText:hover {
+  color: grey;
+}

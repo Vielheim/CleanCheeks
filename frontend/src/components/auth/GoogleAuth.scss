@@ -1,0 +1,17 @@
+.googleAuthContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.googleAuthContainer > button {
+  width: 30vh;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.googleAuthContainer > p {
+  color: red;
+  text-align: center;
+  margin: 1em;
+}
