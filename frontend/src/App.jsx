@@ -7,7 +7,7 @@ import {
 } from 'react-router-dom';
 import MapPage from './pages/MapPage';
 import { getLocalStorageValue } from './utilities/localStorage';
-import { accessTokenKey, userIdKey } from './consts/consts';
+import { ACCESS_TOKEN_KEY, USER_ID_KEY } from './constants';
 import LoginPage from './pages/LoginPage';
 
 function App() {
@@ -15,7 +15,8 @@ function App() {
 
   useEffect(() => {
     setUser(
-      getLocalStorageValue(accessTokenKey) && getLocalStorageValue(userIdKey)
+      getLocalStorageValue(ACCESS_TOKEN_KEY) &&
+        getLocalStorageValue(USER_ID_KEY)
     );
   }, []);
 
