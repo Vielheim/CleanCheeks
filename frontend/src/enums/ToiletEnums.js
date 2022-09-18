@@ -1,0 +1,6 @@
+export const ToiletUtilities = {
+  FRAGRANCE: 'FRAGRANCE',
+  WATERCOOLER: 'WATERCOOLER',
+  BIDETS: 'BIDETS',
+  SHOWERS: 'SHOWERS',
+};

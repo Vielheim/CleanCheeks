@@ -1,52 +1,22 @@
-import React from 'react';
-import { capitalize } from 'lodash';
-import Offcanvas from 'react-bootstrap/Offcanvas';
-import Card from 'react-bootstrap/Card';
+import React, { useState } from 'react';
 import Badge from 'react-bootstrap/Badge';
-import Row from 'react-bootstrap/Row';
+import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
-import { GrFormCheckmark, GrFormClose } from 'react-icons/gr';
+import Offcanvas from 'react-bootstrap/Offcanvas';
+import Row from 'react-bootstrap/Row';
 import { getDistance } from '../utilities';
+import StyledUtility from './ToiletDetail/StyledUtility';
+import ToiletDetail from './ToiletDetail';
 
+import { ToiletUtilities } from '../enums/ToiletEnums';
 import './ClusterDetails.scss';
+import { getCleanlinessMetadata } from './ToiletDetail/Util';
 
 const UTILITIES = [
-  ['Showers', 'Bidets'],
-  ['Watercooler', 'Fragrance'],
+  [ToiletUtilities.SHOWERS, ToiletUtilities.BIDETS],
+  [ToiletUtilities.WATERCOOLER, ToiletUtilities.FRAGRANCE],
 ];
-
-const getCleanlinessMetadata = (cleanliness) => {
-  if (cleanliness < -0.25) {
-    return {
-      text: 'BAD',
-      type: 'danger',
-    };
-  } else if (cleanliness > 0.25) {
-    return {
-      text: 'AVERAGE',
-      type: 'warning',
-    };
-  } else {
-    return {
-      text: 'GOOD',
-      type: 'success',
-    };
-  }
-};
-
-const getStyledUtility = (utility, presentUtilities) => {
-  const isPresent = presentUtilities.includes(utility.toUpperCase());
-  const icon = isPresent ? <GrFormCheckmark /> : <GrFormClose />;
-  const cssClass = isPresent ? '' : 'non-exist-utility';
-
-  return (
-    <div className={cssClass}>
-      {icon}
-      {`  ${capitalize(utility)}`}
-    </div>
-  );
-};
 
 const fmtDistance = (distance) =>
   distance >= 1000 ? `${(distance / 1000).toFixed(1)}km` : `${distance}m`;
@@ -60,6 +30,25 @@ const ClusterDetails = ({ currLocation, cluster, isShow, setIsShow }) => {
     currLocation[0],
     currLocation[1]
   );
+
+  const [selectedToiletIndex, setSelectedToiletIndex] = useState(null);
+
+  const onHide = () => {
+    setSelectedToiletIndex(null);
+    setIsShow(false);
+  };
+
+  if (selectedToiletIndex != null) {
+    return (
+      <ToiletDetail
+        building={building}
+        toilet={toilets[selectedToiletIndex]}
+        isShow={isShow}
+        onBack={() => setSelectedToiletIndex(null)}
+        onHide={onHide}
+      />
+    );
+  }
 
   return (
     <Offcanvas
@@ -92,7 +81,11 @@ const ClusterDetails = ({ currLocation, cluster, isShow, setIsShow }) => {
             const fmtedFloor =
               floor < 0 ? `B${Math.abs(floor)}` : floor.toString();
             return (
-              <Card key={i} className="mb-3">
+              <Card
+                key={i}
+                className="mb-3 offcanvas-inner-container"
+                onClick={() => setSelectedToiletIndex(i)}
+              >
                 <Card.Body>
                   <Card.Title>{`${building}, Level ${fmtedFloor}`}</Card.Title>
                   <Card.Subtitle className="mb-1">{description}</Card.Subtitle>
@@ -111,7 +104,10 @@ const ClusterDetails = ({ currLocation, cluster, isShow, setIsShow }) => {
                         <Row key={i}>
                           {group.map((utility, i) => (
                             <Col key={i}>
-                              {getStyledUtility(utility, utilities)}
+                              <StyledUtility
+                                utility={utility}
+                                presentUtilities={utilities}
+                              />
                             </Col>
                           ))}
                         </Row>
