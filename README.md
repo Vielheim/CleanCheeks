@@ -11,8 +11,12 @@
 
 ### Frontend
 
-1. Install npm packages using `npm i`.
-2. Run the react app using `npm start`.
+1.  Create a `.env` file in `/frontend` to store credentials for postgres. Refer to [frontend/.env.sample](frontend/.env.sample) for more info.
+2.  Install npm packages using `npm i`.
+3.  Run the react app using `npm start`.
+
+**Note:**
+It would be better to start the backend service before starting the frontend app since it relies on the data there.
 
 ### Backend
 
