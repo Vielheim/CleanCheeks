@@ -13,7 +13,7 @@ import ToastContainer from 'react-bootstrap/ToastContainer';
 import SearchBar from '../components/SearchBar';
 import ClusterDetails from '../components/ClusterDetails';
 import getMarkerIcon from '../components/markerIcon';
-import { fetchCloseToilets } from '../api/api';
+import Api from '../api/api';
 import { INITIAL_FILTER_STATE, OFFLINE_TOILETS } from '../constants';
 import { getDistance } from '../utilities';
 import focused_face from '../assets/focused_face.png';
@@ -72,6 +72,12 @@ const TOAST_CONTENTS = {
     title: 'Hello!',
     body: 'Looks like you are back online. Enjoy your clean cheeks!',
     bg: 'light',
+    img: focused_face,
+  },
+  ERROR: {
+    title: 'Oops!',
+    body: 'Something went wrong... Try again later!',
+    bg: 'warning',
     img: focused_face,
   },
 };
@@ -163,11 +169,15 @@ const MapPage = () => {
       radius = minDistance * 0.7;
     }
 
-    fetchCloseToilets(center.map, radius).then((json) => {
-      const toilets = json.data;
-      setToilets(toilets);
-      setFilteredClusters(clusteriseToilets(toilets));
-    });
+    Api.makeApiRequest({
+      method: 'GET',
+      url: `/toilets/neighbours?latitude=${center.map[0]}&longitude=${center.map[1]}&radius=${radius}`,
+    })
+      .then((result) => {
+        setToilets(result.data);
+        setFilteredClusters(clusteriseToilets(result.data));
+      })
+      .catch((e) => setToastType('ERROR'));
   }, [center.map]);
 
   useEffect(() => {
