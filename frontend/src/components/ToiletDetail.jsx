@@ -1,16 +1,12 @@
 import React from 'react';
 import Badge from 'react-bootstrap/Badge';
-import Card from 'react-bootstrap/Card';
-import Col from 'react-bootstrap/Col';
-import Container from 'react-bootstrap/Container';
 import Offcanvas from 'react-bootstrap/Offcanvas';
-import Row from 'react-bootstrap/Row';
 import StyledUtility from './ToiletDetail/StyledUtility';
 
+import { GrFavorite, GrFormPreviousLink } from 'react-icons/gr';
 import { ToiletUtilities } from '../enums/ToiletEnums';
 import './ClusterDetails.scss';
 import './ToiletDetail.scss';
-import { GrFormPreviousLink, GrFavorite } from 'react-icons/gr';
 import { getCleanlinessMetadata } from './ToiletDetail/Util';
 
 const ToiletDetail = ({ building, toilet, isShow, onBack, onHide }) => {
