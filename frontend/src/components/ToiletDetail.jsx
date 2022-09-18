@@ -32,7 +32,7 @@ const ToiletDetail = ({ building, toilet, isShow, onBack, onHide }) => {
     >
       <Offcanvas.Header>
         <GrFormPreviousLink onClick={onBack} size={28} />
-        <Offcanvas.Title>
+        <Offcanvas.Title className="text-center">
           <p className="m-0">{`${building}, Level ${fmtedFloor}`}</p>
           <p className="m-0 text-muted fs-6">{description}</p>
         </Offcanvas.Title>
