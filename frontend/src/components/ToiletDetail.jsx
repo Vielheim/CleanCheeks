@@ -1,18 +1,21 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Badge from 'react-bootstrap/Badge';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import StyledUtility from './ToiletDetail/StyledUtility';
 
-import { GrFavorite, GrFormPreviousLink } from 'react-icons/gr';
+import { FaHeart } from 'react-icons/fa';
+import { TiCancel } from 'react-icons/ti';
 import { ToiletUtilities } from '../enums/ToiletEnums';
+import { GrFormPreviousLink } from 'react-icons/gr';
 import './ClusterDetails.scss';
 import './ToiletDetail.scss';
 import { getCleanlinessMetadata } from './ToiletDetail/Util';
+import { updateToiletPreference } from '../api/api';
 
 const ToiletDetail = ({ building, toilet, isShow, onBack, onHide }) => {
   const {
-    isFavourite,
-    isBlacklist,
+    id,
+    user_preference_type,
     description,
     floor,
     cleanliness,
@@ -22,6 +25,27 @@ const ToiletDetail = ({ building, toilet, isShow, onBack, onHide }) => {
   const fmtedFloor = floor < 0 ? `B${Math.abs(floor)}` : floor.toString();
   const { text, type } = getCleanlinessMetadata(cleanliness);
   const valueGreater = 85.6;
+
+  const [preference, setPreference] = useState(user_preference_type);
+
+  useEffect(() => {
+    setPreference(toilet.user_preference_type);
+  }, [toilet]);
+
+  const onClickFavourite = () => {
+    // TODO: Replace User Id
+    updateToiletPreference('testuser', id, 'FAVOURITE').then((json) => {
+      setPreference(json.data.type);
+      toilet.user_preference_type = json.data.type;
+    });
+  };
+
+  const onClickBlacklist = () => {
+    updateToiletPreference('testuser', id, 'BLACKLIST').then((json) => {
+      setPreference(json.data.type);
+      toilet.user_preference_type = json.data.type;
+    });
+  };
 
   return (
     <Offcanvas
@@ -37,8 +61,17 @@ const ToiletDetail = ({ building, toilet, isShow, onBack, onHide }) => {
           <p className="m-0 text-muted fs-6">{description}</p>
         </Offcanvas.Title>
         <div>
-          <GrFavorite className="icons" size={21} />
-          <GrFavorite size={21} />
+          <FaHeart
+            className="favourite-icon"
+            color={preference === 'FAVOURITE' ? 'red' : 'lightgrey'}
+            size={20}
+            onClick={onClickFavourite}
+          />
+          <TiCancel
+            size={28}
+            color={preference === 'BLACKLIST' ? 'black' : 'lightgrey'}
+            onClick={onClickBlacklist}
+          />
         </div>
       </Offcanvas.Header>
       <Offcanvas.Body>
