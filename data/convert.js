@@ -20,10 +20,11 @@ const TOILET_TYPE = {
   HANDICAP: "HANDICAP",
 };
 const UTILITIES = {
-  SHOWERS: "SHOWERS",
-  FRAGRANCE: "FRAGRANCE",
-  BIDETS: "BIDETS",
-  HOOKS: "HOOKS",
+  SHOWERS: 'SHOWERS',
+  FRAGRANCE: 'FRAGRANCE',
+  BIDETS: 'BIDETS',
+  HOOKS: 'HOOKS',
+  WATERCOOLER: 'WATERCOOLER',
 };
 
 const toilets = [];
@@ -52,14 +53,14 @@ const generateToiletsFromFloors = (
       floor,
       longitude,
       latitude,
-      num_seats: NUM_SEATS,
-      num_squats: NUM_SQUATS,
+      num_seats: Math.floor(Math.random() * 3) + 1,
+      num_squats: Math.floor(Math.random() * 3) + 1,
       cleanliness: CLEANLINESS,
       type: TOILET_TYPE[gender],
       utilities: [
-        UTILITIES.FRAGRANCE,
         UTILITIES.BIDETS,
-        ...isAdd(UTILITIES.HOOKS),
+        ...isAdd(UTILITIES.FRAGRANCE),
+        ...isAdd(UTILITIES.WATERCOOLER),
       ],
     };
     toilets.push(toilet);
