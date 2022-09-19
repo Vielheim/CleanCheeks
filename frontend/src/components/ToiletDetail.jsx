@@ -10,7 +10,7 @@ import { GrFormPreviousLink } from 'react-icons/gr';
 import './ClusterDetails.scss';
 import './ToiletDetail.scss';
 import { getCleanlinessMetadata } from './ToiletDetail/Util';
-import { updateToiletPreference } from '../api/api';
+import ToiletPreferenceControlller from '../api/ToiletPreferenceController';
 
 const ToiletDetail = ({ building, toilet, isShow, onBack, onHide }) => {
   const {
@@ -32,19 +32,23 @@ const ToiletDetail = ({ building, toilet, isShow, onBack, onHide }) => {
     setPreference(toilet.user_preference_type);
   }, [toilet]);
 
+  const updateToiletPreference = (type) => {
+    ToiletPreferenceControlller.updateToiletPreference(id, type)
+      .then((result) => {
+        setPreference(result.data.type);
+        toilet.user_preference_type = result.data.type;
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
   const onClickFavourite = () => {
-    // TODO: Replace User Id
-    updateToiletPreference('testuser', id, 'FAVOURITE').then((json) => {
-      setPreference(json.data.type);
-      toilet.user_preference_type = json.data.type;
-    });
+    updateToiletPreference('FAVOURITE');
   };
 
   const onClickBlacklist = () => {
-    updateToiletPreference('testuser', id, 'BLACKLIST').then((json) => {
-      setPreference(json.data.type);
-      toilet.user_preference_type = json.data.type;
-    });
+    updateToiletPreference('BLACKLIST');
   };
 
   return (

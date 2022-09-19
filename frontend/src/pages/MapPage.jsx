@@ -20,6 +20,7 @@ import focused_face from '../assets/focused_face.png';
 import VENUES from '../assets/venues.json';
 
 import './MapPage.scss';
+import ToiletControlller from '../api/ToiletController';
 
 const CIRCLE_FILL_OPTIONS = {
   fillOpacity: 1,
@@ -169,10 +170,7 @@ const MapPage = () => {
       radius = minDistance * 0.7;
     }
 
-    Api.makeApiRequest({
-      method: 'GET',
-      url: `/toilets/neighbours?latitude=${center.map[0]}&longitude=${center.map[1]}&radius=${radius}`,
-    })
+    ToiletControlller.fetchCloseToilets(center.map, radius)
       .then((result) => {
         setToilets(result.data);
         setFilteredClusters(clusteriseToilets(result.data));
