@@ -13,3 +13,10 @@ export const create = async (
 export const getAll = async (): Promise<IToiletRatingOutput[]> => {
   return await db.getAll();
 };
+
+export const getUserLastRated = async (
+  toilet_id: string,
+  user_id: string
+): Promise<IToiletRatingOutput> => {
+  return await db.getUserLastRated(toilet_id, user_id);
+};

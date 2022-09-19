@@ -9,6 +9,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^0.27.2",
     "bootstrap": "^5.2.0",
+    "date-fns": "^2.29.3",
     "flatbush": "^4.0.0",
     "leaflet": "^1.8.0",
     "lodash": "^4.17.21",

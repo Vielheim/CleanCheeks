@@ -12,6 +12,7 @@ import { PreferenceType } from '../../enums/ToiletPreferenceEnums';
 import '../ClusterDetails.scss';
 import { getCleanlinessMetadata } from '../shared/Util';
 import './ToiletDetail.scss';
+import ToiletRating from './ToiletRating';
 
 const ToiletDetail = ({ building, toilet, isShow, onBack, onHide }) => {
   const {
@@ -102,7 +103,9 @@ const ToiletDetail = ({ building, toilet, isShow, onBack, onHide }) => {
           </p>
         </div>
         <p className="mb-3 h6 fw-bold">Your Rating</p>
-        <div className="box" />
+        <div className="box">
+          <ToiletRating toilet_id={id} />
+        </div>
       </Offcanvas.Body>
     </Offcanvas>
   );

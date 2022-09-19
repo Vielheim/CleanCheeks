@@ -7,4 +7,5 @@ export interface IRating {
   type: RatingType;
   createdAt: Date;
   updatedAt: Date;
+  nextRatingTime: Date;
 }
