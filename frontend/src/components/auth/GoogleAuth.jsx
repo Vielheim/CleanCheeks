@@ -18,10 +18,11 @@ const GoogleAuth = () => {
           method: 'POST',
           url: '/auth/google',
           data: { response },
+          withCredentials: true,
         }).then((result) => {
-          const { user, accessToken } = result.data;
+          const { userId, accessToken } = result.data;
           setLocalStorageValue(ACCESS_TOKEN_KEY, accessToken);
-          setLocalStorageValue(USER_ID_KEY, user.id);
+          setLocalStorageValue(USER_ID_KEY, userId);
           navigate('/home');
         });
       }

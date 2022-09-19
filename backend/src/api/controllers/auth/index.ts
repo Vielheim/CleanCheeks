@@ -22,9 +22,9 @@ export const googleLogin = async (idToken: string) => {
     user = await UserController.create({ id: userId });
   }
 
-  const accessToken = JwtUtils.accessTokenGenerator(user, { expiresIn: '7d' });
+  const accessToken = JwtUtils.generateAccessToken(user, { expiresIn: '7d' });
   const result = {
-    user,
+    userId: user.id,
     accessToken,
   };
 

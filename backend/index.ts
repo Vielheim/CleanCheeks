@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import router from './src/api/routes';
 import sequelize from './src/db/index';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import swaggerUI from 'swagger-ui-express';
 import YAML from 'yamljs';
 import injection_container from './src/db/indices/config';
@@ -17,9 +18,15 @@ export const getApp = () => {
   const swaggerDoc = YAML.load('./swagger.yml');
 
   // middleware
-  app.use(cors());
+  const corsConfig = {
+    origin: process.env.FRONTEND_APP_URL,
+    credentials: true,
+  };
+  app.use(cors(corsConfig));
+  app.options('*', cors(corsConfig));
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(cookieParser());
 
   // endpoints
   app.get('/', (_, res: Response) => {

@@ -8,7 +8,10 @@ authRouter.post('/google', async (req: Request, res: Response) => {
   try {
     const { credential } = req.body.response;
     const result = await authController.googleLogin(credential);
-    return Util.sendSuccess(res, 201, 'Successfully logged in', result);
+    const { userId, accessToken } = result;
+    res.cookie('user_id', userId, { httpOnly: true });
+    res.cookie('access_token', accessToken, { httpOnly: true });
+    Util.sendSuccess(res, 201, 'Successfully logged in', result);
   } catch (error: unknown) {
     return Util.sendFailure(res, error);
   }
