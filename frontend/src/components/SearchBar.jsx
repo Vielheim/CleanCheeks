@@ -158,7 +158,7 @@ const SearchBar = ({ filters, setFilters, venues }) => {
             <div>
               <FilterOptions
                 handleFilterChange={handleFilterChange}
-                handleFilterFocus={handleOptionsFocus}
+                handleOptionsFocus={handleOptionsFocus}
                 state={filters}
               />
             </div>
