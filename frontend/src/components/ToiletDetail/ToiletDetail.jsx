@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import Badge from 'react-bootstrap/Badge';
 import Offcanvas from 'react-bootstrap/Offcanvas';
-import StyledUtility from './ToiletDetail/StyledUtility';
+import StyledUtility from '../shared/StyledUtility';
 
 import { FaHeart } from 'react-icons/fa';
 import { TiCancel } from 'react-icons/ti';
-import { ToiletUtilities } from '../enums/ToiletEnums';
+import { Utilities } from '../../enums/ToiletEnums';
 import { GrFormPreviousLink } from 'react-icons/gr';
-import './ClusterDetails.scss';
+import '../ClusterDetails.scss';
 import './ToiletDetail.scss';
-import { getCleanlinessMetadata } from './ToiletDetail/Util';
-import ToiletPreferenceControlller from '../api/ToiletPreferenceController';
+import { getCleanlinessMetadata } from '../shared/Util';
+import ToiletPreferenceControlller from '../../api/ToiletPreferenceController';
+import { PreferenceType } from '../../enums/ToiletPreferenceEnums';
 
 const ToiletDetail = ({ building, toilet, isShow, onBack, onHide }) => {
   const {
@@ -44,11 +45,11 @@ const ToiletDetail = ({ building, toilet, isShow, onBack, onHide }) => {
   };
 
   const onClickFavourite = () => {
-    updateToiletPreference('FAVOURITE');
+    updateToiletPreference(PreferenceType.FAVOURITE);
   };
 
   const onClickBlacklist = () => {
-    updateToiletPreference('BLACKLIST');
+    updateToiletPreference(PreferenceType.BLACKLIST);
   };
 
   return (
@@ -81,7 +82,7 @@ const ToiletDetail = ({ building, toilet, isShow, onBack, onHide }) => {
       <Offcanvas.Body>
         <p className="mb-3 h6 fw-bold">Utilities</p>
         <div className="toilet-utilities box">
-          {Object.keys(ToiletUtilities).map((utility, i) => (
+          {Object.keys(Utilities).map((utility, i) => (
             <StyledUtility
               key={i}
               utility={utility}
