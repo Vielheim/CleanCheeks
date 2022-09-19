@@ -4,13 +4,7 @@
   align-items: center;
 }
 
-.google-auth-container > button {
-  width: 30vh;
-  display: flex;
-  justify-content: space-evenly;
-}
-
-.google-auth-container > p {
+.error-msg {
   color: red;
   text-align: center;
   margin: 1em;

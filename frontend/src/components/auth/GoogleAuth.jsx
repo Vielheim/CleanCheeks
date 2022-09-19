@@ -38,8 +38,12 @@ const GoogleAuth = () => {
   return (
     <GoogleOAuthProvider clientId={clientId}>
       <div className="google-auth-container">
-        <GoogleLogin onSuccess={onSuccess} onFailure={onFailure} />
-        <p>{errorMsg}</p>
+        <GoogleLogin
+          className="google-login-button"
+          onSuccess={onSuccess}
+          onFailure={onFailure}
+        />
+        <p className="error-msg">{errorMsg}</p>
       </div>
     </GoogleOAuthProvider>
   );

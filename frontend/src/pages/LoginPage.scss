@@ -12,14 +12,14 @@
   transform: translate(-50%, -50%);
 }
 
-.login-container > img {
+.login-logo {
   height: auto;
   width: 100%;
   max-width: 250px;
   margin: 1em;
 }
 
-.login-container > h2 {
+.login-title {
   padding-bottom: 1em;
 }
 
@@ -30,7 +30,7 @@
   align-items: center;
 }
 
-.divider > hr {
+.divider-line {
   width: 15vh;
   color: black;
 }

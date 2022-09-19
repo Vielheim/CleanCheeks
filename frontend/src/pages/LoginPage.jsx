@@ -8,13 +8,13 @@ import './LoginPage.scss';
 const LoginPage = () => {
   return (
     <div className="login-container">
-      <img src={logo} alt="logo"></img>
-      <h2>welcome to cleancheeks</h2>
+      <img className="login-logo" src={logo} alt="logo"></img>
+      <h2 className="login-title">welcome to cleancheeks</h2>
       <GoogleAuth />
       <div className="divider">
-        <hr />
+        <hr className="divider-line" />
         or
-        <hr />
+        <hr className="divider-line" />
       </div>
       <Link to="/home" className="continue-text">
         Continue without logging in
