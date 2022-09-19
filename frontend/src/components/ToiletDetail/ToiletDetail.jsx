@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Badge from 'react-bootstrap/Badge';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import StyledUtility from '../shared/StyledUtility';
 
 import { FaHeart } from 'react-icons/fa';
-import { TiCancel } from 'react-icons/ti';
-import { Utilities } from '../../enums/ToiletEnums';
 import { GrFormPreviousLink } from 'react-icons/gr';
-import '../ClusterDetails.scss';
-import './ToiletDetail.scss';
-import { getCleanlinessMetadata } from '../shared/Util';
+import { TiCancel } from 'react-icons/ti';
 import ToiletPreferenceControlller from '../../api/ToiletPreferenceController';
+import { Utilities } from '../../enums/ToiletEnums';
 import { PreferenceType } from '../../enums/ToiletPreferenceEnums';
+import '../ClusterDetails.scss';
+import { getCleanlinessMetadata } from '../shared/Util';
+import './ToiletDetail.scss';
 
 const ToiletDetail = ({ building, toilet, isShow, onBack, onHide }) => {
   const {
@@ -33,24 +33,27 @@ const ToiletDetail = ({ building, toilet, isShow, onBack, onHide }) => {
     setPreference(toilet.user_preference_type);
   }, [toilet]);
 
-  const updateToiletPreference = (type) => {
-    ToiletPreferenceControlller.updateToiletPreference(id, type)
-      .then((result) => {
-        setPreference(result.data.type);
-        toilet.user_preference_type = result.data.type;
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  };
+  const updateToiletPreference = useCallback(
+    (type) => {
+      ToiletPreferenceControlller.updateToiletPreference(id, type)
+        .then((result) => {
+          setPreference(result.data.type);
+          toilet.user_preference_type = result.data.type;
+        })
+        .catch((e) => {
+          console.error(e);
+        });
+    },
+    [id, toilet]
+  );
 
-  const onClickFavourite = () => {
+  const onClickFavourite = useCallback(() => {
     updateToiletPreference(PreferenceType.FAVOURITE);
-  };
+  }, [updateToiletPreference]);
 
-  const onClickBlacklist = () => {
+  const onClickBlacklist = useCallback(() => {
     updateToiletPreference(PreferenceType.BLACKLIST);
-  };
+  }, [updateToiletPreference]);
 
   return (
     <Offcanvas
