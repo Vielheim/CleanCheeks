@@ -1,7 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Button from 'react-bootstrap/Button';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import { TOILET_RATING } from '../../constants';
 import {
@@ -10,41 +7,60 @@ import {
   setLocalStorageValue,
 } from '../../utilities/localStorage';
 import ToiletRatingController from '../../api/ToiletRatingController';
-import { format, parseISO, differenceInMilliseconds } from 'date-fns';
-
-const ToiletRatingCountdown = ({ nextRatingTime }) => {
-  const fmtNextRatingTime = format(
-    parseISO(nextRatingTime),
-    'd MMM yyyy hh:mm a'
-  );
-  return (
-    <p className="h6 text-muted">
-      Thanks for voting! You can vote again after {fmtNextRatingTime}
-    </p>
-  );
-};
-
-const ToiletRatingButtons = ({ rateCleanToilet, rateDirtyToilet }) => {
-  return (
-    <Row>
-      <Col className="text-center">
-        <Button variant="success" onClick={rateCleanToilet}>
-          {'Clean! :D'}
-        </Button>
-      </Col>
-
-      <Col className="text-center">
-        <Button variant="danger" onClick={rateDirtyToilet}>
-          {'Dirty! >:('}
-        </Button>
-      </Col>
-    </Row>
-  );
-};
+import { parseISO, differenceInMilliseconds } from 'date-fns';
+import ToiletRatingButtons from './ToiletRatingButtons';
+import ToiletRatingCountdown from './ToiletRatingCountdown';
+import { useCallback } from 'react';
 
 const ToiletRating = ({ toilet_id }) => {
   const [nextRatingTime, setNextRatingTime] = useState(null);
   const rating_info_key = `rating_info_${toilet_id}`;
+
+  const rateToilet = async (rating) => {
+    const data = {
+      toilet_id: toilet_id,
+      type: rating,
+    };
+
+    await ToiletRatingController.addUserRating(data)
+      .then((res) => {
+        updateRatingInfo(res.data);
+      })
+      .catch((e) => console.log(e)); // TODO: Handle error
+  };
+
+  const rateCleanToilet = async () => {
+    await rateToilet(TOILET_RATING.CLEAN);
+  };
+
+  const rateDirtyToilet = async () => {
+    await rateToilet(TOILET_RATING.DIRTY);
+  };
+
+  // Update rating info based on backend response
+  const updateRatingInfo = (rating) => {
+    const next_rating_time = rating.nextRatingTime;
+    const rating_info = {
+      next_rating_time: next_rating_time,
+    };
+
+    setLocalStorageValue(rating_info_key, rating_info); // Cache next_rating_time
+    updateNextRatingTime(next_rating_time);
+  };
+
+  // Check and update nextRatingTime
+  const updateNextRatingTime = (next_rating_time) => {
+    if (parseISO(next_rating_time) < new Date()) {
+      clearNextRatingTime(); // expired
+    } else {
+      setNextRatingTime(next_rating_time);
+    }
+  };
+
+  const clearNextRatingTime = useCallback(() => {
+    removeLocalStorageValue(rating_info_key);
+    setNextRatingTime(null);
+  }, [rating_info_key]);
 
   // Check if the user is able to rate this toilet
   useEffect(() => {
@@ -89,53 +105,7 @@ const ToiletRating = ({ toilet_id }) => {
         return () => clearTimeout(timer);
       }
     }
-  }, [nextRatingTime]);
-
-  const rateToilet = async (rating) => {
-    const data = {
-      toilet_id: toilet_id,
-      type: rating,
-    };
-
-    await ToiletRatingController.addUserRating(data)
-      .then((res) => {
-        updateRatingInfo(res.data);
-      })
-      .catch((e) => console.log(e)); // TODO: Handle error
-  };
-
-  const rateCleanToilet = async () => {
-    await rateToilet(TOILET_RATING.CLEAN);
-  };
-
-  const rateDirtyToilet = async () => {
-    await rateToilet(TOILET_RATING.DIRTY);
-  };
-
-  // Update rating info based on backend response
-  const updateRatingInfo = (rating) => {
-    const next_rating_time = rating.nextRatingTime;
-    const rating_info = {
-      next_rating_time: next_rating_time,
-    };
-
-    setLocalStorageValue(rating_info_key, rating_info); // Cache next_rating_time
-    updateNextRatingTime(next_rating_time);
-  };
-
-  // Check and update nextRatingTime
-  const updateNextRatingTime = (next_rating_time) => {
-    if (parseISO(next_rating_time) < new Date()) {
-      clearNextRatingTime(); // expired
-    } else {
-      setNextRatingTime(next_rating_time);
-    }
-  };
-
-  const clearNextRatingTime = () => {
-    removeLocalStorageValue(rating_info_key);
-    setNextRatingTime(null);
-  };
+  }, [nextRatingTime, clearNextRatingTime]);
 
   return (
     <Container className="my-2">

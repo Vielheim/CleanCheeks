@@ -4,7 +4,7 @@ const TOILET_RATINGS_URL = '/toilet_ratings';
 
 export default class ToiletRatingController {
   static async getUserLastRatedInfo(toilet_id) {
-    return Api.makeApiRequest({
+    return await Api.makeApiRequest({
       method: 'GET',
       url: `${TOILET_RATINGS_URL}/last-rated`,
       params: {
@@ -14,7 +14,7 @@ export default class ToiletRatingController {
   }
 
   static async addUserRating(data) {
-    return Api.makeApiRequest({
+    return await Api.makeApiRequest({
       method: 'POST',
       url: TOILET_RATINGS_URL,
       data: data,
