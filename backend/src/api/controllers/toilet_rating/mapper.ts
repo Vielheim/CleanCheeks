@@ -24,6 +24,8 @@ export const toIRating = ({
   createdAt,
   updatedAt,
 }: IToiletRatingOutput): IRating => {
+  const nextRatingTime = new Date(); // TODO: Compute next rating time
+
   return {
     id,
     toilet_id,
@@ -31,5 +33,6 @@ export const toIRating = ({
     type,
     createdAt,
     updatedAt,
+    nextRatingTime,
   };
 };

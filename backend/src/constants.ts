@@ -1,0 +1,1 @@
+export const TOILET_RATING_COOLDOWN_MINUTES = 30;
