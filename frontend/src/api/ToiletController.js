@@ -8,7 +8,7 @@ export default class ToiletControlller {
     radius,
     userId = getLocalStorageValue(USER_ID_KEY) ?? 'testuser'
   ) {
-    return Api.makeApiRequest({
+    return await Api.makeApiRequest({
       method: 'GET',
       url: `/toilets/neighbours?latitude=${coordinates[0]}&longitude=${coordinates[1]}&radius=${radius}&userId=${userId}`,
     });

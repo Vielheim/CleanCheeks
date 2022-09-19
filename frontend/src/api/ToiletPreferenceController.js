@@ -8,7 +8,7 @@ export default class ToiletPreferenceControlller {
     type,
     userId = getLocalStorageValue(USER_ID_KEY) ?? 'testuser'
   ) {
-    return Api.makeApiRequest({
+    return await Api.makeApiRequest({
       method: 'PUT',
       url: '/toilet_preferences',
       data: {
