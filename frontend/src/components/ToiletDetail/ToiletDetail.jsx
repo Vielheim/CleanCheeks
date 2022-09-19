@@ -35,8 +35,8 @@ const ToiletDetail = ({ building, toilet, isShow, onBack, onHide }) => {
   }, [toilet]);
 
   const updateToiletPreference = useCallback(
-    (type) => {
-      ToiletPreferenceControlller.updateToiletPreference(id, type)
+    async (type) => {
+      await ToiletPreferenceControlller.updateToiletPreference(id, type)
         .then((result) => {
           setPreference(result.data.type);
           toilet.user_preference_type = result.data.type;
@@ -61,7 +61,7 @@ const ToiletDetail = ({ building, toilet, isShow, onBack, onHide }) => {
       className="offcanvas-container"
       placement="bottom"
       show={isShow}
-      onHide={() => onHide()}
+      onHide={onHide}
     >
       <Offcanvas.Header>
         <GrFormPreviousLink onClick={onBack} size={28} />

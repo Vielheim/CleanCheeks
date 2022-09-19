@@ -125,3 +125,16 @@ export const getAllNeighbouringToiletsByCoordinates = async (
 
   return results;
 };
+
+export const getToiletsOrderByCleanlinessDesc = async (): Promise<{
+  toilets: IToiletOutput[];
+  count: number;
+}> => {
+  const { rows, count } = await Toilet.findAndCountAll({
+    order: [['cleanliness', 'DESC']],
+  });
+  return {
+    toilets: rows,
+    count,
+  };
+};
