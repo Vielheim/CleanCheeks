@@ -49,20 +49,39 @@ export const getRank = async (
 }> => {
   const { toilets, count } =
     await toiletDataAccess.getToiletsOrderByCleanlinessDesc();
+    let cleanliness = Number.MIN_SAFE_INTEGER;
+    let toilet;
 
-  for (let i = 0; i < count; i++) {
-    const toilet = toilets[i];
-    if (toilet.id === id) {
-      const rank = i + 1;
-      const percentageBeat = ((count - rank) / count) * 100;
-      return {
-        toilet: toilet,
-        rank: rank,
-        percentageBeat: Number(percentageBeat.toFixed(1)),
-        count: count,
-      };
+    for (let i = 0; i < count; i++) {
+      const curr = toilets[i];
+
+      // Find toilet
+      if (curr.id === id) {
+        toilet = curr;
+        cleanliness = curr.cleanliness;
+        continue;
+      }
+
+      // Find next toilet with lower cleanliness
+      if (curr.cleanliness < cleanliness) {
+        const percentageBeat = ((count - i) / count) * 100;
+        return {
+          toilet: curr,
+          rank: i,
+          percentageBeat: Number(percentageBeat.toFixed(1)),
+          count,
+        };
+      }
     }
-  }
 
-  throw new DataNotFoundError(`Toilet with ${id} not found`);
+    if (toilet == null) {
+      throw new DataNotFoundError(`Toilet with ${id} not found`);
+    }
+
+    return {
+      toilet,
+      rank: count,
+      percentageBeat: 0,
+      count: count,
+    };
 };
