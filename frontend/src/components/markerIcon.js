@@ -10,7 +10,7 @@ const getSvgCircle = (numSections, numGreen, isTransparent) => {
   const greenLength = numGreen * sectionLength;
   const redLength = DIAMETER - greenLength;
   const opacity = isTransparent ? 0.7 : 1;
-  
+
   const svgCircle = `
     <svg viewbox="0 0 10 10" fill="transparent" opacity="${opacity}">
       <defs>
@@ -26,10 +26,11 @@ const getSvgCircle = (numSections, numGreen, isTransparent) => {
   return svgCircle;
 };
 
-const getMarkerIcon = (numSections, numGreen, isTransparent = false) => L.divIcon({
-  html: getSvgCircle(numSections, numGreen, isTransparent),
-  iconSize: [40, 40],
-  className: "leaflet-div-icon",
-});
+const getMarkerIcon = (numSections, numGreen, isTransparent = false) =>
+  L.divIcon({
+    html: getSvgCircle(numSections, numGreen, isTransparent),
+    iconSize: [40, 40],
+    className: 'leaflet-div-icon',
+  });
 
 export default getMarkerIcon;
