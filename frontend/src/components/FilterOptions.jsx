@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
+import Card from 'react-bootstrap/Card';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -9,36 +9,28 @@ import Form from 'react-bootstrap/Form';
 import { BiMale, BiFemale, BiHandicap } from 'react-icons/bi';
 
 import { TOILET_TYPE } from '../constants';
-import './FilterModal.scss';
+import './FilterOptions.scss';
 
-const FilterModal = ({ show, state, handleModalClose, handleModalSubmit }) => {
-  const [modalState, setModalState] = useState(state);
+const FilterOptions = ({ state, handleFilterChange, handleOptionsFocus }) => {
   const onFieldsChange = ({ currentTarget }) => {
     const { name, value } = currentTarget;
     if (name === 'haveShowers') {
-      setModalState({
-        ...modalState,
-        haveShowers: !modalState.haveShowers,
+      handleFilterChange({
+        ...state,
+        haveShowers: !state.haveShowers,
       });
     } else {
-      setModalState({
-        ...modalState,
+      handleFilterChange({
+        ...state,
         gender: value,
       });
     }
   };
 
-  const onSubmit = () => {
-    handleModalSubmit(modalState);
-    handleModalClose();
-  };
-
   return (
-    <Modal show={show}>
-      <Modal.Header>
-        <Modal.Title>Apply Filters</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
+    <Card onFocus={handleOptionsFocus}>
+      <Card.Body>
+        <Card.Title>Filters</Card.Title>
         <Container>
           <Row className="mb-2">
             <h6>I am looking for:</h6>
@@ -83,21 +75,13 @@ const FilterModal = ({ show, state, handleModalClose, handleModalSubmit }) => {
               label="Showers"
               name="haveShowers"
               onChange={onFieldsChange}
-              checked={modalState.haveShowers}
+              checked={state.haveShowers}
             />
           </Row>
         </Container>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={handleModalClose}>
-          Close
-        </Button>
-        <Button variant="primary" onClick={onSubmit}>
-          Save Changes
-        </Button>
-      </Modal.Footer>
-    </Modal>
+      </Card.Body>
+    </Card>
   );
 };
 
-export default FilterModal;
+export default FilterOptions;
