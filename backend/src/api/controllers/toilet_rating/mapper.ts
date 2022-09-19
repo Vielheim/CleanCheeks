@@ -5,6 +5,8 @@ import {
 import { RatingType } from '../../../enums/ToiletRatingEnums';
 import { CreateRatingDTO } from '../../data_transfer/toilet_rating/rating.dto';
 import { IRating } from '../../interfaces/rating.interface';
+import { addMinutes } from 'date-fns';
+import { TOILET_RATING_COOLDOWN_MINUTES } from '../../../constants';
 
 // Map CreateRatingDTO to IToiletRatingInput
 export const toIToiletRatingInput = (
@@ -24,7 +26,7 @@ export const toIRating = ({
   createdAt,
   updatedAt,
 }: IToiletRatingOutput): IRating => {
-  const nextRatingTime = new Date(); // TODO: Compute next rating time
+  const nextRatingTime = addMinutes(createdAt, TOILET_RATING_COOLDOWN_MINUTES);
 
   return {
     id,

@@ -10,10 +10,17 @@ import {
   setLocalStorageValue,
 } from '../../utilities/localStorage';
 import ToiletRatingController from '../../api/ToiletRatingController';
+import { format, parseISO } from 'date-fns';
 
 const ToiletRatingCountdown = ({ nextRatingTime }) => {
+  const fmtNextRatingTime = format(
+    parseISO(nextRatingTime),
+    'd MMM yyyy hh:mm a'
+  );
   return (
-    <p className="h6 text-muted">You can vote again after {nextRatingTime}</p>
+    <p className="h6 text-muted">
+      Thanks for voting! You can vote again after {fmtNextRatingTime}
+    </p>
   );
 };
 
@@ -35,7 +42,6 @@ const ToiletRatingButtons = ({ rateCleanToilet, rateDirtyToilet }) => {
   );
 };
 
-// TODO: Update styling to be consistent with Toilet Details page
 const ToiletRating = ({ toilet_id }) => {
   const [nextRatingTime, setNextRatingTime] = useState(null);
   const rating_info_key = `rating_info_${toilet_id}`;
@@ -102,7 +108,7 @@ const ToiletRating = ({ toilet_id }) => {
 
   // Check and update nextRatingTime
   const updateNextRatingTime = (next_rating_time) => {
-    if (next_rating_time < new Date()) {
+    if (parseISO(next_rating_time) < new Date()) {
       removeLocalStorageValue(rating_info_key);
       setNextRatingTime(null);
     } else {
