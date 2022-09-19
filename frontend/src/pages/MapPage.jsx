@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   MapContainer,
   Marker,
@@ -20,6 +20,7 @@ import focused_face from '../assets/focused_face.png';
 import VENUES from '../assets/venues.json';
 
 import './MapPage.scss';
+import ToiletControlller from '../api/ToiletController';
 
 const CIRCLE_FILL_OPTIONS = {
   fillOpacity: 1,
@@ -102,6 +103,18 @@ const MapPage = () => {
     return null;
   };
 
+  const fetchCloseToilets = useCallback((coordinates, radius) => {
+    ToiletControlller.fetchCloseToilets(coordinates, radius)
+      .then((result) => {
+        setToilets(result.data);
+        setFilteredClusters(clusteriseToilets(result.data));
+      })
+      .catch((e) => {
+        console.error(e);
+        setToastType('ERROR');
+      });
+  }, []);
+
   const mapMarkerHandlers = {
     click: (e) => {
       const clusterIndex = e.target.options.data;
@@ -167,18 +180,9 @@ const MapPage = () => {
       // minimum distance apart in metres
       const minDistance = (Math.min(width, height) * 110000) / 2;
       radius = minDistance * 0.7;
+      fetchCloseToilets(center.map, radius);
     }
-
-    Api.makeApiRequest({
-      method: 'GET',
-      url: `/toilets/neighbours?latitude=${center.map[0]}&longitude=${center.map[1]}&radius=${radius}`,
-    })
-      .then((result) => {
-        setToilets(result.data);
-        setFilteredClusters(clusteriseToilets(result.data));
-      })
-      .catch((e) => setToastType('ERROR'));
-  }, [center.map]);
+  }, [center.map, fetchCloseToilets, map]);
 
   useEffect(() => {
     const newCenter = getLocation(VENUES[filters.search]);

@@ -6,16 +6,16 @@ import Container from 'react-bootstrap/Container';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import Row from 'react-bootstrap/Row';
 import { getDistance } from '../utilities';
-import StyledUtility from './ToiletDetail/StyledUtility';
-import ToiletDetail from './ToiletDetail';
+import StyledUtility from './shared/StyledUtility';
+import ToiletDetail from './ToiletDetail/ToiletDetail';
 
-import { ToiletUtilities } from '../enums/ToiletEnums';
+import { Utilities } from '../enums/ToiletEnums';
 import './ClusterDetails.scss';
-import { getCleanlinessMetadata } from './ToiletDetail/Util';
+import { getCleanlinessMetadata } from './shared/Util';
 
 const UTILITIES = [
-  [ToiletUtilities.SHOWERS, ToiletUtilities.BIDETS],
-  [ToiletUtilities.WATERCOOLER, ToiletUtilities.FRAGRANCE],
+  [Utilities.SHOWERS, Utilities.BIDETS],
+  [Utilities.WATERCOOLER, Utilities.FRAGRANCE],
 ];
 
 const fmtDistance = (distance) =>
@@ -31,20 +31,20 @@ const ClusterDetails = ({ currLocation, cluster, isShow, setIsShow }) => {
     currLocation[1]
   );
 
-  const [selectedToiletIndex, setSelectedToiletIndex] = useState(null);
+  const [selectedToilet, setSelectedToilet] = useState(null);
 
   const onHide = () => {
-    setSelectedToiletIndex(null);
+    setSelectedToilet(null);
     setIsShow(false);
   };
 
-  if (selectedToiletIndex != null) {
+  if (selectedToilet != null) {
     return (
       <ToiletDetail
         building={building}
-        toilet={toilets[selectedToiletIndex]}
+        toilet={selectedToilet}
         isShow={isShow}
-        onBack={() => setSelectedToiletIndex(null)}
+        onBack={() => setSelectedToilet(null)}
         onHide={onHide}
       />
     );
@@ -84,7 +84,7 @@ const ClusterDetails = ({ currLocation, cluster, isShow, setIsShow }) => {
               <Card
                 key={i}
                 className="mb-3 offcanvas-inner-container"
-                onClick={() => setSelectedToiletIndex(i)}
+                onClick={() => setSelectedToilet(toilet)}
               >
                 <Card.Body>
                   <Card.Title>{`${building}, Level ${fmtedFloor}`}</Card.Title>

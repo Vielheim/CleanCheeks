@@ -1,8 +1,4 @@
-export const TOILET_TYPE = {
-  MALE: 'MALE',
-  FEMALE: 'FEMALE',
-  HANDICAPPED: 'HANDICAPPED',
-};
+import { ToiletType } from './enums/ToiletEnums';
 
 export const OFFLINE_TOILETS = [
   {
@@ -57,7 +53,7 @@ export const OFFLINE_TOILETS = [
 
 export const INITIAL_FILTER_STATE = {
   search: 'UT-AUD1',
-  gender: TOILET_TYPE.MALE,
+  gender: ToiletType.MALE,
   haveShowers: false,
 };
 

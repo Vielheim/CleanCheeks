@@ -8,7 +8,7 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import { BiMale, BiFemale, BiHandicap } from 'react-icons/bi';
 
-import { TOILET_TYPE } from '../constants';
+import { ToiletType } from '../enums/ToiletEnums';
 import './FilterOptions.scss';
 
 const FilterOptions = ({ state, handleFilterChange, handleOptionsFocus }) => {
@@ -40,7 +40,7 @@ const FilterOptions = ({ state, handleFilterChange, handleOptionsFocus }) => {
             <Col className="col-4 d-flex justify-content-center">
               <Button
                 variant="light"
-                value={TOILET_TYPE.MALE}
+                value={ToiletType.MALE}
                 onClick={onFieldsChange}
               >
                 <BiMale size={32} />
@@ -49,7 +49,7 @@ const FilterOptions = ({ state, handleFilterChange, handleOptionsFocus }) => {
             <Col className="col-4 d-flex justify-content-center">
               <Button
                 variant="light"
-                value={TOILET_TYPE.FEMALE}
+                value={ToiletType.FEMALE}
                 onClick={onFieldsChange}
               >
                 <BiFemale size={32} />
@@ -58,7 +58,7 @@ const FilterOptions = ({ state, handleFilterChange, handleOptionsFocus }) => {
             <Col className="col-4 d-flex justify-content-center">
               <Button
                 variant="light"
-                value={TOILET_TYPE.HANDICAPPED}
+                value={ToiletType.HANDICAP}
                 onClick={onFieldsChange}
               >
                 <BiHandicap size={32} />
