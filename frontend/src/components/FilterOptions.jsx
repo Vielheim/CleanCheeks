@@ -1,6 +1,7 @@
 import React from 'react';
 
-import Button from 'react-bootstrap/Button';
+import ToggleButton from 'react-bootstrap/ToggleButton';
+import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup';
 import Card from 'react-bootstrap/Card';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -13,18 +14,28 @@ import './FilterOptions.scss';
 
 const FilterOptions = ({ state, handleFilterChange, handleOptionsFocus }) => {
   const onFieldsChange = ({ currentTarget }) => {
-    const { name, value } = currentTarget;
+    const { name } = currentTarget;
     if (name === 'haveShowers') {
       handleFilterChange({
         ...state,
         haveShowers: !state.haveShowers,
       });
-    } else {
-      handleFilterChange({
-        ...state,
-        gender: value,
-      });
     }
+  };
+
+  const onToiletTypesChange = ({ target }) => {
+    const { value } = target;
+    const updatedTypes = state.types.includes(value)
+      ? state.types.filter((type) => type !== value)
+      : [...state.types, value];
+    handleFilterChange({
+      ...state,
+      types: updatedTypes,
+    });
+  };
+
+  const captureOnClick = (event) => {
+    event.stopPropagation();
   };
 
   return (
@@ -37,33 +48,38 @@ const FilterOptions = ({ state, handleFilterChange, handleOptionsFocus }) => {
           </Row>
 
           <Row className="mb-3">
-            <Col className="col-4 d-flex justify-content-center">
-              <Button
-                variant="light"
+            <ToggleButtonGroup
+              type="checkbox"
+              defaultValue={state.types}
+              onClick={onToiletTypesChange}
+            >
+              <ToggleButton
+                id="tb-male"
                 value={ToiletType.MALE}
-                onClick={onFieldsChange}
+                onClickCapture={captureOnClick}
+                variant="outline-primary"
               >
                 <BiMale size={32} />
-              </Button>
-            </Col>
-            <Col className="col-4 d-flex justify-content-center">
-              <Button
-                variant="light"
+              </ToggleButton>
+
+              <ToggleButton
+                id="tb-female"
                 value={ToiletType.FEMALE}
-                onClick={onFieldsChange}
+                onClickCapture={captureOnClick}
+                variant="outline-primary"
               >
                 <BiFemale size={32} />
-              </Button>
-            </Col>
-            <Col className="col-4 d-flex justify-content-center">
-              <Button
-                variant="light"
+              </ToggleButton>
+
+              <ToggleButton
+                id="tb-handicap"
                 value={ToiletType.HANDICAP}
-                onClick={onFieldsChange}
+                onClickCapture={captureOnClick}
+                variant="outline-primary"
               >
                 <BiHandicap size={32} />
-              </Button>
-            </Col>
+              </ToggleButton>
+            </ToggleButtonGroup>
           </Row>
 
           <Row className="mb-2">

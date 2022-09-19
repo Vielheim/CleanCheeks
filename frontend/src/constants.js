@@ -53,7 +53,7 @@ export const OFFLINE_TOILETS = [
 
 export const INITIAL_FILTER_STATE = {
   search: 'UT-AUD1',
-  gender: ToiletType.MALE,
+  types: [ToiletType.MALE],
   haveShowers: false,
 };
 
