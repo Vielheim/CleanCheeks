@@ -10,7 +10,7 @@ import {
   setLocalStorageValue,
 } from '../../utilities/localStorage';
 import ToiletRatingController from '../../api/ToiletRatingController';
-import { format, parseISO } from 'date-fns';
+import { format, parseISO, differenceInMilliseconds } from 'date-fns';
 
 const ToiletRatingCountdown = ({ nextRatingTime }) => {
   const fmtNextRatingTime = format(
@@ -74,6 +74,23 @@ const ToiletRating = ({ toilet_id }) => {
     checkUserLastRated();
   });
 
+  // Update rating component when nextRatingTime expires
+  useEffect(() => {
+    if (nextRatingTime) {
+      const parsedDateTime = parseISO(nextRatingTime);
+      const currentDateTime = new Date();
+
+      if (parsedDateTime >= currentDateTime) {
+        const diff = differenceInMilliseconds(parsedDateTime, currentDateTime);
+        const timer = setTimeout(() => {
+          clearNextRatingTime();
+        }, diff);
+
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [nextRatingTime]);
+
   const rateToilet = async (rating) => {
     const data = {
       toilet_id: toilet_id,
@@ -109,11 +126,15 @@ const ToiletRating = ({ toilet_id }) => {
   // Check and update nextRatingTime
   const updateNextRatingTime = (next_rating_time) => {
     if (parseISO(next_rating_time) < new Date()) {
-      removeLocalStorageValue(rating_info_key);
-      setNextRatingTime(null);
+      clearNextRatingTime(); // expired
     } else {
       setNextRatingTime(next_rating_time);
     }
+  };
+
+  const clearNextRatingTime = () => {
+    removeLocalStorageValue(rating_info_key);
+    setNextRatingTime(null);
   };
 
   return (
