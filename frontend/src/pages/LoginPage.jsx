@@ -7,7 +7,7 @@ import './LoginPage.scss';
 
 const LoginPage = () => {
   return (
-    <div className="loginContainer">
+    <div className="login-container">
       <img src={logo} alt="logo"></img>
       <h2>welcome to cleancheeks</h2>
       <GoogleAuth />
@@ -16,7 +16,7 @@ const LoginPage = () => {
         or
         <hr />
       </div>
-      <Link to="/home" className="continueText">
+      <Link to="/home" className="continue-text">
         Continue without logging in
         <MdArrowRight />
       </Link>

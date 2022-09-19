@@ -37,7 +37,7 @@ const GoogleAuth = () => {
 
   return (
     <GoogleOAuthProvider clientId={clientId}>
-      <div className="googleAuthContainer">
+      <div className="google-auth-container">
         <GoogleLogin onSuccess={onSuccess} onFailure={onFailure} />
         <p>{errorMsg}</p>
       </div>
