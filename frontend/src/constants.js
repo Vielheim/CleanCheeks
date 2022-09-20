@@ -1,4 +1,7 @@
 import { ToiletType, Utilities } from './enums/ToiletEnums';
+import clean_toilet from './assets/toilet-icons/clean_toilet.jpeg';
+import normal_toilet from './assets/toilet-icons/normal_toilet.jpeg';
+import dirty_toilet from './assets/toilet-icons/dirty_toilet.jpeg';
 
 export const TOILET_RATING = {
   CLEAN: 'CLEAN',
@@ -75,7 +78,7 @@ export const TOILET_QUOTES = {
   ],
   BAD: [
     'The floor was so wet, I thought I was in a wet market',
-    "There were no pests here because even pests don't want to enter this toilet",
+    "Even pests don't want to enter this toilet",
     "Only if you're feeling adventurous",
     'Tell my mom I love her...',
     'This toilet is A for Abysmal',
@@ -93,19 +96,19 @@ export const TOILET_CLEANLINESS_METADATA = {
   GOOD: {
     text: 'GOOD',
     type: 'success',
-    icon: '',
+    icon: clean_toilet,
     quote: TOILET_QUOTES.GOOD[0],
   },
   BAD: {
     text: 'BAD',
     type: 'danger',
-    icon: '',
+    icon: dirty_toilet,
     quote: TOILET_QUOTES.BAD[0],
   },
   AVERAGE: {
     text: 'AVERAGE',
     type: 'warning',
-    icon: '',
+    icon: normal_toilet,
     quote: TOILET_QUOTES.AVERAGE[0],
   },
 };

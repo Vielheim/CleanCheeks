@@ -17,3 +17,17 @@
   margin-bottom: 28px;
   padding: 12px;
 }
+
+.toilet-summary {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
+}
+
+.toilet-summary-item {
+  padding: 2px;
+  margin: 0;
+  text-align: center;
+  font-style: italic;
+}
