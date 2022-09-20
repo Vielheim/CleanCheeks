@@ -12,13 +12,13 @@ import ToiletRatingButtons from './ToiletRatingButtons';
 import ToiletRatingCountdown from './ToiletRatingCountdown';
 import { useCallback } from 'react';
 
-const ToiletRating = ({ toilet_id }) => {
+const ToiletRating = ({ toiletId, onRate }) => {
   const [nextRatingTime, setNextRatingTime] = useState(null);
-  const rating_info_key = `rating_info_${toilet_id}`;
+  const rating_info_key = `rating_info_${toiletId}`;
 
   const rateToilet = async (rating) => {
     const data = {
-      toilet_id: toilet_id,
+      toilet_id: toiletId,
       type: rating,
     };
 
@@ -69,7 +69,7 @@ const ToiletRating = ({ toilet_id }) => {
 
       // No info stored in cache, check with backend
       if (!rating_info) {
-        return await ToiletRatingController.getUserLastRatedInfo(toilet_id)
+        return await ToiletRatingController.getUserLastRatedInfo(toiletId)
           .then((res) => {
             updateRatingInfo(res.data);
           })

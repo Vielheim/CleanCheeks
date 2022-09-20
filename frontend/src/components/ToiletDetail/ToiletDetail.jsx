@@ -53,7 +53,7 @@ const ToiletDetail = ({ building, toilet, isShow, onBack, onHide }) => {
     updateToiletPreference(PreferenceType.BLACKLIST);
   }, [updateToiletPreference]);
 
-  const getToiletRank = useCallback(async () => {
+  const updateToiletRank = useCallback(async () => {
     await ToiletControlller.getToiletRank(id)
       .then((result) => {
         setPercentageBeat(result.data.percentageBeat);
@@ -68,8 +68,8 @@ const ToiletDetail = ({ building, toilet, isShow, onBack, onHide }) => {
   }, [toilet]);
 
   useEffect(() => {
-    getToiletRank();
-  }, [getToiletRank]);
+    updateToiletRank();
+  }, [updateToiletRank]);
 
   return (
     <Offcanvas
@@ -119,7 +119,7 @@ const ToiletDetail = ({ building, toilet, isShow, onBack, onHide }) => {
         </div>
         <p className="mb-3 h6 fw-bold">Your Rating</p>
         <div className="box">
-          <ToiletRating toilet_id={id} />
+          <ToiletRating toiletId={id} onRate={updateToiletRank} />
         </div>
       </Offcanvas.Body>
     </Offcanvas>
