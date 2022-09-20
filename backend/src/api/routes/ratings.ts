@@ -2,8 +2,10 @@ import { Request, Response, Router } from 'express';
 import * as ratingController from '../controllers/toilet_rating';
 import { CreateRatingDTO } from '../data_transfer/toilet_rating/rating.dto';
 import Util from '../util/Util';
+import authMiddleware from '../middlewares/auth';
 
 const ratingsRouter = Router();
+ratingsRouter.use(authMiddleware);
 
 ratingsRouter.post('/', async (req: Request, res: Response) => {
   try {

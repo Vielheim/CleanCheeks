@@ -18,7 +18,6 @@ const GoogleAuth = () => {
           method: 'POST',
           url: '/auth/google',
           data: { response },
-          withCredentials: true,
         }).then((result) => {
           const { userId, accessToken } = result.data;
           setLocalStorageValue(ACCESS_TOKEN_KEY, accessToken);
