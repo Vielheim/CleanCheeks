@@ -14,7 +14,7 @@ import throttle from 'lodash/throttle';
 
 import './SearchBar.scss';
 
-const SearchBar = ({ filters, setFilters, venues }) => {
+const SearchBar = ({ state, dispatch, venues }) => {
   let searchTimeoutId = 0;
   let filterTimeoutId = 0;
   const map = useMap();
@@ -60,10 +60,7 @@ const SearchBar = ({ filters, setFilters, venues }) => {
   };
 
   const onListItemClick = ({ target: { value } }) => {
-    setFilters((filters) => ({
-      ...filters,
-      search: value,
-    }));
+    dispatch({ type: 'updateFilters', payload: { search: value } });
     setTempSearch(value);
     setIsShowList(false);
   };
@@ -77,14 +74,6 @@ const SearchBar = ({ filters, setFilters, venues }) => {
 
   const onFilterBlur = () => {
     filterTimeoutId = setTimeout(() => setIsShowFilters(false), 300);
-  };
-
-  const handleFilterChange = ({ types, utilities }) => {
-    setFilters((filters) => ({
-      ...filters,
-      types,
-      utilities,
-    }));
   };
 
   const filterVenues = (venues) =>
@@ -157,9 +146,10 @@ const SearchBar = ({ filters, setFilters, venues }) => {
           <Collapse in={isShowFilters}>
             <div>
               <FilterOptions
-                handleFilterChange={handleFilterChange}
+                setIsShowFilters={setIsShowFilters}
                 handleOptionsFocus={handleOptionsFocus}
-                state={filters}
+                state={state}
+                dispatch={dispatch}
               />
             </div>
           </Collapse>

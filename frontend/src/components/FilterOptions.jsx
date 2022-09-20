@@ -12,32 +12,36 @@ import { BiMale, BiFemale, BiHandicap } from 'react-icons/bi';
 import { ToiletType, Utilities } from '../enums/ToiletEnums';
 import './FilterOptions.scss';
 
-const FilterOptions = ({ state, handleFilterChange, handleOptionsFocus }) => {
+const FilterOptions = ({
+  state,
+  dispatch,
+  handleOptionsFocus,
+  setIsShowFilters,
+}) => {
   const onUtilitiesChange = ({ target }) => {
     const { value } = target;
-    const updatedUtilities = state.utilities.includes(value)
-      ? state.utilities.filter((utility) => utility !== value)
-      : [...state.utilities, value];
-    handleFilterChange({
-      ...state,
-      utilities: updatedUtilities,
+    const updatedUtilities = filters.utilities.includes(value)
+      ? filters.utilities.filter((utility) => utility !== value)
+      : [...filters.utilities, value];
+    dispatch({
+      type: 'updateFilters',
+      payload: { utilities: updatedUtilities },
     });
   };
 
   const onTypesChange = ({ target }) => {
     const { value } = target;
-    const updatedTypes = state.types.includes(value)
-      ? state.types.filter((type) => type !== value)
-      : [...state.types, value];
-    handleFilterChange({
-      ...state,
-      types: updatedTypes,
-    });
+    const updatedTypes = filters.types.includes(value)
+      ? filters.types.filter((type) => type !== value)
+      : [...filters.types, value];
+    dispatch({ type: 'updateFilters', payload: { types: updatedTypes } });
   };
 
   const captureOnClick = (event) => {
     event.stopPropagation();
   };
+
+  const { filters } = state;
 
   return (
     <Card onClick={handleOptionsFocus}>
@@ -51,7 +55,7 @@ const FilterOptions = ({ state, handleFilterChange, handleOptionsFocus }) => {
           <Row className="mb-3">
             <ToggleButtonGroup
               type="checkbox"
-              defaultValue={state.types}
+              defaultValue={filters.types}
               onClick={onTypesChange}
             >
               <ToggleButton
@@ -87,13 +91,15 @@ const FilterOptions = ({ state, handleFilterChange, handleOptionsFocus }) => {
             <h6>Utilities</h6>
           </Row>
 
-          <Form defaultValue={state.utilities} onClick={onUtilitiesChange}>
+          <Form onClick={onUtilitiesChange}>
             <Row>
               <Col>
                 <Form.Check
                   className="checkbox"
                   inline
                   label="Fragrance"
+                  checked={filters.utilities.includes(Utilities.FRAGRANCE)}
+                  onChange={() => {}}
                   value={Utilities.FRAGRANCE}
                 ></Form.Check>
               </Col>
@@ -102,19 +108,23 @@ const FilterOptions = ({ state, handleFilterChange, handleOptionsFocus }) => {
                   className="checkbox"
                   inline
                   label="Watercooler"
+                  checked={filters.utilities.includes(Utilities.WATERCOOLER)}
+                  onChange={() => {}}
                   value={Utilities.WATERCOOLER}
                 ></Form.Check>
               </Col>
             </Row>
           </Form>
 
-          <Form defaultValue={state.utilities} onClick={onUtilitiesChange}>
+          <Form defaultValue={filters.utilities} onClick={onUtilitiesChange}>
             <Row>
               <Col>
                 <Form.Check
                   className="checkbox"
                   inline
                   label="Bidets"
+                  checked={filters.utilities.includes(Utilities.BIDETS)}
+                  onChange={() => {}}
                   value={Utilities.BIDETS}
                 ></Form.Check>
               </Col>
@@ -123,6 +133,8 @@ const FilterOptions = ({ state, handleFilterChange, handleOptionsFocus }) => {
                   className="checkbox"
                   inline
                   label="Showers"
+                  checked={filters.utilities.includes(Utilities.SHOWERS)}
+                  onChange={() => {}}
                   value={Utilities.SHOWERS}
                 ></Form.Check>
               </Col>
