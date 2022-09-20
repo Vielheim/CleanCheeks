@@ -1,17 +1,19 @@
 import Api from './api';
 
+const TOILETS_URL = '/toilets';
+
 export default class ToiletControlller {
   static async fetchCloseToilets(coordinates, radius) {
     return Api.makeApiRequest({
       method: 'GET',
-      url: `/toilets/neighbours?latitude=${coordinates[0]}&longitude=${coordinates[1]}&radius=${radius}`,
+      url: `${TOILETS_URL}/neighbours?latitude=${coordinates[0]}&longitude=${coordinates[1]}&radius=${radius}`,
     });
   }
 
   static async getToiletRank(id) {
     return Api.makeApiRequest({
       method: 'GET',
-      url: `/toilets/ranking?id=${id}`,
+      url: `${TOILETS_URL}/ranking?id=${id}`,
     });
   }
 }
