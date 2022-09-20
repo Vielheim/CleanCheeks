@@ -56,7 +56,7 @@ const filterToilets = (toilets, filters) => {
   const { types: typeFilters, utilities: utilitiesFilters } = filters;
   return toilets.filter(
     ({ type, utilities }) =>
-      typeFilters.includes(type) ||
+      typeFilters.includes(type) &&
       utilities.some((utility) => utilitiesFilters.includes(utility))
   );
 };

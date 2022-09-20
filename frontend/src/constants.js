@@ -58,8 +58,8 @@ export const OFFLINE_TOILETS = [
 
 export const INITIAL_FILTER_STATE = {
   search: 'UT-AUD1',
-  types: [ToiletType.MALE],
-  utilities: [Utilities.SHOWERS],
+  types: Object.keys(ToiletType),
+  utilities: Object.keys(Utilities),
 };
 
 export const ACCESS_TOKEN_KEY = 'accessToken';
