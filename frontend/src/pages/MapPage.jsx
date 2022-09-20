@@ -13,7 +13,6 @@ import ToastContainer from 'react-bootstrap/ToastContainer';
 import SearchBar from '../components/SearchBar';
 import ClusterDetails from '../components/ClusterDetails';
 import getMarkerIcon from '../components/markerIcon';
-import Api from '../api/api';
 import { INITIAL_FILTER_STATE, OFFLINE_TOILETS } from '../constants';
 import { getDistance } from '../utilities';
 import focused_face from '../assets/focused_face.png';
@@ -21,6 +20,7 @@ import VENUES from '../assets/venues.json';
 
 import './MapPage.scss';
 import ToiletControlller from '../api/ToiletController';
+import { getToiletsBreakdown } from '../components/shared/Util';
 
 const CIRCLE_FILL_OPTIONS = {
   fillOpacity: 1,
@@ -33,12 +33,6 @@ const getLocation = ({ location }) => {
   const { x: longitude, y: latitude } = location;
   return [latitude, longitude];
 };
-
-const getNumCleanToilets = (toilets) =>
-  toilets.reduce(
-    (prev, { cleanliness }) => (cleanliness >= 0 ? 1 + prev : prev),
-    0
-  );
 
 const clusteriseToilets = (toilets) => {
   const coordsToClusters = {};
@@ -58,6 +52,15 @@ const clusteriseToilets = (toilets) => {
   }
 
   return Object.values(coordsToClusters);
+};
+
+const filterToilets = (toilets, filters) => {
+  const { types: typeFilters, utilities: utilitiesFilters } = filters;
+  return toilets.filter(
+    ({ type, utilities }) =>
+      typeFilters.includes(type) ||
+      utilities.some((utility) => utilitiesFilters.includes(utility))
+  );
 };
 
 const TOAST_CONTENTS = {
@@ -107,7 +110,9 @@ const MapPage = () => {
     ToiletControlller.fetchCloseToilets(coordinates, radius)
       .then((result) => {
         setToilets(result.data);
-        setFilteredClusters(clusteriseToilets(result.data));
+        setFilteredClusters(
+          clusteriseToilets(filterToilets(result.data, filters))
+        );
       })
       .catch((e) => {
         console.error(e);
@@ -193,6 +198,10 @@ const MapPage = () => {
   }, [filters.search]);
 
   useEffect(() => {
+    setFilteredClusters(clusteriseToilets(filterToilets(toilets, filters)));
+  }, [filters.types, filters.utilities]);
+
+  useEffect(() => {
     if (map) {
       map.flyTo(center.current, 18);
     }
@@ -233,6 +242,7 @@ const MapPage = () => {
               center.current[0],
               center.current[1]
             ) <= 200;
+          const breakdown = getToiletsBreakdown(toilets);
           return (
             <React.Fragment key={i}>
               {isNear && (
@@ -243,11 +253,7 @@ const MapPage = () => {
               )}
               <Marker
                 position={[latitude, longitude]}
-                icon={getMarkerIcon(
-                  toilets.length,
-                  getNumCleanToilets(toilets),
-                  !isNear
-                )}
+                icon={getMarkerIcon(toilets.length, breakdown.GOOD, !isNear)}
                 data={i}
                 eventHandlers={mapMarkerHandlers}
               />
@@ -277,6 +283,7 @@ const MapPage = () => {
               <Toast.Header className="toast-header">
                 <div className="toast-header-content">
                   <img
+                    alt="Focused Face"
                     src={TOAST_CONTENTS[toastType].img}
                     height={25}
                     width={25}

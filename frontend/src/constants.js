@@ -1,4 +1,4 @@
-import { ToiletType } from './enums/ToiletEnums';
+import { ToiletType, Utilities } from './enums/ToiletEnums';
 
 export const OFFLINE_TOILETS = [
   {
@@ -54,7 +54,7 @@ export const OFFLINE_TOILETS = [
 export const INITIAL_FILTER_STATE = {
   search: 'UT-AUD1',
   types: [ToiletType.MALE],
-  haveShowers: false,
+  utilities: [Utilities.SHOWERS],
 };
 
 export const ACCESS_TOKEN_KEY = 'accessToken';

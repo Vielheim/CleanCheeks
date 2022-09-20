@@ -9,21 +9,22 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import { BiMale, BiFemale, BiHandicap } from 'react-icons/bi';
 
-import { ToiletType } from '../enums/ToiletEnums';
+import { ToiletType, Utilities } from '../enums/ToiletEnums';
 import './FilterOptions.scss';
 
 const FilterOptions = ({ state, handleFilterChange, handleOptionsFocus }) => {
-  const onFieldsChange = ({ currentTarget }) => {
-    const { name } = currentTarget;
-    if (name === 'haveShowers') {
-      handleFilterChange({
-        ...state,
-        haveShowers: !state.haveShowers,
-      });
-    }
+  const onUtilitiesChange = ({ target }) => {
+    const { value } = target;
+    const updatedUtilities = state.utilities.includes(value)
+      ? state.utilities.filter((utility) => utility !== value)
+      : [...state.utilities, value];
+    handleFilterChange({
+      ...state,
+      utilities: updatedUtilities,
+    });
   };
 
-  const onToiletTypesChange = ({ target }) => {
+  const onTypesChange = ({ target }) => {
     const { value } = target;
     const updatedTypes = state.types.includes(value)
       ? state.types.filter((type) => type !== value)
@@ -39,7 +40,7 @@ const FilterOptions = ({ state, handleFilterChange, handleOptionsFocus }) => {
   };
 
   return (
-    <Card onFocus={handleOptionsFocus}>
+    <Card onClick={handleOptionsFocus}>
       <Card.Body>
         <Card.Title>Filters</Card.Title>
         <Container>
@@ -51,7 +52,7 @@ const FilterOptions = ({ state, handleFilterChange, handleOptionsFocus }) => {
             <ToggleButtonGroup
               type="checkbox"
               defaultValue={state.types}
-              onClick={onToiletTypesChange}
+              onClick={onTypesChange}
             >
               <ToggleButton
                 id="tb-male"
@@ -85,15 +86,48 @@ const FilterOptions = ({ state, handleFilterChange, handleOptionsFocus }) => {
           <Row className="mb-2">
             <h6>Utilities</h6>
           </Row>
-          <Row>
-            <Form.Check
-              className="checkbox"
-              label="Showers"
-              name="haveShowers"
-              onChange={onFieldsChange}
-              checked={state.haveShowers}
-            />
-          </Row>
+
+          <Form defaultValue={state.utilities} onClick={onUtilitiesChange}>
+            <Row>
+              <Col>
+                <Form.Check
+                  className="checkbox"
+                  inline
+                  label="Fragrance"
+                  value={Utilities.FRAGRANCE}
+                ></Form.Check>
+              </Col>
+              <Col>
+                <Form.Check
+                  className="checkbox"
+                  inline
+                  label="Watercooler"
+                  value={Utilities.WATERCOOLER}
+                ></Form.Check>
+              </Col>
+            </Row>
+          </Form>
+
+          <Form defaultValue={state.utilities} onClick={onUtilitiesChange}>
+            <Row>
+              <Col>
+                <Form.Check
+                  className="checkbox"
+                  inline
+                  label="Bidets"
+                  value={Utilities.BIDETS}
+                ></Form.Check>
+              </Col>
+              <Col>
+                <Form.Check
+                  className="checkbox"
+                  inline
+                  label="Showers"
+                  value={Utilities.SHOWERS}
+                ></Form.Check>
+              </Col>
+            </Row>
+          </Form>
         </Container>
       </Card.Body>
     </Card>
