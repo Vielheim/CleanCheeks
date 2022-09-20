@@ -1,4 +1,4 @@
-import { ToiletType } from './enums/ToiletEnums';
+import { ToiletType, Utilities } from './enums/ToiletEnums';
 
 export const TOILET_RATING = {
   CLEAN: 'CLEAN',
@@ -58,8 +58,8 @@ export const OFFLINE_TOILETS = [
 
 export const INITIAL_FILTER_STATE = {
   search: 'UT-AUD1',
-  gender: ToiletType.MALE,
-  haveShowers: false,
+  types: [ToiletType.MALE],
+  utilities: [Utilities.SHOWERS],
 };
 
 export const ACCESS_TOKEN_KEY = 'accessToken';

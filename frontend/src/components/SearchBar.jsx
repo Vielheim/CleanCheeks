@@ -79,11 +79,11 @@ const SearchBar = ({ filters, setFilters, venues }) => {
     filterTimeoutId = setTimeout(() => setIsShowFilters(false), 300);
   };
 
-  const handleFilterChange = ({ gender, haveShowers }) => {
+  const handleFilterChange = ({ types, utilities }) => {
     setFilters((filters) => ({
       ...filters,
-      gender,
-      haveShowers,
+      types,
+      utilities,
     }));
   };
 

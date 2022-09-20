@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 import {
   MapContainer,
   Marker,
@@ -8,19 +8,17 @@ import {
   ZoomControl,
   useMapEvents,
 } from 'react-leaflet';
-import Toast from 'react-bootstrap/Toast';
-import ToastContainer from 'react-bootstrap/ToastContainer';
 import SearchBar from '../components/SearchBar';
 import ClusterDetails from '../components/ClusterDetails';
 import getMarkerIcon from '../components/markerIcon';
-import Api from '../api/api';
 import { INITIAL_FILTER_STATE, OFFLINE_TOILETS } from '../constants';
+import { ToastContext } from '../utilities/context';
 import { getDistance } from '../utilities';
-import focused_face from '../assets/focused_face.png';
 import VENUES from '../assets/venues.json';
 
 import './MapPage.scss';
 import ToiletControlller from '../api/ToiletController';
+import { getToiletsBreakdown } from '../components/shared/Util';
 
 const CIRCLE_FILL_OPTIONS = {
   fillOpacity: 1,
@@ -33,12 +31,6 @@ const getLocation = ({ location }) => {
   const { x: longitude, y: latitude } = location;
   return [latitude, longitude];
 };
-
-const getNumCleanToilets = (toilets) =>
-  toilets.reduce(
-    (prev, { cleanliness }) => (cleanliness >= 0 ? 1 + prev : prev),
-    0
-  );
 
 const clusteriseToilets = (toilets) => {
   const coordsToClusters = {};
@@ -60,27 +52,13 @@ const clusteriseToilets = (toilets) => {
   return Object.values(coordsToClusters);
 };
 
-const TOAST_CONTENTS = {
-  OFFLINE: {
-    title: 'Oops!',
-    body: 'Looks like you are not connected to the internet. Cleancheeks will\
-    only be able to give you updated toilets near you once you are\
-    connected.',
-    bg: 'warning',
-    img: focused_face,
-  },
-  ONLINE: {
-    title: 'Hello!',
-    body: 'Looks like you are back online. Enjoy your clean cheeks!',
-    bg: 'light',
-    img: focused_face,
-  },
-  ERROR: {
-    title: 'Oops!',
-    body: 'Something went wrong... Try again later!',
-    bg: 'warning',
-    img: focused_face,
-  },
+const filterToilets = (toilets, filters) => {
+  const { types: typeFilters, utilities: utilitiesFilters } = filters;
+  return toilets.filter(
+    ({ type, utilities }) =>
+      typeFilters.includes(type) ||
+      utilities.some((utility) => utilitiesFilters.includes(utility))
+  );
 };
 
 const MapPage = () => {
@@ -107,7 +85,9 @@ const MapPage = () => {
     ToiletControlller.fetchCloseToilets(coordinates, radius)
       .then((result) => {
         setToilets(result.data);
-        setFilteredClusters(clusteriseToilets(result.data));
+        setFilteredClusters(
+          clusteriseToilets(filterToilets(result.data, filters))
+        );
       })
       .catch((e) => {
         console.error(e);
@@ -123,7 +103,7 @@ const MapPage = () => {
     },
   };
 
-  const [toastType, setToastType] = useState(null);
+  const setToastType = useContext(ToastContext);
   const [toilets, setToilets] = useState(OFFLINE_TOILETS);
   const [isShowCluster, setIsShowCluster] = useState(false);
   const [filteredClusters, setFilteredClusters] = useState([]);
@@ -162,10 +142,14 @@ const MapPage = () => {
     }
 
     window.addEventListener('online', () => {
-      setToastType('ONLINE');
+      if (setToastType) {
+        setToastType('ONLINE');
+      }
     });
     window.addEventListener('offline', () => {
-      setToastType('OFFLINE');
+      if (setToastType) {
+        setToastType('OFFLINE');
+      }
     });
   }, []);
 
@@ -191,6 +175,10 @@ const MapPage = () => {
       map: newCenter,
     });
   }, [filters.search]);
+
+  useEffect(() => {
+    setFilteredClusters(clusteriseToilets(filterToilets(toilets, filters)));
+  }, [filters.types, filters.utilities]);
 
   useEffect(() => {
     if (map) {
@@ -233,6 +221,7 @@ const MapPage = () => {
               center.current[0],
               center.current[1]
             ) <= 200;
+          const breakdown = getToiletsBreakdown(toilets);
           return (
             <React.Fragment key={i}>
               {isNear && (
@@ -243,11 +232,7 @@ const MapPage = () => {
               )}
               <Marker
                 position={[latitude, longitude]}
-                icon={getMarkerIcon(
-                  toilets.length,
-                  getNumCleanToilets(toilets),
-                  !isNear
-                )}
+                icon={getMarkerIcon(toilets.length, breakdown.GOOD, !isNear)}
                 data={i}
                 eventHandlers={mapMarkerHandlers}
               />
@@ -264,32 +249,6 @@ const MapPage = () => {
           />
         )}
         <PanZoomCenter />
-        {toastType !== null && (
-          <ToastContainer position="bottom-center">
-            <Toast
-              className="mb-4 offline-toast"
-              bg={TOAST_CONTENTS[toastType].bg}
-              show={true}
-              onClose={() => setToastType(null)}
-              delay={4000}
-              autohide
-            >
-              <Toast.Header className="toast-header">
-                <div className="toast-header-content">
-                  <img
-                    src={TOAST_CONTENTS[toastType].img}
-                    height={25}
-                    width={25}
-                  />
-                  <strong className="toast-header-title">
-                    {TOAST_CONTENTS[toastType].title}
-                  </strong>
-                </div>
-              </Toast.Header>
-              <Toast.Body>{TOAST_CONTENTS[toastType].body}</Toast.Body>
-            </Toast>
-          </ToastContainer>
-        )}
       </MapContainer>
     </div>
   );
