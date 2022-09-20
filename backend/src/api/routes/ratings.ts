@@ -12,7 +12,7 @@ ratingsRouter.use(authMiddleware);
 
 ratingsRouter.post('/', async (req: Request, res: Response) => {
   try {
-    const user_id = 'testuser'; // TODO: Get from JWT
+    const { user_id } = req.cookies;
 
     const payload: CreateRatingDTO = {
       user_id: user_id,
@@ -38,7 +38,7 @@ ratingsRouter.get('/', async (_, res: Response) => {
 
 ratingsRouter.get('/last-rated', async (req: Request, res: Response) => {
   try {
-    const user_id = 'testuser'; // TODO: Get from JWT
+    const { user_id } = req.cookies;
 
     const payload: QueryRatingDTO = {
       toilet_id: req.query.toilet_id as string,
