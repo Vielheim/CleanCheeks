@@ -84,15 +84,6 @@ const MapPage = () => {
   const fetchCloseToilets = useCallback((coordinates, radius) => {
     ToiletControlller.fetchCloseToilets(coordinates, radius)
       .then((result) => {
-        console.log(
-          result.data.sort((t1, t2) => {
-            if (t1.id < t2.id) {
-              return -1;
-            }
-            return 1;
-          })
-        );
-
         setToilets(result.data);
         setFilteredClusters(
           clusteriseToilets(filterToilets(result.data, filters))
