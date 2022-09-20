@@ -50,6 +50,21 @@ const ClusterDetails = ({ currLocation, cluster, isShow, setIsShow }) => {
     );
   }
 
+  // ORDER BY FLOOR ASC, CLEANLINESS DESC, ID ASC
+  const sortToilets = (toilet1, toilet2) => {
+    const orderByFloorAsc = toilet1.floor - toilet2.floor;
+    const orderByCleanDesc = toilet2.cleanliness - toilet1.cleanliness;
+    const orderByIdAsc = toilet1.id - toilet2.id;
+
+    if (orderByFloorAsc !== 0) {
+      return orderByFloorAsc;
+    }
+    if (orderByCleanDesc !== 0) {
+      return orderByCleanDesc;
+    }
+    return orderByIdAsc;
+  };
+
   return (
     <Offcanvas
       className="offcanvas-container"
@@ -68,6 +83,7 @@ const ClusterDetails = ({ currLocation, cluster, isShow, setIsShow }) => {
       <Offcanvas.Body>
         {toilets
           .filter(({ floor }) => floor < 8 && floor !== 0)
+          .sort(sortToilets)
           .map((toilet, i) => {
             const {
               description,

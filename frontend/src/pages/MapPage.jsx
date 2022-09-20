@@ -13,7 +13,6 @@ import ToastContainer from 'react-bootstrap/ToastContainer';
 import SearchBar from '../components/SearchBar';
 import ClusterDetails from '../components/ClusterDetails';
 import getMarkerIcon from '../components/markerIcon';
-import Api from '../api/api';
 import { INITIAL_FILTER_STATE, OFFLINE_TOILETS } from '../constants';
 import { getDistance } from '../utilities';
 import focused_face from '../assets/focused_face.png';
