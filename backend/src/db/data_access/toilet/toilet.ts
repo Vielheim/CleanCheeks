@@ -6,7 +6,7 @@ import { Op, Sequelize } from 'sequelize';
 import { ICoordinates } from '../../../api/interfaces/coordinates.interface';
 import ToiletRating from '../../models/ToiletRating';
 import { RatingTypeUtil } from '../../../enums/ToiletRatingEnums';
-import Point from '../../utilities/Point.interface';
+import IPoint from '../../utilities/Point.interface';
 import { isPointInCircle } from '../../utilities/distance';
 
 export const create = async (payload: IToiletInput): Promise<IToiletOutput> => {
@@ -114,13 +114,13 @@ export const getAllNeighbouringToiletsByCoordinates = async (
   });
 
   // Check if toilet is within a radius from the center
-  const center: Point = {
+  const center: IPoint = {
     x: coordinates.latitude,
     y: coordinates.longitude,
   };
 
   const results = toilets_with_preference.filter((toilet) => {
-    const toiletPoint: Point = {
+    const toiletPoint: IPoint = {
       x: toilet.latitude,
       y: toilet.longitude,
     };

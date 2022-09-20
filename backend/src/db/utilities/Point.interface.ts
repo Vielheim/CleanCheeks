@@ -1,6 +1,6 @@
-interface Point {
+interface IPoint {
   x: number;
   y: number;
 }
 
-export default Point;
+export default IPoint;
