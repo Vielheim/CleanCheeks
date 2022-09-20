@@ -4,10 +4,6 @@
   min-height: 80vh;
 }
 
-.offcanvas-inner-container {
-  background-color: #f3f3f3;
-}
-
 .distance {
   padding-left: 1.2rem;
   margin-top: -0.5rem;
@@ -22,4 +18,19 @@
 
 .non-exist-utility {
   opacity: 0.2;
+}
+
+.preference {
+  font-size: 0.7rem;
+  border-color: lightgrey;
+  border-radius: 0.4rem;
+  border-style: solid;
+  padding: 5px;
+}
+
+.card-header {
+  display: flex;
+  background-color: white !important;
+  justify-content: space-between;
+  border: none;
 }
