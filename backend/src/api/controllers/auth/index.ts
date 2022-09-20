@@ -23,7 +23,7 @@ export const googleLogin = async (idToken: string) => {
   }
 
   const accessToken = JwtUtils.generateAccessToken(user, {
-    expiresIn: '1d',
+    expiresIn: '7d',
   });
   const result = {
     userId: user.id,
