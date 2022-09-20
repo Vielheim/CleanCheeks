@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 import {
   MapContainer,
   Marker,
@@ -8,14 +8,12 @@ import {
   ZoomControl,
   useMapEvents,
 } from 'react-leaflet';
-import Toast from 'react-bootstrap/Toast';
-import ToastContainer from 'react-bootstrap/ToastContainer';
 import SearchBar from '../components/SearchBar';
 import ClusterDetails from '../components/ClusterDetails';
 import getMarkerIcon from '../components/markerIcon';
 import { INITIAL_FILTER_STATE, OFFLINE_TOILETS } from '../constants';
+import { ToastContext } from '../utilities/context';
 import { getDistance } from '../utilities';
-import focused_face from '../assets/focused_face.png';
 import VENUES from '../assets/venues.json';
 
 import './MapPage.scss';
@@ -63,29 +61,6 @@ const filterToilets = (toilets, filters) => {
   );
 };
 
-const TOAST_CONTENTS = {
-  OFFLINE: {
-    title: 'Oops!',
-    body: 'Looks like you are not connected to the internet. Cleancheeks will\
-    only be able to give you updated toilets near you once you are\
-    connected.',
-    bg: 'warning',
-    img: focused_face,
-  },
-  ONLINE: {
-    title: 'Hello!',
-    body: 'Looks like you are back online. Enjoy your clean cheeks!',
-    bg: 'light',
-    img: focused_face,
-  },
-  ERROR: {
-    title: 'Oops!',
-    body: 'Something went wrong... Try again later!',
-    bg: 'warning',
-    img: focused_face,
-  },
-};
-
 const MapPage = () => {
   const PanZoomCenter = () => {
     const onPanZoomEnd = (map) => {
@@ -128,7 +103,7 @@ const MapPage = () => {
     },
   };
 
-  const [toastType, setToastType] = useState(null);
+  const setToastType = useContext(ToastContext);
   const [toilets, setToilets] = useState(OFFLINE_TOILETS);
   const [isShowCluster, setIsShowCluster] = useState(false);
   const [filteredClusters, setFilteredClusters] = useState([]);
@@ -167,10 +142,14 @@ const MapPage = () => {
     }
 
     window.addEventListener('online', () => {
-      setToastType('ONLINE');
+      if (setToastType) {
+        setToastType('ONLINE');
+      }
     });
     window.addEventListener('offline', () => {
-      setToastType('OFFLINE');
+      if (setToastType) {
+        setToastType('OFFLINE');
+      }
     });
   }, []);
 
@@ -270,33 +249,6 @@ const MapPage = () => {
           />
         )}
         <PanZoomCenter />
-        {toastType !== null && (
-          <ToastContainer position="bottom-center">
-            <Toast
-              className="mb-4 offline-toast"
-              bg={TOAST_CONTENTS[toastType].bg}
-              show={true}
-              onClose={() => setToastType(null)}
-              delay={4000}
-              autohide
-            >
-              <Toast.Header className="toast-header">
-                <div className="toast-header-content">
-                  <img
-                    alt="Focused Face"
-                    src={TOAST_CONTENTS[toastType].img}
-                    height={25}
-                    width={25}
-                  />
-                  <strong className="toast-header-title">
-                    {TOAST_CONTENTS[toastType].title}
-                  </strong>
-                </div>
-              </Toast.Header>
-              <Toast.Body>{TOAST_CONTENTS[toastType].body}</Toast.Body>
-            </Toast>
-          </ToastContainer>
-        )}
       </MapContainer>
     </div>
   );
