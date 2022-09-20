@@ -16,19 +16,15 @@ import ToiletRating from './ToiletRating';
 import ToiletControlller from '../../api/ToiletController';
 
 const ToiletDetail = ({ building, toilet, isShow, onBack, onHide }) => {
-  const {
-    id,
-    user_preference_type,
-    description,
-    floor,
-    cleanliness,
-    utilities,
-  } = toilet;
+  const { id, user_preference_type, description, floor, utilities } = toilet;
 
   const fmtedFloor = floor < 0 ? `B${Math.abs(floor)}` : floor.toString();
-  const { text, type } = getCleanlinessMetadata(cleanliness);
 
   const [preference, setPreference] = useState(user_preference_type);
+  const [cleanlinessMetadata, setCleanlinessMetadata] = useState({
+    text: 'BAD',
+    type: 'danger',
+  });
   const [percentageBeat, setPercentageBeat] = useState(0);
 
   const updateToiletPreference = useCallback(
@@ -56,12 +52,15 @@ const ToiletDetail = ({ building, toilet, isShow, onBack, onHide }) => {
   const updateToiletRank = useCallback(async () => {
     await ToiletControlller.getToiletRank(id)
       .then((result) => {
+        const cleanliness = result.data.toilet.cleanliness;
         setPercentageBeat(result.data.percentageBeat);
+        setCleanlinessMetadata(getCleanlinessMetadata(cleanliness));
+        toilet.cleanliness = cleanliness;
       })
       .catch((e) => {
-        console.log(e);
+        console.error(e);
       });
-  }, [id]);
+  }, [id, toilet]);
 
   useEffect(() => {
     setPreference(toilet.user_preference_type);
@@ -111,10 +110,13 @@ const ToiletDetail = ({ building, toilet, isShow, onBack, onHide }) => {
         </div>
         <p className="mb-3 h6 fw-bold">Cleanliness</p>
         <div className="box text-center">
-          <Badge className="mb-2" bg={type}>{`${text} cleanliness`}</Badge>
+          <Badge
+            className="mb-2"
+            bg={cleanlinessMetadata.type}
+          >{`${cleanlinessMetadata.text} cleanliness`}</Badge>
           <input
             type="range"
-            class="form-range"
+            className="form-range"
             id="disabledRange"
             min="0"
             value={percentageBeat}

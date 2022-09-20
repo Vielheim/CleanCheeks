@@ -65,8 +65,11 @@ export const getRank = async (
       // Find next toilet with lower cleanliness
       if (curr.cleanliness < cleanliness) {
         const percentageBeat = ((count - i) / count) * 100;
+        if (toilet == null) {
+          throw new DataNotFoundError(`Toilet with ${id} not found`);
+        }
         return {
-          toilet: curr,
+          toilet,
           rank: i,
           percentageBeat: Number(percentageBeat.toFixed(1)),
           count,
