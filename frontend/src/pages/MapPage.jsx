@@ -56,7 +56,7 @@ const filterToilets = (toilets, filters) => {
   const { types: typeFilters, utilities: utilitiesFilters } = filters;
   return toilets.filter(
     ({ type, utilities }) =>
-      typeFilters.includes(type) ||
+      typeFilters.includes(type) &&
       utilities.some((utility) => utilitiesFilters.includes(utility))
   );
 };
@@ -81,20 +81,6 @@ const MapPage = () => {
     return null;
   };
 
-  const fetchCloseToilets = useCallback((coordinates, radius) => {
-    ToiletControlller.fetchCloseToilets(coordinates, radius)
-      .then((result) => {
-        setToilets(result.data);
-        setFilteredClusters(
-          clusteriseToilets(filterToilets(result.data, filters))
-        );
-      })
-      .catch((e) => {
-        console.error(e);
-        setToastType('ERROR');
-      });
-  }, []);
-
   const mapMarkerHandlers = {
     click: (e) => {
       const clusterIndex = e.target.options.data;
@@ -116,6 +102,23 @@ const MapPage = () => {
   });
   const [filters, setFilters] = useState(INITIAL_FILTER_STATE);
   const [map, setMap] = useState(null);
+
+  const fetchCloseToilets = useCallback(
+    (coordinates, radius) => {
+      ToiletControlller.fetchCloseToilets(coordinates, radius)
+        .then((result) => {
+          setToilets(result.data);
+          setFilteredClusters(
+            clusteriseToilets(filterToilets(result.data, filters))
+          );
+        })
+        .catch((e) => {
+          console.error(e);
+          setToastType('ERROR');
+        });
+    },
+    [filters, setToastType]
+  );
 
   // runs only on first load
   useEffect(() => {
@@ -151,7 +154,7 @@ const MapPage = () => {
         setToastType('OFFLINE');
       }
     });
-  }, []);
+  }, [setToastType]);
 
   useEffect(() => {
     let radius = 400;
@@ -178,7 +181,7 @@ const MapPage = () => {
 
   useEffect(() => {
     setFilteredClusters(clusteriseToilets(filterToilets(toilets, filters)));
-  }, [filters.types, filters.utilities]);
+  }, [filters, filters.types, filters.utilities, toilets]);
 
   useEffect(() => {
     if (map) {
