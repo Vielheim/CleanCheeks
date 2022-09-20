@@ -81,6 +81,20 @@ const MapPage = () => {
     return null;
   };
 
+  const fetchCloseToilets = useCallback((coordinates, radius) => {
+    ToiletControlller.fetchCloseToilets(coordinates, radius)
+      .then((result) => {
+        setToilets(result.data);
+        setFilteredClusters(
+          clusteriseToilets(filterToilets(result.data, filters))
+        );
+      })
+      .catch((e) => {
+        console.error(e);
+        setToastType('ERROR');
+      });
+  }, []);
+
   const mapMarkerHandlers = {
     click: (e) => {
       const clusterIndex = e.target.options.data;
@@ -102,23 +116,6 @@ const MapPage = () => {
   });
   const [filters, setFilters] = useState(INITIAL_FILTER_STATE);
   const [map, setMap] = useState(null);
-
-  const fetchCloseToilets = useCallback(
-    (coordinates, radius) => {
-      ToiletControlller.fetchCloseToilets(coordinates, radius)
-        .then((result) => {
-          setToilets(result.data);
-          setFilteredClusters(
-            clusteriseToilets(filterToilets(result.data, filters))
-          );
-        })
-        .catch((e) => {
-          console.error(e);
-          setToastType('ERROR');
-        });
-    },
-    [filters, setToastType]
-  );
 
   // runs only on first load
   useEffect(() => {
@@ -154,7 +151,7 @@ const MapPage = () => {
         setToastType('OFFLINE');
       }
     });
-  }, [setToastType]);
+  }, []);
 
   useEffect(() => {
     let radius = 400;
@@ -181,7 +178,7 @@ const MapPage = () => {
 
   useEffect(() => {
     setFilteredClusters(clusteriseToilets(filterToilets(toilets, filters)));
-  }, [filters, filters.types, filters.utilities, toilets]);
+  }, [filters.types, filters.utilities]);
 
   useEffect(() => {
     if (map) {
