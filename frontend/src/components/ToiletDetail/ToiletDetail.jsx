@@ -13,6 +13,7 @@ import '../ClusterDetails.scss';
 import { getCleanlinessMetadata } from '../shared/Util';
 import './ToiletDetail.scss';
 import ToiletRating from './ToiletRating';
+import ToiletControlller from '../../api/ToiletController';
 
 const ToiletDetail = ({ building, toilet, isShow, onBack, onHide }) => {
   const {
@@ -26,17 +27,13 @@ const ToiletDetail = ({ building, toilet, isShow, onBack, onHide }) => {
 
   const fmtedFloor = floor < 0 ? `B${Math.abs(floor)}` : floor.toString();
   const { text, type } = getCleanlinessMetadata(cleanliness);
-  const valueGreater = 85.6;
 
   const [preference, setPreference] = useState(user_preference_type);
-
-  useEffect(() => {
-    setPreference(toilet.user_preference_type);
-  }, [toilet]);
+  const [percentageBeat, setPercentageBeat] = useState(0);
 
   const updateToiletPreference = useCallback(
-    (type) => {
-      ToiletPreferenceControlller.updateToiletPreference(id, type)
+    async (type) => {
+      await ToiletPreferenceControlller.updateToiletPreference(id, type)
         .then((result) => {
           setPreference(result.data.type);
           toilet.user_preference_type = result.data.type;
@@ -56,12 +53,30 @@ const ToiletDetail = ({ building, toilet, isShow, onBack, onHide }) => {
     updateToiletPreference(PreferenceType.BLACKLIST);
   }, [updateToiletPreference]);
 
+  const updateToiletRank = useCallback(async () => {
+    await ToiletControlller.getToiletRank(id)
+      .then((result) => {
+        setPercentageBeat(result.data.percentageBeat);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }, [id]);
+
+  useEffect(() => {
+    setPreference(toilet.user_preference_type);
+  }, [toilet]);
+
+  useEffect(() => {
+    updateToiletRank();
+  }, [updateToiletRank]);
+
   return (
     <Offcanvas
       className="offcanvas-container"
       placement="bottom"
       show={isShow}
-      onHide={() => onHide()}
+      onHide={onHide}
     >
       <Offcanvas.Header>
         <GrFormPreviousLink onClick={onBack} size={28} />
@@ -98,13 +113,13 @@ const ToiletDetail = ({ building, toilet, isShow, onBack, onHide }) => {
         <div className="box text-center">
           <Badge className="mb-2" bg={type}>{`${text} cleanliness`}</Badge>
           <p>
-            This toilet is cleaner than <strong>{valueGreater}%</strong> of all
-            other toilets on campus!
+            This toilet is cleaner than <strong>{percentageBeat}%</strong> of
+            all other toilets on campus!
           </p>
         </div>
         <p className="mb-3 h6 fw-bold">Your Rating</p>
         <div className="box">
-          <ToiletRating toilet_id={id} />
+          <ToiletRating toiletId={id} onRate={updateToiletRank} />
         </div>
       </Offcanvas.Body>
     </Offcanvas>

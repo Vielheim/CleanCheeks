@@ -13,6 +13,7 @@ import {
 import { validateCoordinates } from '../../data_transfer/validate/Util';
 import { IToilet } from '../../interfaces';
 import { ICoordinates } from '../../interfaces/coordinates.interface';
+import { IToiletRank } from '../../interfaces/toilet.interface';
 import * as mapper from './mapper';
 
 export const create = async (payload: CreateToiletDTO): Promise<IToilet> => {
@@ -64,4 +65,14 @@ export const getAllNeighbouringToilets = async (
   return (await service.getAllNeighbouringToilets(coordinates, userId)).map(
     mapper.toToilet
   );
+};
+
+export const getRank = async (id: string): Promise<IToiletRank> => {
+  const { toilet, rank, percentageBeat, count } = await service.getRank(id);
+  return {
+    toilet: mapper.toToilet(toilet),
+    rank: rank,
+    percentageBeat: percentageBeat,
+    toiletCount: count,
+  };
 };

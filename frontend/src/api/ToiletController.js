@@ -13,4 +13,11 @@ export default class ToiletControlller {
       url: `/toilets/neighbours?latitude=${coordinates[0]}&longitude=${coordinates[1]}&radius=${radius}&userId=${userId}`,
     });
   }
+
+  static async getToiletRank(id) {
+    return Api.makeApiRequest({
+      method: 'GET',
+      url: `/toilets/ranking?id=${id}`,
+    });
+  }
 }

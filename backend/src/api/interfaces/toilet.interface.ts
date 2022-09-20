@@ -16,3 +16,10 @@ export interface IToilet {
   updatedAt?: Date;
   user_preference_type?: PreferenceType;
 }
+
+export interface IToiletRank {
+  toilet: IToilet;
+  rank: number;
+  percentageBeat: number;
+  toiletCount: number;
+}
