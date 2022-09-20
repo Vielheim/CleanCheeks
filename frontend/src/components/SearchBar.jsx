@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import FilterOptions from './FilterOptions';
 import { useMap } from 'react-leaflet';
-import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -9,7 +8,7 @@ import Collapse from 'react-bootstrap/Collapse';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import ListGroup from 'react-bootstrap/ListGroup';
-import { BsFilter, BsSearch } from 'react-icons/bs';
+import { BsSearch } from 'react-icons/bs';
 import throttle from 'lodash/throttle';
 
 import './SearchBar.scss';
@@ -20,7 +19,6 @@ const SearchBar = ({ state, dispatch, venues }) => {
   const map = useMap();
   const [tempSearch, setTempSearch] = useState('');
   const [isShowList, setIsShowList] = useState(false);
-  const [isShowFilters, setIsShowFilters] = useState(false);
 
   // filter options event handlers
   const handleOptionsFocus = () => {
@@ -38,7 +36,6 @@ const SearchBar = ({ state, dispatch, venues }) => {
     if (searchTimeoutId > 0) {
       clearTimeout(searchTimeoutId);
     }
-    setIsShowFilters(false);
     setIsShowList(true);
   };
 
@@ -63,17 +60,6 @@ const SearchBar = ({ state, dispatch, venues }) => {
     dispatch({ type: 'updateFilters', payload: { search: value } });
     setTempSearch(value);
     setIsShowList(false);
-  };
-
-  // filter button event handlers
-  const onFilterFocus = () => {
-    if (filterTimeoutId > 0) {
-      clearTimeout(filterTimeoutId);
-    }
-  };
-
-  const onFilterBlur = () => {
-    filterTimeoutId = setTimeout(() => setIsShowFilters(false), 300);
   };
 
   const filterVenues = (venues) =>
@@ -110,14 +96,7 @@ const SearchBar = ({ state, dispatch, venues }) => {
             />
             <Collapse in={!isShowList} dimension="width">
               <div>
-                <Button
-                  className="filter-options-button"
-                  onClick={() => setIsShowFilters(!isShowFilters)}
-                  onFocus={onFilterFocus}
-                  onBlur={onFilterBlur}
-                >
-                  <BsFilter height={22} />
-                </Button>
+                <FilterOptions state={state} dispatch={dispatch} />
               </div>
             </Collapse>
           </InputGroup>
@@ -142,16 +121,6 @@ const SearchBar = ({ state, dispatch, venues }) => {
                 </ListGroup.Item>
               ))}
             </ListGroup>
-          </Collapse>
-          <Collapse in={isShowFilters}>
-            <div>
-              <FilterOptions
-                setIsShowFilters={setIsShowFilters}
-                handleOptionsFocus={handleOptionsFocus}
-                state={state}
-                dispatch={dispatch}
-              />
-            </div>
           </Collapse>
         </Col>
       </Row>

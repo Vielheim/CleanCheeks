@@ -184,7 +184,9 @@ const MapPage = () => {
           );
         })}
         <ZoomControl position="bottomright" />
-        <ClusterDetails state={state} dispatch={dispatch} />
+        {state.selectedCluster !== null && (
+          <ClusterDetails state={state} dispatch={dispatch} />
+        )}
         <PanZoomCenter />
       </MapContainer>
     </div>

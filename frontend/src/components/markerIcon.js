@@ -17,11 +17,12 @@ const getSvgCircle = (numGreen, numYellow, numRed, isTransparent) => {
   const svgCircle = `
     <svg viewbox="0 0 10 10" fill="transparent" opacity="${opacity}">
       <defs>
-        <circle id="circle" cx="5" cy="5" r="4" fill="white" transform="rotate(270, 5, 5)" />
+        <circle id="circle" cx="5" cy="5" r="4" fill="transparent" transform="rotate(270, 5, 5)" />
       </defs>
       <use xlink:href="#circle" stroke="#EB1D36" stroke-dasharray="${redLength}, ${yellowLength + greenLength}"  />
       <use xlink:href="#circle" stroke="#FFDE00" stroke-dasharray="0 ${redLength}, ${yellowLength} ${greenLength}"  />
       <use xlink:href="#circle" stroke="#367E18" stroke-dasharray="0, ${redLength + yellowLength}, ${greenLength}, 0" />
+      <circle cx="5" cy="5" r="3.5" fill="white" />
         
       <text x="50%" y="50%" dominant-baseline="central" text-anchor="middle" fill="black" font-size="4">${numSections}</text>
     </svg>
