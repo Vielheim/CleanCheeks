@@ -112,6 +112,15 @@ const ToiletDetail = ({ building, toilet, isShow, onBack, onHide }) => {
         <p className="mb-3 h6 fw-bold">Cleanliness</p>
         <div className="box text-center">
           <Badge className="mb-2" bg={type}>{`${text} cleanliness`}</Badge>
+          <input
+            type="range"
+            class="form-range"
+            id="disabledRange"
+            min="0"
+            value={percentageBeat}
+            max="100"
+            disabled
+          />
           <p>
             This toilet is cleaner than <strong>{percentageBeat}%</strong> of
             all other toilets on campus!

@@ -10,7 +10,7 @@ const ratingsRouter = Router();
 
 ratingsRouter.post('/', async (req: Request, res: Response) => {
   try {
-    const user_id = '115574711555888239575'; // TODO: Get from JWT
+    const user_id = 'testuser'; // TODO: Get from JWT
 
     const payload: CreateRatingDTO = {
       user_id: user_id,
@@ -36,7 +36,7 @@ ratingsRouter.get('/', async (_, res: Response) => {
 
 ratingsRouter.get('/last-rated', async (req: Request, res: Response) => {
   try {
-    const user_id = '115574711555888239575'; // TODO: Get from JWT
+    const user_id = 'testuser'; // TODO: Get from JWT
 
     const payload: QueryRatingDTO = {
       toilet_id: req.query.toilet_id as string,
