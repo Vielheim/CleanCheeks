@@ -17,6 +17,6 @@ export const getAll = async (): Promise<IToiletRatingOutput[]> => {
 export const getUserLastRated = async (
   toilet_id: string,
   user_id: string
-): Promise<IToiletRatingOutput> => {
+): Promise<IToiletRatingOutput | null> => {
   return await db.getUserLastRated(toilet_id, user_id);
 };

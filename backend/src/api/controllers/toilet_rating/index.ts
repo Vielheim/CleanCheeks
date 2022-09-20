@@ -24,12 +24,17 @@ export const getAll = async (): Promise<Array<IRating>> => {
 
 export const getUserLastRated = async (
   payload: QueryRatingDTO
-): Promise<IRating> => {
+): Promise<IRating | null> => {
   validateQueryRatingDTO(payload);
 
   const ratingOutput = await service.getUserLastRated(
     payload.toilet_id,
     payload.user_id
   );
+
+  if (!ratingOutput) {
+    return ratingOutput;
+  }
+
   return mapper.toIRating(ratingOutput);
 };

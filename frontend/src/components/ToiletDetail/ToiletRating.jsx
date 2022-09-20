@@ -71,14 +71,16 @@ const ToiletRating = ({ toiletId, onRate }) => {
       if (!rating_info) {
         return await ToiletRatingController.getUserLastRatedInfo(toiletId)
           .then((res) => {
-            updateRatingInfo(res.data);
-          })
-          .catch((e) => {
-            if (e.status === 404) {
+            const data = res.data;
+
+            if (!data) {
               setNextRatingTime(null); // User has not voted, set the rating to null
             } else {
-              console.log(e); // TODO: Handle error
+              updateRatingInfo(res.data);
             }
+          })
+          .catch((e) => {
+            console.log(e); // TODO: Handle error
           });
       }
 
