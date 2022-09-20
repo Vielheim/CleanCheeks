@@ -5,7 +5,6 @@ import ToggleButton from 'react-bootstrap/ToggleButton';
 import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Card from 'react-bootstrap/Card';
-import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
@@ -86,7 +85,7 @@ const FilterOptions = ({ state, dispatch }) => {
               <h6>Utilities</h6>
             </Row>
 
-            <Form>
+            <Form defaultValue={filters.utilities} onClick={onUtilitiesChange}>
               <Row>
                 <Col xs={6}>
                   <Form.Check

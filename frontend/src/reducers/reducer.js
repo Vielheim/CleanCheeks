@@ -49,10 +49,10 @@ export const INITIAL_TOILET_STATE = {
   // current is where the marker will point.
   // map is where the center of the map UI is at.
   center: {
-    current: getLocation(VENUES['UT-AUD1']),
-    map: getLocation(VENUES['UT-AUD1']),
+    current: JSON.parse(localStorage.getItem('lastCenter')) ?? getLocation(VENUES['UT-AUD1']),
+    map: JSON.parse(localStorage.getItem('lastCenter')) ?? getLocation(VENUES['UT-AUD1']),
   },
-  filters: INITIAL_FILTER_STATE,
+  filters: JSON.parse(localStorage.getItem('filters')) ?? INITIAL_FILTER_STATE,
 };
 
 const toiletReducer = (state, action) => {

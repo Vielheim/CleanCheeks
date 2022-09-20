@@ -25,6 +25,7 @@ import VENUES from '../assets/venues.json';
 import './MapPage.scss';
 import ToiletControlller from '../api/ToiletController';
 import { getToiletsBreakdown } from '../components/shared/Util';
+import { INITIAL_FILTER_STATE } from '../constants';
 
 const CIRCLE_FILL_OPTIONS = {
   fillOpacity: 1,
@@ -74,15 +75,6 @@ const MapPage = () => {
 
   // runs only on first load
   useEffect(() => {
-    // const lastCenter = localStorage.getItem('lastCenter');
-    // if (lastCenter !== null) {
-    //   const parsedCenter = JSON.parse(lastCenter);
-    //   dispatch({
-    //     type: 'updateCenter',
-    //     payload: { current: parsedCenter, map: parsedCenter },
-    //   });
-    // }
-
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
         const latitude = position.coords.latitude;
@@ -106,7 +98,11 @@ const MapPage = () => {
         setToastType('OFFLINE');
       }
     });
-  }, []);
+  }, [setToastType]);
+
+  useEffect(() => {
+    localStorage.setItem('filters', JSON.stringify(state.filters));
+  }, [state.filters]);
 
   useEffect(() => {
     let radius = 400;
@@ -121,13 +117,14 @@ const MapPage = () => {
       radius = minDistance * 0.7;
       fetchCloseToilets(state.center.map, radius);
     }
-  }, [state.center.map, map]);
+  }, [state.center.map, map, fetchCloseToilets]);
 
   useEffect(() => {
+    localStorage.setItem('lastCenter', JSON.stringify(state.center.current));
     if (map) {
       map.flyTo(state.center.current, 18);
     }
-  }, [state.center.current, map]);
+  }, [state.center, map]);
 
   return (
     <div id="map">
