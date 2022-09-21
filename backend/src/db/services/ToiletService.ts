@@ -4,10 +4,6 @@ import * as toiletDataAccess from '../data_access/toilet/toilet';
 import { GetAllToiletsFilters } from '../data_access/toilet/types';
 import { IToiletOutput } from '../models/Toilet';
 
-export const deleteById = (id: string): Promise<boolean> => {
-  return toiletDataAccess.deleteById(id);
-};
-
 export const getById = (id: string): Promise<IToiletOutput> => {
   return toiletDataAccess.getById(id);
 };
