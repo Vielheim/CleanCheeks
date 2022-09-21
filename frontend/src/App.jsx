@@ -46,7 +46,7 @@ function App() {
       url: '/auth/check-login',
     })
       .then(() => setUser(true))
-      .catch(setUser(false));
+      .catch(() => setUser(false));
   }, []);
 
   return (

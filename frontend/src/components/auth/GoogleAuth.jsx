@@ -1,7 +1,5 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { setLocalStorageValue } from '../../utilities/localStorage';
-import { ACCESS_TOKEN_KEY, USER_ID_KEY } from '../../constants';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import Api from '../../api/api';
 import './GoogleAuth.scss';
@@ -26,7 +24,6 @@ const GoogleAuth = () => {
         });
       }
     } catch (e) {
-      console.log(e);
       setErrorMsg('Error signing in with Google. Try again.');
     }
   };
