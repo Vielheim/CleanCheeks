@@ -1,8 +1,5 @@
-import { GetAllToiletsFilters } from '../../../db/data_access/toilet/types';
 import * as service from '../../../db/services/ToiletService';
 import { PreferenceType } from '../../../enums';
-import { FilterToiletsDTO } from '../../data_transfer/toilet/toilet.dto';
-import { validateFilterToiletsDTO } from '../../data_transfer/toilet/validate.dto';
 import { validateCoordinates } from '../../data_transfer/validate/Util';
 import { IToilet } from '../../interfaces';
 import { ICoordinates } from '../../interfaces/coordinates.interface';
@@ -11,20 +8,6 @@ import {
   IToiletsWithUserPreferences,
 } from '../../interfaces/toilet.interface';
 import * as mapper from './mapper';
-
-export const getById = async (id: string): Promise<IToilet> => {
-  const toiletOutput = await service.getById(id);
-  return mapper.toToilet(toiletOutput);
-};
-
-export const getAll = async (filters: FilterToiletsDTO): Promise<IToilet[]> => {
-  // validate or throw error
-  validateFilterToiletsDTO(filters);
-
-  const getAllToiletFilters: GetAllToiletsFilters =
-    mapper.toGetAllToiletFilters(filters);
-  return (await service.getAll(getAllToiletFilters)).map(mapper.toToilet);
-};
 
 export const getAllNeighbouringToilets = async (
   coordinates: ICoordinates,
