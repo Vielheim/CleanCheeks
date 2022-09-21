@@ -1,11 +1,11 @@
 import { capitalize } from 'lodash';
 import { GrFormCheckmark, GrFormClose } from 'react-icons/gr';
-import './StyledUtility.scss';
+import styles from './StyledUtility.module.scss';
 
 const StyledUtility = ({ utility, presentUtilities }) => {
   const isPresent = presentUtilities.includes(utility.toUpperCase());
   const icon = isPresent ? <GrFormCheckmark /> : <GrFormClose />;
-  const cssClass = isPresent ? '' : 'non-exist-utility';
+  const cssClass = isPresent ? '' : styles['non-exist-utility'];
 
   return (
     <div className={cssClass}>

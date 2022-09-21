@@ -6,10 +6,10 @@ import StyledUtility from '../StyledUtility/StyledUtility';
 import { GrFormPreviousLink } from 'react-icons/gr';
 import ToiletControlller from '../../api/ToiletController';
 import { Utilities } from '../../enums/ToiletEnums';
-import '../ClusterDetail/ClusterDetails.scss';
+
 import { getCleanlinessMetadata } from '../shared/Util';
 import PreferenceIcons from './PreferenceIcons';
-import './ToiletDetail.scss';
+import styles from './ToiletDetail.module.scss';
 import ToiletRating from './ToiletRating';
 
 const ToiletDetail = ({ building, toilet, isShow, onBack, onHide }) => {
@@ -46,7 +46,7 @@ const ToiletDetail = ({ building, toilet, isShow, onBack, onHide }) => {
 
   return (
     <Offcanvas
-      className="offcanvas-container"
+      className={styles['offcanvas-container']}
       placement="bottom"
       show={isShow}
       onHide={onHide}
@@ -64,11 +64,13 @@ const ToiletDetail = ({ building, toilet, isShow, onBack, onHide }) => {
         />
       </Offcanvas.Header>
       <Offcanvas.Body>
-        <div className="toilet-summary">
-          <p className="toilet-summary-item">{cleanlinessMetadata.quote}</p>
+        <div className={styles['toilet-summary']}>
+          <p className={styles['toilet-summary-item']}>
+            {cleanlinessMetadata.quote}
+          </p>
 
           <img
-            className="toilet-summary-item"
+            className={styles['toilet-summary-item']}
             alt={cleanlinessMetadata.text}
             src={cleanlinessMetadata.icon}
             width={100}
@@ -77,7 +79,7 @@ const ToiletDetail = ({ building, toilet, isShow, onBack, onHide }) => {
         </div>
 
         <p className="mb-3 h6 fw-bold">Utilities</p>
-        <div className="toilet-utilities box">
+        <div className={`${styles['toilet-utilities']} ${styles['box']}`}>
           {Object.keys(Utilities).map((utility, i) => (
             <StyledUtility
               key={i}
@@ -87,7 +89,7 @@ const ToiletDetail = ({ building, toilet, isShow, onBack, onHide }) => {
           ))}
         </div>
         <p className="mb-3 h6 fw-bold">Cleanliness</p>
-        <div className="box text-center">
+        <div className={`text-center ${styles['box']}`}>
           <Badge
             className="mb-2"
             bg={cleanlinessMetadata.type}
@@ -107,7 +109,7 @@ const ToiletDetail = ({ building, toilet, isShow, onBack, onHide }) => {
           </p>
         </div>
         <p className="mb-3 h6 fw-bold">Your Rating</p>
-        <div className="box">
+        <div className={styles['box']}>
           <ToiletRating toiletId={id} onRate={updateToiletRank} />
         </div>
       </Offcanvas.Body>

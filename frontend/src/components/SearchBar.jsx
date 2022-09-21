@@ -11,7 +11,7 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import { BsSearch } from 'react-icons/bs';
 import throttle from 'lodash/throttle';
 
-import './SearchBar.scss';
+import styles from './SearchBar.module.scss';
 
 const SearchBar = ({ state, dispatch, venues }) => {
   let searchTimeoutId = 0;
@@ -70,7 +70,7 @@ const SearchBar = ({ state, dispatch, venues }) => {
   };
 
   return (
-    <Container className="filter-row">
+    <Container className={styles['filter-row']}>
       <Row>
         <Col>
           <InputGroup>
@@ -78,7 +78,7 @@ const SearchBar = ({ state, dispatch, venues }) => {
               <BsSearch />
             </InputGroup.Text>
             <Form.Control
-              className="search-bar"
+              className={styles['search-bar']}
               placeholder="Where are you? Eg: UTown"
               onChange={onSearchChange}
               onFocus={onFormFocus}
@@ -98,7 +98,7 @@ const SearchBar = ({ state, dispatch, venues }) => {
         <Col className="mt-1">
           <Collapse in={isShowList}>
             <ListGroup
-              className="list-group"
+              className={styles['list-group']}
               onFocus={onListFocus}
               onWheelCapture={onCapture}
             >

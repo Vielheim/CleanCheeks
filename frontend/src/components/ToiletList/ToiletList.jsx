@@ -9,7 +9,7 @@ import ToiletDetail from '../ToiletDetail/ToiletDetail';
 
 import { Utilities } from '../../enums/ToiletEnums';
 import { getPreferenceTypeDisplay } from '../../enums/ToiletPreferenceEnums';
-import './ToiletList.scss';
+import styles from './ToiletList.module.scss';
 import { getCleanlinessMetadata, sortToilets } from '../shared/Util';
 
 const UTILITIES = [
@@ -64,7 +64,7 @@ const ToiletList = ({ toilets, isShow, onCustomHide }) => {
               onClick={() => setSelectedToilet(toilet)}
             >
               <Card.Body>
-                <Card.Title className="card-header border-0 p-0">
+                <Card.Title className={`${styles['card-header']} border-0 p-0`}>
                   <p className="mb-2">{`${building}, Level ${fmtedFloor}`}</p>
                   {user_preference_type && (
                     <p className="mb-2 text-muted preference">
@@ -85,7 +85,7 @@ const ToiletList = ({ toilets, isShow, onCustomHide }) => {
                 </Row>
 
                 {UTILITIES.length > 0 && (
-                  <Container className="toilet-utilities-row">
+                  <Container className={styles['toilet-utilities-row']}>
                     {UTILITIES.map((group, i) => (
                       <Row key={i}>
                         {group.map((utility, i) => (

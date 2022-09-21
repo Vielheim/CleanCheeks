@@ -1,6 +1,6 @@
 import L from 'leaflet';
 
-import './markerIcon.scss';
+import styles from './markerIcon.module.scss';
 
 const getSvgCircle = (numGreen, numYellow, numRed, isTransparent) => {
   const RADIUS = 4;
@@ -35,7 +35,7 @@ const getMarkerIcon = (numGreen, numYellow, numRed, isTransparent = false) =>
   L.divIcon({
     html: getSvgCircle(numGreen, numYellow, numRed, isTransparent),
     iconSize: [40, 40],
-    className: 'leaflet-div-icon',
+    className: styles['leaflet-div-icon'],
   });
 
 export default getMarkerIcon;
