@@ -12,7 +12,7 @@ authRouter.post('/google', async (req: Request, res: Response) => {
     const { userId, accessToken } = result;
     res.cookie('user_id', userId, { httpOnly: true });
     res.cookie('access_token', accessToken, { httpOnly: true });
-    Util.sendSuccess(res, 201, 'Successfully logged in', result);
+    Util.sendSuccess(res, 201, 'Successfully logged in', true);
   } catch (error: unknown) {
     return Util.sendFailure(res, error);
   }
