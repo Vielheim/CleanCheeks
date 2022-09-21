@@ -11,8 +11,6 @@ import styles from './ToiletPreferencesModal.module.scss';
 /* 
 TODO: Sync blacklisted and favourited toilets when user favourites and blacklist toilets
 TODO: Show login button when user is not logged in
-TODO: Update UI
-- Apply gray background to toilet detail (for visual hierarchy)
  */
 const ToiletPreferencesModal = ({ state }) => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -23,6 +21,7 @@ const ToiletPreferencesModal = ({ state }) => {
   const [blacklistedToilets, setBlacklistedToilets] = useState([]);
   const [favouritedToilets, setFavouritedToilets] = useState([]);
 
+  // TODO: Fetch toilets whenever user changes preferences (can add action to useContext)
   const fetchToiletsWithPreferences = useCallback(() => {
     ToiletControlller.fetchToiletWithUserPreferences()
       .then((result) => {

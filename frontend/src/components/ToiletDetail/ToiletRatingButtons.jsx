@@ -7,14 +7,14 @@ const ToiletRatingButtons = ({ rateCleanToilet, rateDirtyToilet }) => {
   return (
     <Row>
       <Col className="text-center">
-        <Button variant="success" onClick={rateCleanToilet}>
-          {'Clean! :D'}
+        <Button variant="danger" onClick={rateDirtyToilet}>
+          {'Dirty! >:('}
         </Button>
       </Col>
 
       <Col className="text-center">
-        <Button variant="danger" onClick={rateDirtyToilet}>
-          {'Dirty! >:('}
+        <Button variant="success" onClick={rateCleanToilet}>
+          {'Clean! :D'}
         </Button>
       </Col>
     </Row>
