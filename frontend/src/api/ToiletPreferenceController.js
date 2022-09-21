@@ -13,4 +13,11 @@ export default class ToiletPreferenceControlller {
       },
     });
   }
+
+  static async deleteToiletPreference(toiletId) {
+    return Api.makeApiRequest({
+      method: 'DELETE',
+      url: `${TOILET_PREFERENCE_URL}?toiletId=${toiletId}`,
+    });
+  }
 }

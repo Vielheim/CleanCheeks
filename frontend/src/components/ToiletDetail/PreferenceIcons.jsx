@@ -17,17 +17,31 @@ const PreferenceIcons = ({
 
   const updateToiletPreference = useCallback(
     async (type) => {
-      await ToiletPreferenceControlller.updateToiletPreference(toiletId, type)
-        .then((result) => {
-          setPreference(result.data.type);
-          onSetPreferenceType(result.data.type);
-        })
-        .catch((e) => {
-          setUser(false);
-          navigate('/');
-        });
+      if (type === preference) {
+        await ToiletPreferenceControlller.deleteToiletPreference(toiletId)
+          .then((result) => {
+            if (result.data) {
+              setPreference(null);
+              onSetPreferenceType(null);
+            }
+          })
+          .catch((e) => {
+            setUser(false);
+            navigate('/');
+          });
+      } else {
+        await ToiletPreferenceControlller.updateToiletPreference(toiletId, type)
+          .then((result) => {
+            setPreference(result.data.type);
+            onSetPreferenceType(result.data.type);
+          })
+          .catch((e) => {
+            setUser(false);
+            navigate('/');
+          });
+      }
     },
-    [toiletId, onSetPreferenceType, setUser, navigate]
+    [preference, toiletId, onSetPreferenceType, setUser, navigate]
   );
 
   const onClickFavourite = useCallback(() => {
