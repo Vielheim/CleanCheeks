@@ -7,8 +7,10 @@ import cookieParser from 'cookie-parser';
 import swaggerUI from 'swagger-ui-express';
 import YAML from 'yamljs';
 
-const port = 8000; // Can replace with input from .env file
-const current_api = '/api/v1';
+const BASE_URL = process.env.BACKEND_APP_BASE_URL;
+const PORT = 8000;
+const FULL_URL = `${BASE_URL}:${PORT}`;
+const CURRENT_API = '/api/v1';
 
 export const getApp = () => {
   const app: Express = express();
@@ -27,12 +29,12 @@ export const getApp = () => {
 
   // endpoints
   app.get('/', (_, res: Response) => {
-    res.redirect('http://localhost:8000/api/v1/docs/');
+    res.redirect(`${FULL_URL}${CURRENT_API}/docs/`);
   });
 
-  app.use(current_api + '/docs', swaggerUI.serve, swaggerUI.setup(swaggerDoc));
+  app.use(CURRENT_API + '/docs', swaggerUI.serve, swaggerUI.setup(swaggerDoc));
 
-  app.use(current_api, router);
+  app.use(CURRENT_API, router);
 
   return app;
 };
@@ -41,8 +43,8 @@ export const startApp = () => {
   const app = getApp();
 
   try {
-    app.listen(port, () => {
-      console.log(`Server running on http://localhost:${port}`);
+    app.listen(PORT, () => {
+      console.log(`Server running on ${FULL_URL}`);
     });
   } catch (error: any) {
     console.log(`Error occurred: ${error.message}`);
