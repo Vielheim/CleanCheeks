@@ -3,16 +3,11 @@ import { ICoordinates } from '../../../api/interfaces/coordinates.interface';
 import { RatingTypeUtil } from '../../../enums/ToiletRatingEnums';
 import { DataNotFoundError } from '../../../errors/Errors';
 import { Toilet, ToiletPreference } from '../../models';
-import { IToiletInput, IToiletOutput } from '../../models/Toilet';
+import { IToiletOutput } from '../../models/Toilet';
 import ToiletRating from '../../models/ToiletRating';
 import { isPointInCircle } from '../../utilities/distance';
 import IPoint from '../../utilities/Point.interface';
 import { GetAllToiletsFilters, isEmptyGetAllToiletFilters } from './types';
-
-export const create = async (payload: IToiletInput): Promise<IToiletOutput> => {
-  const toilet = await Toilet.create(payload);
-  return toilet;
-};
 
 export const updateToiletRating = async ({
   toilet_id,
@@ -30,16 +25,6 @@ export const updateToiletRating = async ({
     cleanliness: Math.floor(newRating * 100) / 100,
     num_ratings: newRatingCount,
   });
-};
-
-export const update = async (
-  id: string,
-  payload: Partial<IToiletInput>
-): Promise<IToiletOutput> => {
-  const toilet = await getById(id);
-
-  const updatedToilet = await toilet.update(payload);
-  return updatedToilet;
 };
 
 export const deleteById = async (id: string): Promise<boolean> => {
