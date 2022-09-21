@@ -6,8 +6,5 @@ rm -r ./node_modules
 echo 'Done. Installing packages...'
 npm install
 
-echo 'Done. Building...'
-npm run build 
-
-echo 'Done. Running migrations...'
-npm run db-init
+echo 'Done. Running predeploy...'
+npm run predeploy
