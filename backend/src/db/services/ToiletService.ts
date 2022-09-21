@@ -1,18 +1,7 @@
 import { ICoordinates } from '../../api/interfaces/coordinates.interface';
 import { DataNotFoundError } from '../../errors/Errors';
 import * as toiletDataAccess from '../data_access/toilet/toilet';
-import { GetAllToiletsFilters } from '../data_access/toilet/types';
 import { IToiletOutput } from '../models/Toilet';
-
-export const getById = (id: string): Promise<IToiletOutput> => {
-  return toiletDataAccess.getById(id);
-};
-
-export const getAll = (
-  filters: GetAllToiletsFilters
-): Promise<IToiletOutput[]> => {
-  return toiletDataAccess.getAll(filters);
-};
 
 export const getAllNeighbouringToilets = async (
   coordinates: ICoordinates,

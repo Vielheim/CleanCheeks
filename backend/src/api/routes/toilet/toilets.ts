@@ -1,10 +1,7 @@
 import { Request, Response, Router } from 'express';
 import * as toiletController from '../../controllers/toilet';
 import Util from '../../util/Util';
-import {
-  getCoordinatesFromReq,
-  getFilterToiletsDTOFromReq,
-} from './toilets.util';
+import { getCoordinatesFromReq } from './toilets.util';
 
 const toiletsRouter = Router();
 
@@ -52,26 +49,6 @@ toiletsRouter.get('/ranking', async (req: Request, res: Response) => {
     const toiletId: string = req.query.id as string;
     const result = await toiletController.getRank(toiletId);
     return Util.sendSuccess(res, 200, 'Get toilet ranking', result);
-  } catch (error: unknown) {
-    return Util.sendFailure(res, error);
-  }
-});
-
-toiletsRouter.get('/:id', async (req: Request, res: Response) => {
-  try {
-    const id = req.params.id;
-    const result = await toiletController.getById(id);
-    return Util.sendSuccess(res, 200, 'Retrieved toilet', result);
-  } catch (error: unknown) {
-    return Util.sendFailure(res, error);
-  }
-});
-
-toiletsRouter.get('/', async (req: Request, res: Response) => {
-  try {
-    const filters = getFilterToiletsDTOFromReq(req);
-    const results = await toiletController.getAll(filters);
-    return Util.sendSuccess(res, 200, 'Retrieved all toilets', results);
   } catch (error: unknown) {
     return Util.sendFailure(res, error);
   }
