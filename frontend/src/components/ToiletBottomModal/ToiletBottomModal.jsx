@@ -1,14 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Offcanvas from 'react-bootstrap/Offcanvas';
-import { getDistance } from '../../utilities';
+import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
 import ToiletList from '../ToiletList/ToiletList';
-import { FiChevronUp, FiChevronDown } from 'react-icons/fi';
 
-import './ToiletBottomModal.scss';
 import Draggable from 'react-draggable';
+import ToiletControlller from '../../api/ToiletController';
+import './ToiletBottomModal.scss';
 
-const fmtDistance = (distance) =>
-  distance >= 1000 ? `${(distance / 1000).toFixed(1)}km` : `${distance}m`;
 // const distance = getDistance(;
 //   latitude,
 //   longitude,
@@ -16,15 +14,31 @@ const fmtDistance = (distance) =>
 //   state.center.current[1]
 // );
 
+// TODO: Sync blacklisted and favourited toilets
 const ToiletBottomModal = () => {
   const [isExpanded, setIsExpanded] = useState(false);
-
   const [position, setPosition] = useState({
     x: 0,
     y: 0.6 * window.innerHeight,
   });
-
   const [showModal, setShowModal] = useState(true);
+  const [blacklistedToilets, setBlacklistedToilets] = useState([]);
+  const [favouritedToilets, setFavouritedToilets] = useState([]);
+
+  const fetchToiletsWithPreferences = useCallback(() => {
+    ToiletControlller.fetchToiletWithUserPreferences()
+      .then((result) => {
+        setBlacklistedToilets(result.data.blacklistedToilets);
+        setFavouritedToilets(result.data.favouritedToilets);
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+  }, []);
+
+  useEffect(() => {
+    fetchToiletsWithPreferences();
+  }, [fetchToiletsWithPreferences]);
 
   const onHandleDrag = (e) => {
     if (isExpanded) {
@@ -49,7 +63,6 @@ const ToiletBottomModal = () => {
     backdrop: false,
   };
 
-  // Fetch favourited and blacklisted toilets
   return (
     <Draggable
       axis="y"
@@ -67,34 +80,42 @@ const ToiletBottomModal = () => {
         onHide={setShowModal}
         {...prop}
       >
-        {isExpanded ? (
-          <FiChevronDown
-            className="horizontal-bar"
-            size={40}
-            onClick={onHandleDrag}
-          />
-        ) : (
-          <FiChevronUp
-            className="horizontal-bar"
-            size={40}
-            onClick={onHandleDrag}
-          />
-        )}
         <Offcanvas.Header>
           <Offcanvas.Title>Favourited Toilets</Offcanvas.Title>
+          {isExpanded ? (
+            <FiChevronDown
+              className="horizontal-bar"
+              size={28}
+              onClick={onHandleDrag}
+            />
+          ) : (
+            <FiChevronUp
+              className="horizontal-bar"
+              size={28}
+              onClick={onHandleDrag}
+            />
+          )}
         </Offcanvas.Header>
         <Offcanvas.Body>
-          <ToiletList toilets={[]} isShow={isShow} onCustomHide={onHide} />
+          <ToiletList
+            toilets={favouritedToilets}
+            isShow={isShow}
+            onCustomHide={onHide}
+          />
         </Offcanvas.Body>
         <Offcanvas.Header>
           <Offcanvas.Title>Blacklisted Toilets</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
-          <ToiletList toilets={[]} isShow={isShow} onCustomHide={onHide} />
+          <ToiletList
+            toilets={blacklistedToilets}
+            isShow={isShow}
+            onCustomHide={onHide}
+          />
         </Offcanvas.Body>
       </Offcanvas>
     </Draggable>
   );
-};;
+};
 
 export default ToiletBottomModal;

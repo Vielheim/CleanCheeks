@@ -1,12 +1,9 @@
 import React from 'react';
 import Offcanvas from 'react-bootstrap/Offcanvas';
-import { getDistance } from '../../utilities';
+import { fmtDistance, getDistance } from '../../utilities';
 import ToiletList from '../ToiletList/ToiletList';
 
 import './ClusterDetails.scss';
-
-const fmtDistance = (distance) =>
-  distance >= 1000 ? `${(distance / 1000).toFixed(1)}km` : `${distance}m`;
 
 const ClusterDetails = ({ state, dispatch }) => {
   const { building, latitude, longitude, toilets } = state.selectedCluster;

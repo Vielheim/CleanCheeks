@@ -16,4 +16,11 @@ export default class ToiletControlller {
       url: `${TOILETS_URL}/ranking?id=${id}`,
     });
   }
+
+  static async fetchToiletWithUserPreferences() {
+    return Api.makeApiRequest({
+      method: 'GET',
+      url: `${TOILETS_URL}/with_user_preferences`,
+    });
+  }
 }

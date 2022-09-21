@@ -1,5 +1,6 @@
 import { GetAllToiletsFilters } from '../../../db/data_access/toilet/types';
 import * as service from '../../../db/services/ToiletService';
+import { PreferenceType } from '../../../enums';
 import {
   CreateToiletDTO,
   FilterToiletsDTO,
@@ -13,7 +14,10 @@ import {
 import { validateCoordinates } from '../../data_transfer/validate/Util';
 import { IToilet } from '../../interfaces';
 import { ICoordinates } from '../../interfaces/coordinates.interface';
-import { IToiletRank } from '../../interfaces/toilet.interface';
+import {
+  IToiletRank,
+  IToiletsWithUserPreferences,
+} from '../../interfaces/toilet.interface';
 import * as mapper from './mapper';
 
 export const create = async (payload: CreateToiletDTO): Promise<IToilet> => {
@@ -65,6 +69,29 @@ export const getAllNeighbouringToilets = async (
   return (await service.getAllNeighbouringToilets(coordinates, userId)).map(
     mapper.toToilet
   );
+};
+
+export const getToiletsWithUserPreferences = async (
+  userId?: string
+): Promise<IToiletsWithUserPreferences> => {
+  if (userId == null) {
+    return {
+      blacklistedToilets: [],
+      favouritedToilets: [],
+    };
+  }
+  const toilets = (await service.getToiletsWithUserPreferences(userId)).map(
+    mapper.toToilet
+  );
+
+  return {
+    blacklistedToilets: toilets.filter(
+      (toilet) => toilet.user_preference_type === PreferenceType.BLACKLIST
+    ),
+    favouritedToilets: toilets.filter(
+      (toilet) => toilet.user_preference_type === PreferenceType.FAVOURITE
+    ),
+  };
 };
 
 export const getRank = async (id: string): Promise<IToiletRank> => {

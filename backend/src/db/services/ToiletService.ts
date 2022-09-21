@@ -2,6 +2,7 @@ import { ICoordinates } from '../../api/interfaces/coordinates.interface';
 import { DataNotFoundError } from '../../errors/Errors';
 import * as toiletDataAccess from '../data_access/toilet/toilet';
 import { GetAllToiletsFilters } from '../data_access/toilet/types';
+import { ToiletPreference } from '../models';
 import { IToiletInput, IToiletOutput } from '../models/Toilet';
 
 export const create = (payload: IToiletInput): Promise<IToiletOutput> => {
@@ -29,14 +30,20 @@ export const getAll = (
   return toiletDataAccess.getAll(filters);
 };
 
-export const getAllNeighbouringToilets = (
+export const getAllNeighbouringToilets = async (
   coordinates: ICoordinates,
   userId?: string
 ): Promise<IToiletOutput[]> => {
-  return toiletDataAccess.getAllNeighbouringToiletsByCoordinates(
+  return await toiletDataAccess.getAllNeighbouringToiletsByCoordinates(
     coordinates,
     userId
   );
+};
+
+export const getToiletsWithUserPreferences = async (
+  userId: string
+): Promise<IToiletOutput[]> => {
+  return await toiletDataAccess.getToiletsWithUserPreferences(userId);
 };
 
 export const getRank = async (

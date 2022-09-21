@@ -4,11 +4,11 @@ import {
   CreateToiletDTO,
   UpdateToiletDTO,
 } from '../../data_transfer/toilet/toilet.dto';
+import Util from '../../util/Util';
 import {
   getCoordinatesFromReq,
   getFilterToiletsDTOFromReq,
 } from './toilets.util';
-import Util from '../../util/Util';
 
 const toiletsRouter = Router();
 
@@ -61,6 +61,26 @@ toiletsRouter.get('/neighbours', async (req: Request, res: Response) => {
     return Util.sendFailure(res, error);
   }
 });
+
+toiletsRouter.get(
+  '/with_user_preferences',
+  async (req: Request, res: Response) => {
+    try {
+      const { user_id } = req.cookies;
+      const results = await toiletController.getToiletsWithUserPreferences(
+        user_id
+      );
+      return Util.sendSuccess(
+        res,
+        200,
+        'Retrieved toilets set with user preferences',
+        results
+      );
+    } catch (error: unknown) {
+      return Util.sendFailure(res, error);
+    }
+  }
+);
 
 toiletsRouter.get('/ranking', async (req: Request, res: Response) => {
   try {
