@@ -49,7 +49,7 @@ const SearchBar = ({ state, dispatch, venues }) => {
   };
 
   const onListItemClick = ({ target: { value } }) => {
-    dispatch({ type: 'updateFilters', payload: { search: value } });
+    dispatch({ type: 'updateSearch', payload: value });
     setTempSearch(value);
     setIsShowList(false);
   };

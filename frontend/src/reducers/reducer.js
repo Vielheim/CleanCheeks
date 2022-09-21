@@ -66,21 +66,30 @@ const toiletReducer = (state, action) => {
         ...state,
         center: newCenterObj,
       }
+    case 'updateSearch':
+      const newCenter = getLocation(VENUES[action.payload]);
+      
+      return {
+        ...state,
+        filters: {
+          ...state.filters,
+          search: action.payload,
+        },
+        center: {
+          current: newCenter,
+          map: newCenter,
+        },
+      }
     case 'updateFilters':
       const filters = {
         ...state.filters,
         ...action.payload,
       };
-      const newCenter = getLocation(VENUES[filters.search]);
     
       return {
         ...state,
         filters,
         filteredClusters: clusteriseToilets(filterToilets(state.toilets, filters)),
-        center: {
-          current: newCenter,
-          map: newCenter,
-        },
       }
     case 'showCluster':
       return {
