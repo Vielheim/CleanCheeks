@@ -43,20 +43,4 @@ preferencesRouter.delete('/', async (req: Request, res: Response) => {
   }
 });
 
-preferencesRouter.get('/', async (req: Request, res: Response) => {
-  try {
-    let results;
-    const { user_id } = req.cookies;
-
-    if (user_id) {
-      results = await preferenceController.getByUserId(user_id);
-    } else {
-      results = await preferenceController.getAll();
-    }
-    return Util.sendSuccess(res, 200, 'Retrieved toilet preferences', results);
-  } catch (error: unknown) {
-    return Util.sendFailure(res, error);
-  }
-});
-
 export default preferencesRouter;
