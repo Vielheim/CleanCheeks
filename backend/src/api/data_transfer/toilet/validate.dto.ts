@@ -1,37 +1,11 @@
 import { ToiletType, Utilities } from '../../../enums';
 import { validate } from '../validate/Util';
-import {
-  CreateToiletDTO,
-  UpdateToiletDTO,
-  FilterToiletsDTO,
-} from './toilet.dto';
+import { FilterToiletsDTO } from './toilet.dto';
 
 const validateNonEmptyArray = (array_name: string, array: Array<any>) => {
   if (!array.length) {
     throw Error(`${array_name} must not be empty!`);
   }
-};
-
-// Validate individual fields
-const validateNumSeats = (num_seats: number) => {
-  const isValidated = 0 <= num_seats && Number.isInteger(num_seats);
-  validate(
-    isValidated,
-    'num_seats must be an integer and greater than or equal to 0'
-  );
-};
-
-const validateNumSquats = (num_squats: number) => {
-  const isValidated = 0 <= num_squats && Number.isInteger(num_squats);
-  validate(
-    isValidated,
-    'num_squats must be an integer and greater than or equal to 0'
-  );
-};
-
-const validateCleanliness = (cleanliness: number) => {
-  const isValidated = -1 <= cleanliness && cleanliness <= 1;
-  validate(isValidated, 'cleanliness must be a number between -1 and 1');
 };
 
 const validateToiletType = (type: string) => {
@@ -50,37 +24,6 @@ const validateUtilities = (utilities: string[]) => {
       `Utility ${utility} must be one of: ${Object.keys(Utilities)}`
     );
   });
-};
-
-// Validation for DTOs
-export const validateCreateToiletDTO = (payload: CreateToiletDTO) => {
-  validateNumSeats(payload.num_seats);
-  validateNumSquats(payload.num_squats);
-  validateCleanliness(payload.cleanliness);
-  validateToiletType(payload.type);
-  validateUtilities(payload.utilities);
-};
-
-export const validateUpdateToiletDTO = (payload: UpdateToiletDTO) => {
-  if (payload.num_seats) {
-    validateNumSeats(payload.num_seats);
-  }
-
-  if (payload.num_squats) {
-    validateNumSquats(payload.num_squats);
-  }
-
-  if (payload.cleanliness) {
-    validateCleanliness(payload.cleanliness);
-  }
-
-  if (payload.type) {
-    validateToiletType(payload.type);
-  }
-
-  if (payload.utilities) {
-    validateUtilities(payload.utilities);
-  }
 };
 
 // Filters must be non-empty and are the correct type
