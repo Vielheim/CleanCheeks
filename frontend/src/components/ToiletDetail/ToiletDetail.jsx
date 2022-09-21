@@ -4,74 +4,44 @@ import Badge from 'react-bootstrap/Badge';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import StyledUtility from '../shared/StyledUtility';
 
-import { FaHeart } from 'react-icons/fa';
 import { GrFormPreviousLink } from 'react-icons/gr';
-import { TiCancel } from 'react-icons/ti';
-import ToiletPreferenceControlller from '../../api/ToiletPreferenceController';
+import ToiletControlller from '../../api/ToiletController';
 import { Utilities } from '../../enums/ToiletEnums';
-import { PreferenceType } from '../../enums/ToiletPreferenceEnums';
 import '../ClusterDetails.scss';
 import { getCleanlinessMetadata } from '../shared/Util';
+import PreferenceIcons from './PreferenceIcons';
 import './ToiletDetail.scss';
 import ToiletRating from './ToiletRating';
-import ToiletControlller from '../../api/ToiletController';
-import { setLocalStorageValue } from '../../utilities/localStorage';
-import { USER_KEY } from '../../constants';
 
 const ToiletDetail = ({ building, toilet, isShow, onBack, onHide }) => {
-  const {
-    id,
-    user_preference_type,
-    description,
-    floor,
-    cleanliness,
-    utilities,
-  } = toilet;
+  const { id, description, floor, utilities } = toilet;
 
   const navigate = useNavigate();
 
   const fmtedFloor = floor < 0 ? `B${Math.abs(floor)}` : floor.toString();
-  const { text, type } = getCleanlinessMetadata(cleanliness);
 
-  const [preference, setPreference] = useState(user_preference_type);
+  const [cleanlinessMetadata, setCleanlinessMetadata] = useState({
+    text: 'BAD',
+    type: 'danger',
+  });
   const [percentageBeat, setPercentageBeat] = useState(0);
-
-  const updateToiletPreference = useCallback(
-    async (type) => {
-      await ToiletPreferenceControlller.updateToiletPreference(id, type)
-        .then((result) => {
-          setPreference(result.data.type);
-          toilet.user_preference_type = result.data.type;
-        })
-        .catch((e) => {
-          setLocalStorageValue(USER_KEY, false);
-          navigate('/');
-        });
-    },
-    [id, toilet]
-  );
-
-  const onClickFavourite = useCallback(() => {
-    updateToiletPreference(PreferenceType.FAVOURITE);
-  }, [updateToiletPreference]);
-
-  const onClickBlacklist = useCallback(() => {
-    updateToiletPreference(PreferenceType.BLACKLIST);
-  }, [updateToiletPreference]);
 
   const updateToiletRank = useCallback(async () => {
     await ToiletControlller.getToiletRank(id)
       .then((result) => {
+        const cleanliness = result.data.toilet.cleanliness;
         setPercentageBeat(result.data.percentageBeat);
+        setCleanlinessMetadata(getCleanlinessMetadata(cleanliness));
+        toilet.cleanliness = cleanliness;
       })
       .catch((e) => {
-        console.log(e);
+        console.error(e);
       });
-  }, [id]);
+  }, [id, toilet]);
 
-  useEffect(() => {
-    setPreference(toilet.user_preference_type);
-  }, [toilet]);
+  const onUpdateToiletPreference = (preference) => {
+    toilet.user_preference_type = preference;
+  };
 
   useEffect(() => {
     updateToiletRank();
@@ -90,21 +60,25 @@ const ToiletDetail = ({ building, toilet, isShow, onBack, onHide }) => {
           <p className="m-0">{`${building}, Level ${fmtedFloor}`}</p>
           <p className="m-0 text-muted fs-6">{description}</p>
         </Offcanvas.Title>
-        <div>
-          <FaHeart
-            className="favourite-icon"
-            color={preference === 'FAVOURITE' ? 'red' : 'lightgrey'}
-            size={20}
-            onClick={onClickFavourite}
-          />
-          <TiCancel
-            size={28}
-            color={preference === 'BLACKLIST' ? 'black' : 'lightgrey'}
-            onClick={onClickBlacklist}
-          />
-        </div>
+        <PreferenceIcons
+          toiletId={id}
+          initPreferenceType={toilet.user_preference_type}
+          onSetPreferenceType={onUpdateToiletPreference}
+        />
       </Offcanvas.Header>
       <Offcanvas.Body>
+        <div className="toilet-summary">
+          <p className="toilet-summary-item">{cleanlinessMetadata.quote}</p>
+
+          <img
+            className="toilet-summary-item"
+            alt={cleanlinessMetadata.text}
+            src={cleanlinessMetadata.icon}
+            width={100}
+            height={100}
+          />
+        </div>
+
         <p className="mb-3 h6 fw-bold">Utilities</p>
         <div className="toilet-utilities box">
           {Object.keys(Utilities).map((utility, i) => (
@@ -117,10 +91,13 @@ const ToiletDetail = ({ building, toilet, isShow, onBack, onHide }) => {
         </div>
         <p className="mb-3 h6 fw-bold">Cleanliness</p>
         <div className="box text-center">
-          <Badge className="mb-2" bg={type}>{`${text} cleanliness`}</Badge>
+          <Badge
+            className="mb-2"
+            bg={cleanlinessMetadata.type}
+          >{`${cleanlinessMetadata.text} cleanliness`}</Badge>
           <input
             type="range"
-            class="form-range"
+            className="form-range"
             id="disabledRange"
             min="0"
             value={percentageBeat}

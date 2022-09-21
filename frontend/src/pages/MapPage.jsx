@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  useContext,
+  useReducer,
+} from 'react';
 import {
   MapContainer,
   Marker,
@@ -8,20 +14,19 @@ import {
   ZoomControl,
   useMapEvents,
 } from 'react-leaflet';
-import Toast from 'react-bootstrap/Toast';
-import ToastContainer from 'react-bootstrap/ToastContainer';
 import SearchBar from '../components/SearchBar';
 import ClusterDetails from '../components/ClusterDetails';
 import getMarkerIcon from '../components/markerIcon';
-import { INITIAL_FILTER_STATE, OFFLINE_TOILETS, USER_KEY } from '../constants';
+import { ToastContext } from '../utilities/context';
 import { getDistance } from '../utilities';
-import focused_face from '../assets/focused_face.png';
+import toiletReducer, { INITIAL_TOILET_STATE } from '../reducers/reducer';
 import VENUES from '../assets/venues.json';
 import LoginButton from '../components/LoginButton';
 import { getLocalStorageValue } from '../utilities/localStorage';
 
 import './MapPage.scss';
 import ToiletControlller from '../api/ToiletController';
+import { getToiletsBreakdown } from '../components/shared/Util';
 
 const CIRCLE_FILL_OPTIONS = {
   fillOpacity: 1,
@@ -30,145 +35,75 @@ const CIRCLE_FILL_OPTIONS = {
 };
 const POLYLINE_FILL_OPTIONS = { color: '#4242a9' };
 
-const getLocation = ({ location }) => {
-  const { x: longitude, y: latitude } = location;
-  return [latitude, longitude];
-};
-
-const getNumCleanToilets = (toilets) =>
-  toilets.reduce(
-    (prev, { cleanliness }) => (cleanliness >= 0 ? 1 + prev : prev),
-    0
-  );
-
-const clusteriseToilets = (toilets) => {
-  const coordsToClusters = {};
-  for (const { building, latitude, longitude, ...others } of toilets) {
-    const coordKey = `${latitude} + ${longitude}`;
-    if (!coordsToClusters[coordKey]) {
-      coordsToClusters[coordKey] = {
-        building,
-        latitude,
-        longitude,
-        toilets: [],
-      };
-    }
-    coordsToClusters[coordKey].toilets.push({
-      ...others,
-    });
-  }
-
-  return Object.values(coordsToClusters);
-};
-
-const TOAST_CONTENTS = {
-  OFFLINE: {
-    title: 'Oops!',
-    body: 'Looks like you are not connected to the internet. Cleancheeks will\
-    only be able to give you updated toilets near you once you are\
-    connected.',
-    bg: 'warning',
-    img: focused_face,
-  },
-  ONLINE: {
-    title: 'Hello!',
-    body: 'Looks like you are back online. Enjoy your clean cheeks!',
-    bg: 'light',
-    img: focused_face,
-  },
-  ERROR: {
-    title: 'Oops!',
-    body: 'Something went wrong... Try again later!',
-    bg: 'warning',
-    img: focused_face,
-  },
-};
-
 const MapPage = () => {
   const PanZoomCenter = () => {
     const onPanZoomEnd = (map) => {
       const { lat, lng } = map.getCenter();
-      setCenter({
-        ...center,
-        map: [lat, lng],
-      });
+      dispatch({ type: 'updateCenter', payload: { map: [lat, lng] } });
     };
     const map = useMapEvents({
       dragend: () => {
-        onPanZoomEnd(map);
-      },
-      zoomend: () => {
         onPanZoomEnd(map);
       },
     });
     return null;
   };
 
-  const fetchCloseToilets = useCallback((coordinates, radius) => {
-    ToiletControlller.fetchCloseToilets(coordinates, radius)
-      .then((result) => {
-        setToilets(result.data);
-        setFilteredClusters(clusteriseToilets(result.data));
-      })
-      .catch((e) => {
-        console.error(e);
-        setToastType('ERROR');
-      });
-  }, []);
-
   const mapMarkerHandlers = {
     click: (e) => {
       const clusterIndex = e.target.options.data;
-      setIsShowCluster(true);
-      setSelectedCluster(filteredClusters[clusterIndex]);
+      dispatch({ type: 'showCluster', payload: clusterIndex });
     },
   };
 
-  const [toastType, setToastType] = useState(null);
-  const [toilets, setToilets] = useState(OFFLINE_TOILETS);
-  const [isShowCluster, setIsShowCluster] = useState(false);
-  const [filteredClusters, setFilteredClusters] = useState([]);
-  const [selectedCluster, setSelectedCluster] = useState(null);
-  // current is where the marker will point.
-  // map is where the center of the map UI is at.
-  const [center, setCenter] = useState({
-    current: getLocation(VENUES['UT-AUD1']),
-    map: getLocation(VENUES['UT-AUD1']),
-  });
-  const [filters, setFilters] = useState(INITIAL_FILTER_STATE);
+  const setToastType = useContext(ToastContext);
+  const [state, dispatch] = useReducer(toiletReducer, INITIAL_TOILET_STATE);
   const [map, setMap] = useState(null);
+
+  const fetchCloseToilets = useCallback(
+    (coordinates, radius) => {
+      ToiletControlller.fetchCloseToilets(coordinates, radius)
+        .then((result) => {
+          dispatch({ type: 'updateToilets', payload: result.data });
+        })
+        .catch((e) => {
+          console.error(e);
+          setToastType('ERROR');
+        });
+    },
+    [setToastType]
+  );
 
   // runs only on first load
   useEffect(() => {
-    const lastCenter = localStorage.getItem('lastCenter');
-    if (lastCenter !== null) {
-      const parsedCenter = JSON.parse(lastCenter);
-      setCenter({
-        current: parsedCenter,
-        map: parsedCenter,
-      });
-    }
-
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
         const latitude = position.coords.latitude;
         const longitude = position.coords.longitude;
         const newCenter = [latitude, longitude];
-        setCenter({
-          current: newCenter,
-          map: newCenter,
+        dispatch({
+          type: 'updateCenter',
+          payload: { current: newCenter, map: newCenter },
         });
         localStorage.setItem('lastCenter', JSON.stringify(newCenter));
       });
     }
 
     window.addEventListener('online', () => {
-      setToastType('ONLINE');
+      if (setToastType) {
+        setToastType('ONLINE');
+      }
     });
     window.addEventListener('offline', () => {
-      setToastType('OFFLINE');
+      if (setToastType) {
+        setToastType('OFFLINE');
+      }
     });
-  }, []);
+  }, [setToastType]);
+
+  useEffect(() => {
+    localStorage.setItem('filters', JSON.stringify(state.filters));
+  }, [state.filters]);
 
   useEffect(() => {
     let radius = 400;
@@ -181,32 +116,25 @@ const MapPage = () => {
       // minimum distance apart in metres
       const minDistance = (Math.min(width, height) * 110000) / 2;
       radius = minDistance * 0.7;
-      fetchCloseToilets(center.map, radius);
+      fetchCloseToilets(state.center.map, radius);
     }
-  }, [center.map, fetchCloseToilets, map]);
+  }, [state.center.map, map, fetchCloseToilets]);
 
   useEffect(() => {
-    const newCenter = getLocation(VENUES[filters.search]);
-    setCenter({
-      current: newCenter,
-      map: newCenter,
-    });
-  }, [filters.search]);
-
-  useEffect(() => {
+    localStorage.setItem('lastCenter', JSON.stringify(state.center.current));
     if (map) {
-      map.flyTo(center.current, 18);
+      map.flyTo(state.center.map);
     }
-  }, [center.current, map]);
+  }, [state.center, map]);
 
   return (
     <div id="map">
       <MapContainer
-        center={center.current}
+        center={state.center.current}
         zoom={18}
         minZoom={17}
         zoomControl={false}
-        scrollWheelZoom={false}
+        scrollWheelZoom={true}
         ref={setMap}
       >
         <TileLayer
@@ -216,40 +144,38 @@ const MapPage = () => {
         {!getLocalStorageValue(USER_KEY) && <LoginButton />}
         <SearchBar
           className="leaflet-top searchbar-row"
-          setFilters={setFilters}
-          filters={filters}
+          state={state}
+          dispatch={dispatch}
           venues={VENUES}
         />
         <Circle
           className="location-marker"
-          center={center.current}
+          center={state.center.current}
           pathOptions={CIRCLE_FILL_OPTIONS}
           radius={10}
         />
-        {filteredClusters.map((cluster, i) => {
+        {state.filteredClusters.map((cluster, i) => {
           const { latitude, longitude, toilets } = cluster;
           const isNear =
             getDistance(
               latitude,
               longitude,
-              center.current[0],
-              center.current[1]
+              state.center.current[0],
+              state.center.current[1]
             ) <= 200;
+          const { GOOD, AVERAGE, BAD } = getToiletsBreakdown(toilets);
+
           return (
             <React.Fragment key={i}>
               {isNear && (
                 <Polyline
                   pathOptions={POLYLINE_FILL_OPTIONS}
-                  positions={[center.current, [latitude, longitude]]}
+                  positions={[state.center.current, [latitude, longitude]]}
                 />
               )}
               <Marker
                 position={[latitude, longitude]}
-                icon={getMarkerIcon(
-                  toilets.length,
-                  getNumCleanToilets(toilets),
-                  !isNear
-                )}
+                icon={getMarkerIcon(GOOD, AVERAGE, BAD, !isNear)}
                 data={i}
                 eventHandlers={mapMarkerHandlers}
               />
@@ -257,41 +183,10 @@ const MapPage = () => {
           );
         })}
         <ZoomControl position="bottomright" />
-        {selectedCluster && (
-          <ClusterDetails
-            currLocation={center.current}
-            cluster={selectedCluster}
-            isShow={isShowCluster}
-            setIsShow={setIsShowCluster}
-          />
+        {state.selectedCluster !== null && (
+          <ClusterDetails state={state} dispatch={dispatch} />
         )}
         <PanZoomCenter />
-        {toastType !== null && (
-          <ToastContainer position="bottom-center">
-            <Toast
-              className="mb-4 offline-toast"
-              bg={TOAST_CONTENTS[toastType].bg}
-              show={true}
-              onClose={() => setToastType(null)}
-              delay={4000}
-              autohide
-            >
-              <Toast.Header className="toast-header">
-                <div className="toast-header-content">
-                  <img
-                    src={TOAST_CONTENTS[toastType].img}
-                    height={25}
-                    width={25}
-                  />
-                  <strong className="toast-header-title">
-                    {TOAST_CONTENTS[toastType].title}
-                  </strong>
-                </div>
-              </Toast.Header>
-              <Toast.Body>{TOAST_CONTENTS[toastType].body}</Toast.Body>
-            </Toast>
-          </ToastContainer>
-        )}
       </MapContainer>
     </div>
   );

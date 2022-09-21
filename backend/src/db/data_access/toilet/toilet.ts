@@ -4,11 +4,10 @@ import { IToiletInput, IToiletOutput } from '../../models/Toilet';
 import { GetAllToiletsFilters, isEmptyGetAllToiletFilters } from './types';
 import { Op, Sequelize } from 'sequelize';
 import { ICoordinates } from '../../../api/interfaces/coordinates.interface';
-import injection_container from '../../indices/config';
-import { NeighbouringToiletsIndex } from '../../indices';
-import TYPES from '../../indices/types';
 import ToiletRating from '../../models/ToiletRating';
 import { RatingTypeUtil } from '../../../enums/ToiletRatingEnums';
+import IPoint from '../../utilities/Point.interface';
+import { isPointInCircle } from '../../utilities/distance';
 
 export const create = async (payload: IToiletInput): Promise<IToiletOutput> => {
   const toilet = await Toilet.create(payload);
@@ -96,7 +95,7 @@ export const getAll = async (
   });
 };
 
-// Get all toilets with optionally a user's preference of the toilet
+// Get all neighbouring toilets with optionally a user's preference of the toilet
 export const getAllNeighbouringToiletsByCoordinates = async (
   coordinates: ICoordinates,
   userId?: string
@@ -114,14 +113,20 @@ export const getAllNeighbouringToiletsByCoordinates = async (
     },
   });
 
-  const neighbouringToiletsIndex: NeighbouringToiletsIndex =
-    injection_container.get<NeighbouringToiletsIndex>(
-      TYPES.NeighbouringToiletsIndex
-    );
+  // Check if toilet is within a radius from the center
+  const center: IPoint = {
+    x: coordinates.latitude,
+    y: coordinates.longitude,
+  };
 
-  const results = neighbouringToiletsIndex
-    .query(coordinates.latitude, coordinates.longitude, coordinates.radius)
-    .map((idx) => toilets_with_preference[idx]);
+  const results = toilets_with_preference.filter((toilet) => {
+    const toiletPoint: IPoint = {
+      x: toilet.latitude,
+      y: toilet.longitude,
+    };
+
+    return isPointInCircle(toiletPoint, center, coordinates.radius);
+  });
 
   return results;
 };

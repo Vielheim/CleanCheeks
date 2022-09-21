@@ -5,3 +5,18 @@
   height: 100vh;
   width: 100%;
 }
+
+// toast styles
+.toast-header {
+  justify-content: space-between;
+}
+
+.toast-header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.toast-header-title {
+  margin-left: 1rem;
+}

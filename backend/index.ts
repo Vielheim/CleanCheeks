@@ -1,4 +1,4 @@
-import express, { Express, Request, Response } from 'express';
+import express, { Express, Response } from 'express';
 import bodyParser from 'body-parser';
 import router from './src/api/routes';
 import sequelize from './src/db/index';
@@ -6,12 +6,11 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import swaggerUI from 'swagger-ui-express';
 import YAML from 'yamljs';
-import injection_container from './src/db/indices/config';
-import { NeighbouringToiletsIndex } from './src/db/indices';
-import TYPES from './src/db/indices/types';
 
-const port = 8000; // Can replace with input from .env file
-const current_api = '/api/v1';
+const BASE_URL = process.env.BACKEND_APP_BASE_URL;
+const PORT = 8000;
+const FULL_URL = `${BASE_URL}:${PORT}`;
+const CURRENT_API = '/api/v1';
 
 export const getApp = () => {
   const app: Express = express();
@@ -28,14 +27,14 @@ export const getApp = () => {
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(cookieParser());
 
-  // endpoints
+  // For Render.com to ping: https://stackoverflow.com/questions/72150113/nodejs-app-build-is-successful-render-but-application-error-in-render-at-the-l
   app.get('/', (_, res: Response) => {
-    res.redirect('http://localhost:8000/api/v1/docs/');
+    res.sendStatus(200);
   });
 
-  app.use(current_api + '/docs', swaggerUI.serve, swaggerUI.setup(swaggerDoc));
+  app.use(CURRENT_API + '/docs', swaggerUI.serve, swaggerUI.setup(swaggerDoc));
 
-  app.use(current_api, router);
+  app.use(CURRENT_API, router);
 
   return app;
 };
@@ -44,20 +43,12 @@ export const startApp = () => {
   const app = getApp();
 
   try {
-    app.listen(port, () => {
-      console.log(`Server running on http://localhost:${port}`);
+    app.listen(PORT, () => {
+      console.log(`Server running on ${FULL_URL}`);
     });
   } catch (error: any) {
     console.log(`Error occurred: ${error.message}`);
   }
-};
-
-export const initialiseIndices = async () => {
-  const neighbouringToiletsIndex =
-    injection_container.get<NeighbouringToiletsIndex>(
-      TYPES.NeighbouringToiletsIndex
-    );
-  await neighbouringToiletsIndex.generateIndices();
 };
 
 export const startDb = () => {
@@ -73,7 +64,6 @@ export const startDb = () => {
 // Start db and server
 export const start = async () => {
   startDb();
-  await initialiseIndices();
   startApp();
 };
 
