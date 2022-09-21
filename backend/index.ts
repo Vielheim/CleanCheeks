@@ -27,7 +27,7 @@ export const getApp = () => {
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(cookieParser());
 
-  // endpoints
+  // For Render.com to ping: https://stackoverflow.com/questions/72150113/nodejs-app-build-is-successful-render-but-application-error-in-render-at-the-l
   app.get('/', (_, res: Response) => {
     res.sendStatus(200);
   });
