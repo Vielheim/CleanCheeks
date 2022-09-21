@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 import Container from 'react-bootstrap/Container';
+import { useNavigate } from 'react-router-dom';
 import { TOILET_RATING } from '../../constants';
 import {
   getLocalStorageValue,
@@ -10,11 +11,13 @@ import ToiletRatingController from '../../api/ToiletRatingController';
 import { parseISO, differenceInMilliseconds } from 'date-fns';
 import ToiletRatingButtons from './ToiletRatingButtons';
 import ToiletRatingCountdown from './ToiletRatingCountdown';
-import { useCallback } from 'react';
+import { AuthContext } from '../../utilities/context';
 
 const ToiletRating = ({ toiletId, onRate }) => {
+  const navigate = useNavigate();
   const [nextRatingTime, setNextRatingTime] = useState(null);
   const rating_info_key = `rating_info_${toiletId}`;
+  const { setUser } = useContext(AuthContext);
 
   const clearNextRatingTime = useCallback(() => {
     removeLocalStorageValue(rating_info_key);
@@ -60,7 +63,10 @@ const ToiletRating = ({ toiletId, onRate }) => {
           updateRatingInfo(res.data);
           onRate();
         })
-        .catch((e) => console.log(e));
+        .catch((e) => {
+          setUser(false);
+          navigate('/');
+        });
     },
     [onRate, toiletId, updateRatingInfo]
   );
