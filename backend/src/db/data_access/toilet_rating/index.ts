@@ -1,4 +1,3 @@
-import { DataNotFoundError } from '../../../errors/Errors';
 import ToiletRating, {
   IToiletRatingInput,
   IToiletRatingOutput,
@@ -8,10 +7,6 @@ export const create = async (
   payload: IToiletRatingInput
 ): Promise<IToiletRatingOutput> => {
   return await ToiletRating.create(payload);
-};
-
-export const getAll = async (): Promise<IToiletRatingOutput[]> => {
-  return await ToiletRating.findAll();
 };
 
 export const getUserLastRated = async (
