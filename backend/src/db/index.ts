@@ -17,6 +17,9 @@ let sequelize: Sequelize;
 if (NODE_ENV === 'production') {
   sequelize = new Sequelize(PROD_DB_URL!, {
     dialect: DB_DIALECT as Dialect,
+    dialectOptions: {
+      ssl: true,
+    },
   });
 } else {
   sequelize = new Sequelize(DB_NAME!, DB_USER!, DB_PASSWORD, {
