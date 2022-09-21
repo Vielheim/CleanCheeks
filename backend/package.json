@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npm run deploy",
+    "start": "npm run deploy-init && npm run deploy",
     "deploy": "concurrently \"tsc --watch\" \"nodemon -q dist/index.js\"",
-    "predeploy": "npm run build && npm run db-init",
+    "deploy-init": "npm run build && npm run db-init",
     "build": "rimraf ./dist && tsc",
     "db-init": "sequelize-cli db:migrate:undo:all && sequelize-cli db:migrate && sequelize-cli db:seed:all",
     "lint": "npx prettier --write ./src/*",
