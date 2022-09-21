@@ -1,13 +1,13 @@
+import { Op, Sequelize } from 'sequelize';
+import { ICoordinates } from '../../../api/interfaces/coordinates.interface';
+import { RatingTypeUtil } from '../../../enums/ToiletRatingEnums';
 import { DataNotFoundError } from '../../../errors/Errors';
 import { Toilet, ToiletPreference } from '../../models';
 import { IToiletInput, IToiletOutput } from '../../models/Toilet';
-import { GetAllToiletsFilters, isEmptyGetAllToiletFilters } from './types';
-import { Op, Sequelize } from 'sequelize';
-import { ICoordinates } from '../../../api/interfaces/coordinates.interface';
 import ToiletRating from '../../models/ToiletRating';
-import { RatingTypeUtil } from '../../../enums/ToiletRatingEnums';
-import IPoint from '../../utilities/Point.interface';
 import { isPointInCircle } from '../../utilities/distance';
+import IPoint from '../../utilities/Point.interface';
+import { GetAllToiletsFilters, isEmptyGetAllToiletFilters } from './types';
 
 export const create = async (payload: IToiletInput): Promise<IToiletOutput> => {
   const toilet = await Toilet.create(payload);
@@ -129,6 +129,23 @@ export const getAllNeighbouringToiletsByCoordinates = async (
   });
 
   return results;
+};
+
+export const getToiletsWithUserPreferences = async (
+  userId: string
+): Promise<IToiletOutput[]> => {
+  return await Toilet.findAll({
+    include: {
+      model: ToiletPreference,
+      as: 'toiletPreferences',
+      where: {
+        user_id: {
+          [Op.eq]: userId, // ignored if undefined
+        },
+      },
+      required: true, // Use outer join to include all toilets
+    },
+  });
 };
 
 export const getToiletsOrderByCleanlinessDesc = async (): Promise<{

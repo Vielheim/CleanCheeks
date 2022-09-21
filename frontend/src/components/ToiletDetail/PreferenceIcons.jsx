@@ -27,7 +27,7 @@ const PreferenceIcons = ({
           navigate('/');
         });
     },
-    [toiletId, onSetPreferenceType]
+    [toiletId, onSetPreferenceType, setUser, navigate]
   );
 
   const onClickFavourite = useCallback(() => {
@@ -41,7 +41,6 @@ const PreferenceIcons = ({
   return (
     <div>
       <FaHeart
-        className="favourite-icon"
         color={preference === PreferenceType.FAVOURITE ? 'red' : 'lightgrey'}
         size={20}
         onClick={onClickFavourite}
