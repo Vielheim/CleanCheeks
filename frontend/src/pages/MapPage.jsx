@@ -15,7 +15,7 @@ import {
   useMapEvents,
 } from 'react-leaflet';
 import SearchBar from '../components/SearchBar';
-import ClusterDetails from '../components/ClusterDetails';
+import ClusterDetails from '../components/ClusterDetail/ClusterDetails';
 import getMarkerIcon from '../components/markerIcon';
 import { ToastContext } from '../utilities/context';
 import { getDistance } from '../utilities';
@@ -25,6 +25,7 @@ import VENUES from '../assets/venues.json';
 import './MapPage.scss';
 import ToiletControlller from '../api/ToiletController';
 import { getToiletsBreakdown } from '../components/shared/Util';
+import ToiletBottomModal from '../components/ToiletBottomModal/ToiletBottomModal';
 
 const CIRCLE_FILL_OPTIONS = {
   fillOpacity: 1,
@@ -183,6 +184,7 @@ const MapPage = () => {
         {state.selectedCluster !== null && (
           <ClusterDetails state={state} dispatch={dispatch} />
         )}
+        {<ToiletBottomModal />}
         <PanZoomCenter />
       </MapContainer>
     </div>

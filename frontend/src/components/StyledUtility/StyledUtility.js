@@ -1,5 +1,6 @@
 import { capitalize } from 'lodash';
 import { GrFormCheckmark, GrFormClose } from 'react-icons/gr';
+import './StyledUtility.scss';
 
 const StyledUtility = ({ utility, presentUtilities }) => {
   const isPresent = presentUtilities.includes(utility.toUpperCase());
