@@ -1,7 +1,7 @@
 import React from 'react';
 import Offcanvas from 'react-bootstrap/Offcanvas';
-import { getDistance } from '../utilities';
-import ToiletList from './ToiletList/ToiletList';
+import { getDistance } from '../../utilities';
+import ToiletList from '../ToiletList/ToiletList';
 
 import './ClusterDetails.scss';
 
@@ -34,7 +34,11 @@ const ClusterDetails = ({ state, dispatch }) => {
         <strong>{fmtDistance(distance)}</strong> away from your location
       </div>
       <Offcanvas.Body>
-        <ToiletList toilets={toilets} state={state} />
+        <ToiletList
+          toilets={toilets}
+          isShow={state.isShowCluster}
+          onCustomHide={() => dispatch({ type: 'closeCluster' })}
+        />
       </Offcanvas.Body>
     </Offcanvas>
   );

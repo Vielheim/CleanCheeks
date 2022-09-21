@@ -17,12 +17,12 @@ const UTILITIES = [
   [Utilities.BIDETS, Utilities.SHOWERS],
 ];
 
-const ToiletList = ({ toilets, state, dispatch }) => {
+const ToiletList = ({ toilets, isShow, onCustomHide }) => {
   const [selectedToilet, setSelectedToilet] = useState(null);
 
   const onHide = () => {
     setSelectedToilet(null);
-    dispatch({ type: 'closeCluster' });
+    onCustomHide();
   };
 
   if (selectedToilet != null) {
@@ -30,7 +30,7 @@ const ToiletList = ({ toilets, state, dispatch }) => {
       <ToiletDetail
         building={selectedToilet.building}
         toilet={selectedToilet}
-        isShow={state.isShowCluster}
+        isShow={isShow}
         onBack={() => setSelectedToilet(null)}
         onHide={onHide}
       />

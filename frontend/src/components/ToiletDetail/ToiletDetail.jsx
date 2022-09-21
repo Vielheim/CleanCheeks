@@ -6,7 +6,7 @@ import StyledUtility from '../StyledUtility/StyledUtility';
 import { GrFormPreviousLink } from 'react-icons/gr';
 import ToiletControlller from '../../api/ToiletController';
 import { Utilities } from '../../enums/ToiletEnums';
-import '../ClusterDetails.scss';
+import '../ClusterDetail/ClusterDetails.scss';
 import { getCleanlinessMetadata } from '../shared/Util';
 import PreferenceIcons from './PreferenceIcons';
 import './ToiletDetail.scss';
