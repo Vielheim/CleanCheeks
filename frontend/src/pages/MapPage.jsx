@@ -22,7 +22,7 @@ import { getDistance } from '../utilities';
 import toiletReducer, { INITIAL_TOILET_STATE } from '../reducers/reducer';
 import VENUES from '../assets/venues.json';
 
-import './MapPage.scss';
+import styles from './MapPage.module.scss';
 import ToiletControlller from '../api/ToiletController';
 import { getToiletsBreakdown } from '../components/shared/Util';
 
@@ -146,7 +146,7 @@ const MapPage = () => {
           venues={VENUES}
         />
         <Circle
-          className="location-marker"
+          className={styles['location-marker']}
           center={state.center.current}
           pathOptions={CIRCLE_FILL_OPTIONS}
           radius={10}

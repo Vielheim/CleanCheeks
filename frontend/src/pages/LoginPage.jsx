@@ -3,20 +3,20 @@ import { Link } from 'react-router-dom';
 import logo from '../assets/logo.jpeg';
 import { MdArrowRight } from 'react-icons/md';
 import GoogleAuth from '../components/auth/GoogleAuth';
-import './LoginPage.scss';
+import styles from './LoginPage.module.scss';
 
 const LoginPage = () => {
   return (
-    <div className="login-container">
-      <img className="login-logo" src={logo} alt="logo"></img>
-      <h2 className="login-title">welcome to cleancheeks</h2>
+    <div className={styles['login-container']}>
+      <img className={styles['login-logo']} src={logo} alt="logo"></img>
+      <h2 className={styles['login-title']}>welcome to cleancheeks</h2>
       <GoogleAuth />
-      <div className="divider">
-        <hr className="divider-line" />
+      <div className={styles['divider']}>
+        <hr className={styles['divider-line']} />
         or
-        <hr className="divider-line" />
+        <hr className={styles['divider-line']} />
       </div>
-      <Link to="/home" className="continue-text">
+      <Link to="/home" className={styles['continue-text']}>
         Continue without logging in
         <MdArrowRight />
       </Link>

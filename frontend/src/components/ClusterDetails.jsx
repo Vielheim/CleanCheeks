@@ -10,7 +10,7 @@ import StyledUtility from './shared/StyledUtility';
 import ToiletDetail from './ToiletDetail/ToiletDetail';
 
 import { Utilities } from '../enums/ToiletEnums';
-import './ClusterDetails.scss';
+import styles from './ClusterDetails.module.scss';
 import { getCleanlinessMetadata } from './shared/Util';
 import { getPreferenceTypeDisplay } from '../enums/ToiletPreferenceEnums';
 
@@ -68,7 +68,7 @@ const ClusterDetails = ({ state, dispatch }) => {
 
   return (
     <Offcanvas
-      className="offcanvas-container"
+      className={styles['offcanvas-container']}
       placement="bottom"
       show={state.isShowCluster}
       onHide={() => dispatch({ type: 'closeCluster' })}
@@ -78,7 +78,7 @@ const ClusterDetails = ({ state, dispatch }) => {
           numToilets > 1 ? 's' : ''
         } are at ${building}`}</Offcanvas.Title>
       </Offcanvas.Header>
-      <div className="distance">
+      <div className={styles['distance']}>
         <strong>{fmtDistance(distance)}</strong> away from your location
       </div>
       <Offcanvas.Body>
@@ -106,10 +106,12 @@ const ClusterDetails = ({ state, dispatch }) => {
                 onClick={() => setSelectedToilet(toilet)}
               >
                 <Card.Body>
-                  <Card.Title className="card-header border-0 p-0">
+                  <Card.Title
+                    className={`${styles['card-header']} border-0 p-0`}
+                  >
                     <p className="mb-2">{`${building}, Level ${fmtedFloor}`}</p>
                     {user_preference_type && (
-                      <p className="mb-2 text-muted preference">
+                      <p className={`mb-2 text-muted ${styles['preference']}`}>
                         {getPreferenceTypeDisplay(user_preference_type)}
                       </p>
                     )}
@@ -127,7 +129,7 @@ const ClusterDetails = ({ state, dispatch }) => {
                   </Row>
 
                   {UTILITIES.length > 0 && (
-                    <Container className="toilet-utilities-row">
+                    <Container className={styles['toilet-utilities-row']}>
                       {UTILITIES.map((group, i) => (
                         <Row key={i}>
                           {group.map((utility, i) => (

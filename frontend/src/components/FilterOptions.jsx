@@ -11,7 +11,7 @@ import Form from 'react-bootstrap/Form';
 import { BiMale, BiFemale, BiHandicap } from 'react-icons/bi';
 
 import { ToiletType, Utilities } from '../enums/ToiletEnums';
-import './FilterOptions.scss';
+import styles from './FilterOptions.module.scss';
 
 const FilterOptions = ({ state, dispatch }) => {
   const onUtilitiesChange = ({ target }) => {
@@ -37,11 +37,11 @@ const FilterOptions = ({ state, dispatch }) => {
 
   return (
     <Dropdown autoClose="outside">
-      <Dropdown.Toggle className="filter-options-button">
+      <Dropdown.Toggle className={styles['filter-options-button']}>
         <BsFilter height={22} />
       </Dropdown.Toggle>
       <Dropdown.Menu className="p-0 container">
-        <Card className="">
+        <Card>
           <Card.Body>
             <Card.Title>Filters</Card.Title>
 
@@ -89,7 +89,7 @@ const FilterOptions = ({ state, dispatch }) => {
               <Row>
                 <Col xs={6}>
                   <Form.Check
-                    className="checkbox"
+                    className={styles['checkbox']}
                     inline
                     label="Fragrance"
                     checked={filters.utilities.includes(Utilities.FRAGRANCE)}
@@ -99,7 +99,7 @@ const FilterOptions = ({ state, dispatch }) => {
                 </Col>
                 <Col xs={6}>
                   <Form.Check
-                    className="checkbox"
+                    className={styles['checkbox']}
                     inline
                     label="Watercooler"
                     checked={filters.utilities.includes(Utilities.WATERCOOLER)}
@@ -114,7 +114,7 @@ const FilterOptions = ({ state, dispatch }) => {
               <Row>
                 <Col xs={6}>
                   <Form.Check
-                    className="checkbox"
+                    className={styles['checkbox']}
                     inline
                     label="Bidets"
                     checked={filters.utilities.includes(Utilities.BIDETS)}
@@ -124,7 +124,7 @@ const FilterOptions = ({ state, dispatch }) => {
                 </Col>
                 <Col xs={6}>
                   <Form.Check
-                    className="checkbox"
+                    className={styles['checkbox']}
                     inline
                     label="Showers"
                     checked={filters.utilities.includes(Utilities.SHOWERS)}

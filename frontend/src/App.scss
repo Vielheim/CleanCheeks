@@ -1,9 +1,19 @@
 @import 'custom';
 @import '~leaflet/dist/leaflet.css';
 
+// leaflet styles
 .leaflet-container {
   height: 100vh;
   width: 100%;
+}
+
+.leaflet-pane {
+  z-index: 0;
+}
+
+// dropdown styles
+.dropdown-toggle::after {
+  display: none !important; 
 }
 
 // toast styles
