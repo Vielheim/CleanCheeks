@@ -12,6 +12,7 @@ import ToiletDetail from './ToiletDetail/ToiletDetail';
 import { Utilities } from '../enums/ToiletEnums';
 import './ClusterDetails.scss';
 import { getCleanlinessMetadata } from './shared/Util';
+import { getPreferenceTypeDisplay } from '../enums/ToiletPreferenceEnums';
 
 const UTILITIES = [
   [Utilities.FRAGRANCE, Utilities.WATERCOOLER],
@@ -92,7 +93,9 @@ const ClusterDetails = ({ state, dispatch }) => {
               num_seats,
               num_squats,
               utilities,
+              user_preference_type,
             } = toilet;
+
             const { text, type } = getCleanlinessMetadata(cleanliness);
             const fmtedFloor =
               floor < 0 ? `B${Math.abs(floor)}` : floor.toString();
@@ -103,8 +106,17 @@ const ClusterDetails = ({ state, dispatch }) => {
                 onClick={() => setSelectedToilet(toilet)}
               >
                 <Card.Body>
-                  <Card.Title>{`${building}, Level ${fmtedFloor}`}</Card.Title>
-                  <Card.Subtitle className="mb-1">{description}</Card.Subtitle>
+                  <Card.Title className="card-header border-0 p-0">
+                    <p className="mb-2">{`${building}, Level ${fmtedFloor}`}</p>
+                    {user_preference_type && (
+                      <p className="mb-2 text-muted preference">
+                        {getPreferenceTypeDisplay(user_preference_type)}
+                      </p>
+                    )}
+                  </Card.Title>
+                  <Card.Subtitle className="mb-1 text-muted">
+                    {description}
+                  </Card.Subtitle>
                   <Badge
                     className="mb-2"
                     bg={type}
