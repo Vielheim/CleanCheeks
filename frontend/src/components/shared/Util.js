@@ -1,4 +1,5 @@
 import { TOILET_CLEANLINESS_METADATA, TOILET_QUOTES } from '../../constants';
+import { getOrder } from '../../enums/ToiletPreferenceEnums';
 
 const DIRTY_CLEANLINESS_VALUE = -0.25;
 const CLEAN_CLEANLINESS_VALUE = 0.25;
@@ -38,3 +39,24 @@ export const getToiletsBreakdown = (toilets) =>
         GOOD: 0,
       }
     );
+
+// ORDER BY FAVOURITE -> BLACKLIST -> FLOOR ASC, CLEANLINESS DESC, ID ASC
+export const sortToilets = (toilet1, toilet2) => {
+  const orderByFavouriteBlacklist =
+    getOrder(toilet1.user_preference_type) -
+    getOrder(toilet2.user_preference_type);
+  const orderByFloorAsc = toilet1.floor - toilet2.floor;
+  const orderByCleanDesc = toilet2.cleanliness - toilet1.cleanliness;
+  const orderByIdAsc = toilet1.id - toilet2.id;
+
+  if (orderByFavouriteBlacklist !== 0) {
+    return orderByFavouriteBlacklist;
+  }
+  if (orderByFloorAsc !== 0) {
+    return orderByFloorAsc;
+  }
+  if (orderByCleanDesc !== 0) {
+    return orderByCleanDesc;
+  }
+  return orderByIdAsc;
+};
