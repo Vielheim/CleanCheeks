@@ -8,16 +8,6 @@ import {
 
 const toiletsRouter = Router();
 
-toiletsRouter.delete('/:id', async (req: Request, res: Response) => {
-  try {
-    const id = req.params.id;
-    const result = await toiletController.deleteById(id);
-    return Util.sendSuccess(res, 200, 'Deleted toilet', result);
-  } catch (error: unknown) {
-    return Util.sendFailure(res, error);
-  }
-});
-
 toiletsRouter.get('/neighbours', async (req: Request, res: Response) => {
   try {
     const { user_id } = req.cookies;
