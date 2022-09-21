@@ -17,11 +17,10 @@ import {
 import SearchBar from '../components/SearchBar';
 import ClusterDetails from '../components/ClusterDetail/ClusterDetails';
 import getMarkerIcon from '../components/markerIcon';
-import { AuthContext, ToastContext } from '../utilities/context';
+import { ToastContext } from '../utilities/context';
 import { getDistance } from '../utilities';
 import toiletReducer, { INITIAL_TOILET_STATE } from '../reducers/reducer';
 import VENUES from '../assets/venues.json';
-import LoginButton from '../components/LoginButton';
 
 import './MapPage.scss';
 import ToiletControlller from '../api/ToiletController';
@@ -36,7 +35,6 @@ const CIRCLE_FILL_OPTIONS = {
 const POLYLINE_FILL_OPTIONS = { color: '#4242a9' };
 
 const MapPage = () => {
-  const { user } = useContext(AuthContext);
   const PanZoomCenter = () => {
     const onPanZoomEnd = (map) => {
       const { lat, lng } = map.getCenter();
@@ -142,7 +140,6 @@ const MapPage = () => {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        {!user && <LoginButton />}
         <SearchBar
           className="leaflet-top searchbar-row"
           state={state}
