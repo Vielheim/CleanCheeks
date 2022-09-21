@@ -6,5 +6,5 @@ rm -r ./node_modules
 echo 'Done. Installing packages...'
 npm install
 
-echo 'Done. Running predeploy...'
-npm run predeploy
+echo 'Done. Running deploy-init...'
+npm run deploy-init
