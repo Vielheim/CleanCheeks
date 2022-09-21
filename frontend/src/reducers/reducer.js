@@ -8,7 +8,8 @@ const getLocation = ({ location }) => {
 
 const clusteriseToilets = (toilets) => {
   const coordsToClusters = {};
-  for (const { building, latitude, longitude, ...others } of toilets) {
+  for (const toilet of toilets) {
+    const { building, latitude, longitude } = toilet;
     const coordKey = `${latitude} + ${longitude}`;
     if (!coordsToClusters[coordKey]) {
       coordsToClusters[coordKey] = {
@@ -18,10 +19,7 @@ const clusteriseToilets = (toilets) => {
         toilets: [],
       };
     }
-    coordsToClusters[coordKey].toilets.push({
-      building,
-      ...others,
-    });
+    coordsToClusters[coordKey].toilets.push({ ...toilet });
   }
 
   return Object.values(coordsToClusters);
