@@ -15,10 +15,12 @@ const {
 let sequelize: Sequelize;
 
 if (NODE_ENV === 'production') {
-  sequelize = new Sequelize(PROD_DB_URL!, {
+  sequelize = new Sequelize(`${PROD_DB_URL!}?sslmode=require`, {
     dialect: DB_DIALECT as Dialect,
     dialectOptions: {
-      ssl: true,
+      ssl: {
+        rejectUnauthorized: false,
+      },
     },
   });
 } else {
