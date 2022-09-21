@@ -27,7 +27,6 @@ const ToiletPreferencesModal = ({ state }) => {
     x: 0,
     y: 0.4 * window.innerHeight,
   });
-  const [showModal, setShowModal] = useState(true);
   const [blacklistedToilets, setBlacklistedToilets] = useState([]);
   const [favouritedToilets, setFavouritedToilets] = useState([]);
 
@@ -73,8 +72,8 @@ const ToiletPreferencesModal = ({ state }) => {
       <Offcanvas
         className={styles['bottom-modal']}
         placement="bottom"
-        show={showModal}
-        onHide={setShowModal}
+        show={true}
+        onHide={onHide}
         {...prop}
       >
         <Offcanvas.Header>
@@ -109,7 +108,7 @@ const ToiletPreferencesModal = ({ state }) => {
             onCustomHide={onHide}
             tagType="distance"
           />
-          <Offcanvas.Title className={`${styles['title']} mb-3 fw-bolder`}>
+          <Offcanvas.Title className={`${styles['title']} mb-3 mt-5 fw-bolder`}>
             <TiCancel
               className={styles['blacklisted-icon']}
               color="#453F41"

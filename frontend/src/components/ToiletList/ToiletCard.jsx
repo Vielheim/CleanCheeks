@@ -52,9 +52,7 @@ const ToiletCard = ({ toilet, onSelect, tagType, userLocation }) => {
         <Card.Title className={`${styles['card-header']} border-0 p-0`}>
           <p className="mb-2">{`${building}, Level ${fmtedFloor}`}</p>
           {tagDisplay && (
-            <p className={`${styles['preference']} mb-2 text-muted`}>
-              {tagDisplay}
-            </p>
+            <p className={`${styles['preference']} mb-2`}>{tagDisplay}</p>
           )}
         </Card.Title>
         <Card.Subtitle className="mb-1 text-muted">{description}</Card.Subtitle>
