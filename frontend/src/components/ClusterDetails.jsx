@@ -15,28 +15,28 @@ import { getCleanlinessMetadata } from './shared/Util';
 import { getPreferenceTypeDisplay } from '../enums/ToiletPreferenceEnums';
 
 const UTILITIES = [
-  [Utilities.SHOWERS, Utilities.BIDETS],
-  [Utilities.WATERCOOLER, Utilities.FRAGRANCE],
+  [Utilities.FRAGRANCE, Utilities.WATERCOOLER],
+  [Utilities.BIDETS, Utilities.SHOWERS],
 ];
 
 const fmtDistance = (distance) =>
   distance >= 1000 ? `${(distance / 1000).toFixed(1)}km` : `${distance}m`;
 
-const ClusterDetails = ({ currLocation, cluster, isShow, setIsShow }) => {
-  const { building, latitude, longitude, toilets } = cluster;
+const ClusterDetails = ({ state, dispatch }) => {
+  const { building, latitude, longitude, toilets } = state.selectedCluster;
   const numToilets = toilets.length;
   const distance = getDistance(
     latitude,
     longitude,
-    currLocation[0],
-    currLocation[1]
+    state.center.current[0],
+    state.center.current[1]
   );
 
   const [selectedToilet, setSelectedToilet] = useState(null);
 
   const onHide = () => {
     setSelectedToilet(null);
-    setIsShow(false);
+    dispatch({ type: 'closeCluster' });
   };
 
   if (selectedToilet != null) {
@@ -44,7 +44,7 @@ const ClusterDetails = ({ currLocation, cluster, isShow, setIsShow }) => {
       <ToiletDetail
         building={building}
         toilet={selectedToilet}
-        isShow={isShow}
+        isShow={state.isShowCluster}
         onBack={() => setSelectedToilet(null)}
         onHide={onHide}
       />
@@ -70,8 +70,8 @@ const ClusterDetails = ({ currLocation, cluster, isShow, setIsShow }) => {
     <Offcanvas
       className="offcanvas-container"
       placement="bottom"
-      show={isShow}
-      onHide={() => setIsShow(false)}
+      show={state.isShowCluster}
+      onHide={() => dispatch({ type: 'closeCluster' })}
     >
       <Offcanvas.Header closeButton>
         <Offcanvas.Title>{`${numToilets} toilet${
