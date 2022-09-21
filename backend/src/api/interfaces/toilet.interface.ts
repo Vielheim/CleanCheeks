@@ -23,3 +23,8 @@ export interface IToiletRank {
   percentageBeat: number;
   toiletCount: number;
 }
+
+export interface IToiletsWithUserPreferences {
+  blacklistedToilets: IToilet[];
+  favouritedToilets: IToilet[];
+}

@@ -1,12 +1,9 @@
 import React from 'react';
 import Offcanvas from 'react-bootstrap/Offcanvas';
-import { getDistance } from '../../utilities';
+import { fmtDistance, getDistance } from '../../utilities/Util';
 import ToiletList from '../ToiletList/ToiletList';
 
-import './ClusterDetails.scss';
-
-const fmtDistance = (distance) =>
-  distance >= 1000 ? `${(distance / 1000).toFixed(1)}km` : `${distance}m`;
+import styles from './ClusterDetails.module.scss';
 
 const ClusterDetails = ({ state, dispatch }) => {
   const { building, latitude, longitude, toilets } = state.selectedCluster;
@@ -20,7 +17,7 @@ const ClusterDetails = ({ state, dispatch }) => {
 
   return (
     <Offcanvas
-      className="offcanvas-container"
+      className={styles['offcanvas-container']}
       placement="bottom"
       show={state.isShowCluster}
       onHide={() => dispatch({ type: 'closeCluster' })}
@@ -30,14 +27,16 @@ const ClusterDetails = ({ state, dispatch }) => {
           numToilets > 1 ? 's' : ''
         } are at ${building}`}</Offcanvas.Title>
       </Offcanvas.Header>
-      <div className="distance">
+      <div className={styles['distance']}>
         <strong>{fmtDistance(distance)}</strong> away from your location
       </div>
       <Offcanvas.Body>
         <ToiletList
+          state={state}
           toilets={toilets}
           isShow={state.isShowCluster}
           onCustomHide={() => dispatch({ type: 'closeCluster' })}
+          tagType="user_preference"
         />
       </Offcanvas.Body>
     </Offcanvas>

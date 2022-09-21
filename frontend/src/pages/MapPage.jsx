@@ -18,14 +18,14 @@ import SearchBar from '../components/SearchBar';
 import ClusterDetails from '../components/ClusterDetail/ClusterDetails';
 import getMarkerIcon from '../components/markerIcon';
 import { ToastContext } from '../utilities/context';
-import { getDistance } from '../utilities';
+import { getDistance } from '../utilities/Util';
 import toiletReducer, { INITIAL_TOILET_STATE } from '../reducers/reducer';
 import VENUES from '../assets/venues.json';
 
 import styles from './MapPage.module.scss';
 import ToiletControlller from '../api/ToiletController';
-import { getToiletsBreakdown } from '../components/shared/Util';
-import ToiletBottomModal from '../components/ToiletBottomModal/ToiletBottomModal';
+import { getToiletsBreakdown } from '../utilities/Util';
+import ToiletPreferencesModal from '../components/ToiletPreferencesModal/ToiletPreferencesModal';
 
 const CIRCLE_FILL_OPTIONS = {
   fillOpacity: 1,
@@ -184,7 +184,7 @@ const MapPage = () => {
         {state.selectedCluster !== null && (
           <ClusterDetails state={state} dispatch={dispatch} />
         )}
-        {<ToiletBottomModal />}
+        {<ToiletPreferencesModal state={state} />}
         <PanZoomCenter />
       </MapContainer>
     </div>

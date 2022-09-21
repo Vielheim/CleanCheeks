@@ -1,0 +1,19 @@
+.bottom-modal {
+  --bs-offcanvas-height: 80vh;
+
+  min-height: 80vh;
+}
+
+.modal-chevron {
+  align-self: flex-end;
+}
+
+.blacklisted-icon {
+  margin-right: 2px;
+  margin-bottom: 3px;
+}
+
+.favourite-icon {
+  margin-right: 6px;
+  margin-bottom: 3px;
+}
