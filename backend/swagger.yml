@@ -13,6 +13,8 @@ tags:
     description: Preferences for each toilet
   - name: Users
     description: User
+  - name: Auth
+    desccription: Authentication routes
 
 paths:
   /api/v1/toilets:
@@ -293,6 +295,48 @@ paths:
           description: Bad request
         '404':
           description: User not found
+  /api/v1/auth/google:
+    post:
+      tags:
+        - Auth
+      summary: Verifies user's Google account and generates JWT
+      description: Verifies user's Google account using Google ID token and generates a JWT
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GoogleLoginRequestBody'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/GoogleLoginRequestBody'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/GoogleLoginRequestBody'
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleLoginResponse'
+        '400':
+          description: Bad request
+  /api/v1/auth/check-login:
+    post:
+      tags:
+        - Auth
+      summary: Verifies JWT
+      description: Verifies the user's JWT in the request cookie to determine if it is still valid or not
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckLoginResponse'
+        '400':
+          description: Bad request
 
 components:
   schemas:
@@ -574,3 +618,35 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Toilet'
+    GoogleLoginRequestBody:
+      type: object
+      required:
+        - credential
+      properties:
+        credential:
+          type: string
+          example: 928375087-109240-9170297401-928401-957038750-81720
+    GoogleLoginResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Successfully logged in
+        data:
+          type: boolean
+          example: true
+    CheckLoginResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Successfully authenticated
+        data:
+          type: boolean
+          example: true
