@@ -29,7 +29,7 @@ export const getApp = () => {
 
   // endpoints
   app.get('/', (_, res: Response) => {
-    res.redirect(`${FULL_URL}${CURRENT_API}/docs/`);
+    res.sendStatus(200);
   });
 
   app.use(CURRENT_API + '/docs', swaggerUI.serve, swaggerUI.setup(swaggerDoc));
