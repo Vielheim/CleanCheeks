@@ -2,44 +2,44 @@ import React, { useEffect, useState } from 'react';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { getDistance } from '../../utilities';
 import ToiletList from '../ToiletList/ToiletList';
+import { FiChevronUp, FiChevronDown } from 'react-icons/fi';
 
 import './ToiletBottomModal.scss';
 import Draggable from 'react-draggable';
 
 const fmtDistance = (distance) =>
   distance >= 1000 ? `${(distance / 1000).toFixed(1)}km` : `${distance}m`;
+// const distance = getDistance(;
+//   latitude,
+//   longitude,
+//   state.center.current[0],
+//   state.center.current[1]
+// );
 
 const ToiletBottomModal = () => {
-  // const distance = getDistance(
-  //   latitude,
-  //   longitude,
-  //   state.center.current[0],
-  //   state.center.current[1]
-  // );
-  const h = window.innerHeight;
+  const [isExpanded, setIsExpanded] = useState(false);
 
-  const [dragState, setDragState] = useState({
-    activeDrags: 0,
-    deltaPosition: {
-      x: 0,
-      y: 0,
-    },
-    controlledPosition: {
-      x: -400,
-      y: 200,
-    },
+  const [position, setPosition] = useState({
+    x: 0,
+    y: 0.6 * window.innerHeight,
   });
 
   const [showModal, setShowModal] = useState(true);
 
-  const handleDrag = (e, ui) => {
-    setDragState((prev) => ({
-      ...prev,
-      deltaPosition: {
-        x: prev.deltaPosition.x + ui.deltaX,
-        y: prev.deltaPosition.y + ui.deltaY,
-      },
-    }));
+  const onHandleDrag = (e) => {
+    if (isExpanded) {
+      setPosition({
+        x: 0,
+        y: 0.6 * window.innerHeight,
+      });
+      setIsExpanded(false);
+    } else {
+      setPosition({
+        x: 0,
+        y: 0.1 * window.innerHeight,
+      });
+      setIsExpanded(true);
+    }
   };
 
   const isShow = true;
@@ -49,12 +49,16 @@ const ToiletBottomModal = () => {
     backdrop: false,
   };
 
-  // Fetch favourited and
+  // Fetch favourited and blacklisted toilets
   return (
     <Draggable
       axis="y"
-      bounds={{ top: 0.1 * h, bottom: 0.6 * h }}
-      onDrag={handleDrag}
+      position={position}
+      bounds={{
+        top: 0.1 * window.innerHeight,
+        bottom: 0.6 * window.innerHeight,
+      }}
+      onStart={() => false}
     >
       <Offcanvas
         className="bottom-modal"
@@ -63,6 +67,19 @@ const ToiletBottomModal = () => {
         onHide={setShowModal}
         {...prop}
       >
+        {isExpanded ? (
+          <FiChevronDown
+            className="horizontal-bar"
+            size={40}
+            onClick={onHandleDrag}
+          />
+        ) : (
+          <FiChevronUp
+            className="horizontal-bar"
+            size={40}
+            onClick={onHandleDrag}
+          />
+        )}
         <Offcanvas.Header>
           <Offcanvas.Title>Favourited Toilets</Offcanvas.Title>
         </Offcanvas.Header>
@@ -78,6 +95,6 @@ const ToiletBottomModal = () => {
       </Offcanvas>
     </Draggable>
   );
-};
+};;
 
 export default ToiletBottomModal;
