@@ -64,6 +64,18 @@ const ToiletDetail = ({ building, toilet, isShow, onBack, onHide }) => {
         />
       </Offcanvas.Header>
       <Offcanvas.Body>
+        <div className="toilet-summary">
+          <p className="toilet-summary-item">{cleanlinessMetadata.quote}</p>
+
+          <img
+            className="toilet-summary-item"
+            alt={cleanlinessMetadata.text}
+            src={cleanlinessMetadata.icon}
+            width={100}
+            height={100}
+          />
+        </div>
+
         <p className="mb-3 h6 fw-bold">Utilities</p>
         <div className="toilet-utilities box">
           {Object.keys(Utilities).map((utility, i) => (
