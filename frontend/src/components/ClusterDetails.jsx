@@ -1,26 +1,9 @@
-import React, { useState } from 'react';
-import Badge from 'react-bootstrap/Badge';
-import Card from 'react-bootstrap/Card';
-import Col from 'react-bootstrap/Col';
-import Container from 'react-bootstrap/Container';
+import React from 'react';
 import Offcanvas from 'react-bootstrap/Offcanvas';
-import Row from 'react-bootstrap/Row';
 import { getDistance } from '../utilities';
-import StyledUtility from './shared/StyledUtility';
-import ToiletDetail from './ToiletDetail/ToiletDetail';
+import ToiletList from './ToiletList/ToiletList';
 
-import { Utilities } from '../enums/ToiletEnums';
-import {
-  getOrder,
-  getPreferenceTypeDisplay,
-} from '../enums/ToiletPreferenceEnums';
 import './ClusterDetails.scss';
-import { getCleanlinessMetadata } from './shared/Util';
-
-const UTILITIES = [
-  [Utilities.FRAGRANCE, Utilities.WATERCOOLER],
-  [Utilities.BIDETS, Utilities.SHOWERS],
-];
 
 const fmtDistance = (distance) =>
   distance >= 1000 ? `${(distance / 1000).toFixed(1)}km` : `${distance}m`;
@@ -34,46 +17,6 @@ const ClusterDetails = ({ state, dispatch }) => {
     state.center.current[0],
     state.center.current[1]
   );
-
-  const [selectedToilet, setSelectedToilet] = useState(null);
-
-  const onHide = () => {
-    setSelectedToilet(null);
-    dispatch({ type: 'closeCluster' });
-  };
-
-  if (selectedToilet != null) {
-    return (
-      <ToiletDetail
-        building={building}
-        toilet={selectedToilet}
-        isShow={state.isShowCluster}
-        onBack={() => setSelectedToilet(null)}
-        onHide={onHide}
-      />
-    );
-  }
-
-  // ORDER BY FAVOURITE -> BLACKLIST -> FLOOR ASC, CLEANLINESS DESC, ID ASC
-  const sortToilets = (toilet1, toilet2) => {
-    const orderByFavouriteBlacklist =
-      getOrder(toilet1.user_preference_type) -
-      getOrder(toilet2.user_preference_type);
-    const orderByFloorAsc = toilet1.floor - toilet2.floor;
-    const orderByCleanDesc = toilet2.cleanliness - toilet1.cleanliness;
-    const orderByIdAsc = toilet1.id - toilet2.id;
-
-    if (orderByFavouriteBlacklist !== 0) {
-      return orderByFavouriteBlacklist;
-    }
-    if (orderByFloorAsc !== 0) {
-      return orderByFloorAsc;
-    }
-    if (orderByCleanDesc !== 0) {
-      return orderByCleanDesc;
-    }
-    return orderByIdAsc;
-  };
 
   return (
     <Offcanvas
@@ -91,70 +34,7 @@ const ClusterDetails = ({ state, dispatch }) => {
         <strong>{fmtDistance(distance)}</strong> away from your location
       </div>
       <Offcanvas.Body>
-        {toilets
-          .filter(({ floor }) => floor < 8 && floor !== 0)
-          .sort(sortToilets)
-          .map((toilet, i) => {
-            const {
-              description,
-              floor,
-              cleanliness,
-              num_seats,
-              num_squats,
-              utilities,
-              user_preference_type,
-            } = toilet;
-
-            const { text, type } = getCleanlinessMetadata(cleanliness);
-            const fmtedFloor =
-              floor < 0 ? `B${Math.abs(floor)}` : floor.toString();
-            return (
-              <Card
-                key={i}
-                className="mb-3 offcanvas-inner-container"
-                onClick={() => setSelectedToilet(toilet)}
-              >
-                <Card.Body>
-                  <Card.Title className="card-header border-0 p-0">
-                    <p className="mb-2">{`${building}, Level ${fmtedFloor}`}</p>
-                    {user_preference_type && (
-                      <p className="mb-2 text-muted preference">
-                        {getPreferenceTypeDisplay(user_preference_type)}
-                      </p>
-                    )}
-                  </Card.Title>
-                  <Card.Subtitle className="mb-1 text-muted">
-                    {description}
-                  </Card.Subtitle>
-                  <Badge
-                    className="mb-2"
-                    bg={type}
-                  >{`${text} cleanliness`}</Badge>
-                  <Row className="mb-1">
-                    <Col>{`Number of seats: ${num_seats}`}</Col>
-                    <Col>{`Number of squats: ${num_squats}`}</Col>
-                  </Row>
-
-                  {UTILITIES.length > 0 && (
-                    <Container className="toilet-utilities-row">
-                      {UTILITIES.map((group, i) => (
-                        <Row key={i}>
-                          {group.map((utility, i) => (
-                            <Col key={i}>
-                              <StyledUtility
-                                utility={utility}
-                                presentUtilities={utilities}
-                              />
-                            </Col>
-                          ))}
-                        </Row>
-                      ))}
-                    </Container>
-                  )}
-                </Card.Body>
-              </Card>
-            );
-          })}
+        <ToiletList toilets={toilets} state={state} />
       </Offcanvas.Body>
     </Offcanvas>
   );

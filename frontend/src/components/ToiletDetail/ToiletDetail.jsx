@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import Badge from 'react-bootstrap/Badge';
 import Offcanvas from 'react-bootstrap/Offcanvas';
-import StyledUtility from '../shared/StyledUtility';
+import StyledUtility from '../StyledUtility/StyledUtility';
 
 import { GrFormPreviousLink } from 'react-icons/gr';
 import ToiletControlller from '../../api/ToiletController';
