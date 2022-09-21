@@ -13,11 +13,12 @@ import ToastContainer from 'react-bootstrap/ToastContainer';
 import SearchBar from '../components/SearchBar';
 import ClusterDetails from '../components/ClusterDetails';
 import getMarkerIcon from '../components/markerIcon';
-import Api from '../api/api';
-import { INITIAL_FILTER_STATE, OFFLINE_TOILETS } from '../constants';
+import { INITIAL_FILTER_STATE, OFFLINE_TOILETS, USER_KEY } from '../constants';
 import { getDistance } from '../utilities';
 import focused_face from '../assets/focused_face.png';
 import VENUES from '../assets/venues.json';
+import LoginButton from '../components/LoginButton';
+import { getLocalStorageValue } from '../utilities/localStorage';
 
 import './MapPage.scss';
 import ToiletControlller from '../api/ToiletController';
@@ -212,6 +213,7 @@ const MapPage = () => {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
+        {!getLocalStorageValue(USER_KEY) && <LoginButton />}
         <SearchBar
           className="leaflet-top searchbar-row"
           setFilters={setFilters}

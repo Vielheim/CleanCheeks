@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Container from 'react-bootstrap/Container';
-import { TOILET_RATING } from '../../constants';
+import { TOILET_RATING, USER_KEY } from '../../constants';
 import {
   getLocalStorageValue,
   removeLocalStorageValue,
@@ -11,8 +11,10 @@ import { parseISO, differenceInMilliseconds } from 'date-fns';
 import ToiletRatingButtons from './ToiletRatingButtons';
 import ToiletRatingCountdown from './ToiletRatingCountdown';
 import { useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const ToiletRating = ({ toiletId, onRate }) => {
+  const navigate = useNavigate();
   const [nextRatingTime, setNextRatingTime] = useState(null);
   const rating_info_key = `rating_info_${toiletId}`;
 
@@ -60,7 +62,10 @@ const ToiletRating = ({ toiletId, onRate }) => {
           updateRatingInfo(res.data);
           onRate();
         })
-        .catch((e) => console.log(e));
+        .catch((e) => {
+          setLocalStorageValue(USER_KEY, false);
+          navigate('/');
+        });
     },
     [onRate, toiletId, updateRatingInfo]
   );

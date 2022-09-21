@@ -1,0 +1,24 @@
+@import '../custom.scss';
+
+.login-button {
+  color: white;
+  background-color: $primary;
+  border: 1px solid $primary;
+  border: 0;
+  border-radius: 4px;
+  font-weight: 600;
+  margin: 0 10px;
+  width: 8em;
+  padding: 10px 0;
+  transition: 0.2s;
+  position: absolute;
+  bottom: 6em;
+  left: 2em;
+}
+
+.login-button:hover {
+  cursor: pointer;
+  color: white;
+  box-shadow: 0 0 8px $primary;
+  background-color: $primary;
+}

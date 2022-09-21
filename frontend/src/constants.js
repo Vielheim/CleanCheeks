@@ -62,5 +62,4 @@ export const INITIAL_FILTER_STATE = {
   haveShowers: false,
 };
 
-export const ACCESS_TOKEN_KEY = 'accessToken';
-export const USER_ID_KEY = 'userId';
+export const USER_KEY = 'user';

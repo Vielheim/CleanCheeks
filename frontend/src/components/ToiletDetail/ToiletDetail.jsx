@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Badge from 'react-bootstrap/Badge';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import StyledUtility from '../shared/StyledUtility';
@@ -14,6 +15,8 @@ import { getCleanlinessMetadata } from '../shared/Util';
 import './ToiletDetail.scss';
 import ToiletRating from './ToiletRating';
 import ToiletControlller from '../../api/ToiletController';
+import { setLocalStorageValue } from '../../utilities/localStorage';
+import { USER_KEY } from '../../constants';
 
 const ToiletDetail = ({ building, toilet, isShow, onBack, onHide }) => {
   const {
@@ -24,6 +27,8 @@ const ToiletDetail = ({ building, toilet, isShow, onBack, onHide }) => {
     cleanliness,
     utilities,
   } = toilet;
+
+  const navigate = useNavigate();
 
   const fmtedFloor = floor < 0 ? `B${Math.abs(floor)}` : floor.toString();
   const { text, type } = getCleanlinessMetadata(cleanliness);
@@ -39,7 +44,8 @@ const ToiletDetail = ({ building, toilet, isShow, onBack, onHide }) => {
           toilet.user_preference_type = result.data.type;
         })
         .catch((e) => {
-          console.error(e);
+          setLocalStorageValue(USER_KEY, false);
+          navigate('/');
         });
     },
     [id, toilet]

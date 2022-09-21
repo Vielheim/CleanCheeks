@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import {
   BrowserRouter as Router,
   Routes,
@@ -6,19 +6,26 @@ import {
   Navigate,
 } from 'react-router-dom';
 import MapPage from './pages/MapPage';
-import { getLocalStorageValue } from './utilities/localStorage';
-import { ACCESS_TOKEN_KEY, USER_ID_KEY } from './constants';
+import Api from './api/api';
 import LoginPage from './pages/LoginPage';
+import { useEffect } from 'react';
+import {
+  getLocalStorageValue,
+  setLocalStorageValue,
+} from './utilities/localStorage';
+import { USER_KEY } from './constants';
 
 function App() {
-  const [user, setUser] = useState();
+  const isAuthenticated = () => {
+    Api.makeApiRequest({
+      method: 'POST',
+      url: '/auth/check-login',
+    })
+      .then(() => setLocalStorageValue(USER_KEY, true))
+      .catch(() => setLocalStorageValue(USER_KEY, false));
+  };
 
-  useEffect(() => {
-    setUser(
-      getLocalStorageValue(ACCESS_TOKEN_KEY) &&
-        getLocalStorageValue(USER_ID_KEY)
-    );
-  }, []);
+  useEffect(() => isAuthenticated(), []);
 
   return (
     <Router>
@@ -27,7 +34,13 @@ function App() {
         <Route
           exact
           path="/"
-          element={!user ? <LoginPage /> : <Navigate to="/home" replace />}
+          element={
+            getLocalStorageValue(USER_KEY) ? (
+              <Navigate to="/home" />
+            ) : (
+              <LoginPage />
+            )
+          }
         />
       </Routes>
     </Router>

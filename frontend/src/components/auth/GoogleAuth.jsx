@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { setLocalStorageValue } from '../../utilities/localStorage';
-import { ACCESS_TOKEN_KEY, USER_ID_KEY } from '../../constants';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import Api from '../../api/api';
 import './GoogleAuth.scss';
+import { setLocalStorageValue } from '../../utilities/localStorage';
+import { USER_KEY } from '../../constants';
 
 const GoogleAuth = () => {
   const navigate = useNavigate();
@@ -18,15 +18,13 @@ const GoogleAuth = () => {
           method: 'POST',
           url: '/auth/google',
           data: { response },
-        }).then((result) => {
-          const { userId, accessToken } = result.data;
-          setLocalStorageValue(ACCESS_TOKEN_KEY, accessToken);
-          setLocalStorageValue(USER_ID_KEY, userId);
+        }).then(() => {
+          setLocalStorageValue(USER_KEY, true);
           navigate('/home');
         });
       }
     } catch (e) {
-      console.log(e);
+      setLocalStorageValue(USER_KEY, false);
       setErrorMsg('Error signing in with Google. Try again.');
     }
   };
