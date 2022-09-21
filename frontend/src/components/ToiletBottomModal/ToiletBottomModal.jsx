@@ -15,6 +15,7 @@ import './ToiletBottomModal.scss';
 // );
 
 // TODO: Sync blacklisted and favourited toilets
+// TODO: Show login button when user is not logged in
 const ToiletBottomModal = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [position, setPosition] = useState({
@@ -84,13 +85,13 @@ const ToiletBottomModal = () => {
           <Offcanvas.Title>Favourited Toilets</Offcanvas.Title>
           {isExpanded ? (
             <FiChevronDown
-              className="horizontal-bar"
+              className="modal-chevron"
               size={28}
               onClick={onHandleDrag}
             />
           ) : (
             <FiChevronUp
-              className="horizontal-bar"
+              className="modal-chevron"
               size={28}
               onClick={onHandleDrag}
             />
