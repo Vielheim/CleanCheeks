@@ -27,9 +27,9 @@ export const getApp = () => {
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(cookieParser());
 
-  // endpoints
+  // For Render.com to ping: https://stackoverflow.com/questions/72150113/nodejs-app-build-is-successful-render-but-application-error-in-render-at-the-l
   app.get('/', (_, res: Response) => {
-    res.redirect(`${FULL_URL}${CURRENT_API}/docs/`);
+    res.sendStatus(200);
   });
 
   app.use(CURRENT_API + '/docs', swaggerUI.serve, swaggerUI.setup(swaggerDoc));

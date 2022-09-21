@@ -10,3 +10,13 @@ export const getPreferenceTypeDisplay = (preferenceType) => {
     return 'FAVOURITED';
   }
 };
+
+export const getOrder = (preferenceType) => {
+  if (preferenceType === PreferenceType.FAVOURITE) {
+    return 0;
+  } else if (preferenceType === PreferenceType.BLACKLIST) {
+    return 2;
+  }
+  // No preference type
+  return 1;
+};

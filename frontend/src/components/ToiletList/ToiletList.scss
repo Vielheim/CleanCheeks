@@ -1,3 +1,4 @@
+<<<<<<< HEAD:frontend/src/components/ClusterDetails.module.scss
 .offcanvas-container {
   --bs-offcanvas-height: 80vh;
   min-height: 80vh;
@@ -16,6 +17,8 @@
   border-color: lightgrey;
 }
 
+=======
+>>>>>>> main:frontend/src/components/ToiletList/ToiletList.scss
 .preference {
   font-size: 0.7rem;
   border-color: lightgrey;  
@@ -29,4 +32,10 @@
   background-color: white;
   justify-content: space-between;
   border: none;
+}
+
+.toilet-utilities-row {
+  border-style: solid;
+  border-radius: 0.375rem;
+  border-color: lightgrey;
 }

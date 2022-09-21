@@ -19,6 +19,7 @@ const clusteriseToilets = (toilets) => {
       };
     }
     coordsToClusters[coordKey].toilets.push({
+      building,
       ...others,
     });
   }
