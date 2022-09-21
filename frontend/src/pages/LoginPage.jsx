@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import logo from '../assets/logo.jpeg';
+import logo from '../assets/satisfied.png';
 import { MdArrowRight } from 'react-icons/md';
 import GoogleAuth from '../components/auth/GoogleAuth';
 import styles from './LoginPage.module.scss';
