@@ -25,7 +25,6 @@ import VENUES from '../assets/venues.json';
 import './MapPage.scss';
 import ToiletControlller from '../api/ToiletController';
 import { getToiletsBreakdown } from '../components/shared/Util';
-import { INITIAL_FILTER_STATE } from '../constants';
 
 const CIRCLE_FILL_OPTIONS = {
   fillOpacity: 1,
@@ -122,7 +121,7 @@ const MapPage = () => {
   useEffect(() => {
     localStorage.setItem('lastCenter', JSON.stringify(state.center.current));
     if (map) {
-      map.flyTo(state.center.current, 18);
+      map.flyTo(state.center.map);
     }
   }, [state.center, map]);
 
@@ -133,7 +132,7 @@ const MapPage = () => {
         zoom={18}
         minZoom={17}
         zoomControl={false}
-        scrollWheelZoom={false}
+        scrollWheelZoom={true}
         ref={setMap}
       >
         <TileLayer

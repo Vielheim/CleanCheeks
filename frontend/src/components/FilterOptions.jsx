@@ -40,7 +40,7 @@ const FilterOptions = ({ state, dispatch }) => {
       <Dropdown.Toggle className="filter-options-button">
         <BsFilter height={22} />
       </Dropdown.Toggle>
-      <Dropdown.Menu className="p-0">
+      <Dropdown.Menu className="p-0 container">
         <Card className="">
           <Card.Body>
             <Card.Title>Filters</Card.Title>

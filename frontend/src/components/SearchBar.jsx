@@ -15,17 +15,9 @@ import './SearchBar.scss';
 
 const SearchBar = ({ state, dispatch, venues }) => {
   let searchTimeoutId = 0;
-  let filterTimeoutId = 0;
   const map = useMap();
   const [tempSearch, setTempSearch] = useState('');
   const [isShowList, setIsShowList] = useState(false);
-
-  // filter options event handlers
-  const handleOptionsFocus = () => {
-    if (filterTimeoutId > 0) {
-      clearTimeout(filterTimeoutId);
-    }
-  };
 
   const onSearchChange = ({ target: { value } }) => {
     setTempSearch(value);
@@ -105,7 +97,11 @@ const SearchBar = ({ state, dispatch, venues }) => {
       <Row>
         <Col className="mt-1">
           <Collapse in={isShowList}>
-            <ListGroup className="list-group" onFocus={onListFocus}>
+            <ListGroup
+              className="list-group"
+              onFocus={onListFocus}
+              onWheelCapture={onCapture}
+            >
               {thrFilterVenues(venues).map((id) => (
                 <ListGroup.Item
                   key={id}

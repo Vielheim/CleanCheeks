@@ -14,8 +14,8 @@ import './ClusterDetails.scss';
 import { getCleanlinessMetadata } from './shared/Util';
 
 const UTILITIES = [
-  [Utilities.SHOWERS, Utilities.BIDETS],
-  [Utilities.WATERCOOLER, Utilities.FRAGRANCE],
+  [Utilities.FRAGRANCE, Utilities.WATERCOOLER],
+  [Utilities.BIDETS, Utilities.SHOWERS],
 ];
 
 const fmtDistance = (distance) =>
@@ -43,7 +43,7 @@ const ClusterDetails = ({ state, dispatch }) => {
       <ToiletDetail
         building={building}
         toilet={selectedToilet}
-        isShow={state.isShowcluster}
+        isShow={state.isShowCluster}
         onBack={() => setSelectedToilet(null)}
         onHide={onHide}
       />
