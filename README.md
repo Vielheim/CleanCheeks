@@ -24,8 +24,8 @@ It would be better to start the backend service before starting the frontend app
 2. Install npm packages using `npm i`.
 3. Run `npm run db:create` to create the `postgres` database on your local machine.
 4. There are two ways to run the backend service
-    1. For first-time initialisation, run `npm run clean-start`. This runs all the database commands to clear and populate the database. You can also run this if you want to reset the database to its initial state.
-    2. For subsequent initialisations, run `npm start` to start the backend service.
+    1. For first-time initialisation, run `npm start`. This runs all the database commands to clear and populate the database. You can also run this if you want to reset the database to its initial state.
+    2. For subsequent initialisations, run `npm run deploy` to start the backend service.
 
 **Note:**
 The API endpoint can be found at http://localhost:8000/api/v1.
