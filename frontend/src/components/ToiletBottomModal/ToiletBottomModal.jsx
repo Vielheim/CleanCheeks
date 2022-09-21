@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { getDistance } from '../../utilities';
 import ToiletList from '../ToiletList/ToiletList';
@@ -16,6 +16,7 @@ const ToiletBottomModal = () => {
   //   state.center.current[0],
   //   state.center.current[1]
   // );
+  const h = window.innerHeight;
 
   const [dragState, setDragState] = useState({
     activeDrags: 0,
@@ -32,9 +33,6 @@ const ToiletBottomModal = () => {
   const [showModal, setShowModal] = useState(true);
 
   const handleDrag = (e, ui) => {
-    if (ui.y <= 200) {
-      return;
-    }
     setDragState((prev) => ({
       ...prev,
       deltaPosition: {
@@ -44,8 +42,6 @@ const ToiletBottomModal = () => {
     }));
   };
 
-  const h = window.innerHeight;
-
   const isShow = true;
   const onHide = () => {};
 
@@ -53,10 +49,11 @@ const ToiletBottomModal = () => {
     backdrop: false,
   };
 
+  // Fetch favourited and
   return (
     <Draggable
       axis="y"
-      bounds={{ top: 0.6 * h, bottom: 0.5 * h }}
+      bounds={{ top: 0.1 * h, bottom: 0.6 * h }}
       onDrag={handleDrag}
     >
       <Offcanvas
@@ -66,13 +63,13 @@ const ToiletBottomModal = () => {
         onHide={setShowModal}
         {...prop}
       >
-        <Offcanvas.Header closeButton>
+        <Offcanvas.Header>
           <Offcanvas.Title>Favourited Toilets</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
           <ToiletList toilets={[]} isShow={isShow} onCustomHide={onHide} />
         </Offcanvas.Body>
-        <Offcanvas.Header closeButton>
+        <Offcanvas.Header>
           <Offcanvas.Title>Blacklisted Toilets</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
