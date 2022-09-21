@@ -28,7 +28,7 @@ const ToiletList = ({ state, toilets, isShow, onCustomHide, tagType }) => {
     <>
       {toilets
         .filter(({ floor }) => floor < 8 && floor !== 0)
-        .sort(sortToilets)
+        .sort((t1, t2) => sortToilets(t1, t2, state.center.current))
         .map((toilet) => (
           <ToiletCard
             key={toilet.id}

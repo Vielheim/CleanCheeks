@@ -1,12 +1,12 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Offcanvas from 'react-bootstrap/Offcanvas';
-import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
-import ToiletList from '../ToiletList/ToiletList';
-import { FaHeart } from 'react-icons/fa';
-import { TiCancel } from 'react-icons/ti';
 import Draggable from 'react-draggable';
+import { FaHeart } from 'react-icons/fa';
+import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
+import { TiCancel } from 'react-icons/ti';
 import ToiletControlller from '../../api/ToiletController';
-import styles from './ToiletBottomModal.module.scss';
+import ToiletList from '../ToiletList/ToiletList';
+import styles from './ToiletPreferencesModal.module.scss';
 
 // const distance = getDistance(;
 //   latitude,
@@ -21,11 +21,11 @@ TODO: Show login button when user is not logged in
 TODO: Update UI
 - Apply gray background to toilet detail (for visual hierarchy)
  */
-const ToiletBottomModal = ({ state }) => {
+const ToiletPreferencesModal = ({ state }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [position, setPosition] = useState({
     x: 0,
-    y: 0.6 * window.innerHeight,
+    y: 0.4 * window.innerHeight,
   });
   const [showModal, setShowModal] = useState(true);
   const [blacklistedToilets, setBlacklistedToilets] = useState([]);
@@ -56,7 +56,7 @@ const ToiletBottomModal = ({ state }) => {
     } else {
       setPosition({
         x: 0,
-        y: 0.1 * window.innerHeight,
+        y: 0,
       });
       setIsExpanded(true);
     }
@@ -130,4 +130,4 @@ const ToiletBottomModal = ({ state }) => {
   );
 };
 
-export default ToiletBottomModal;
+export default ToiletPreferencesModal;

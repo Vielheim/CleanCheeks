@@ -25,7 +25,7 @@ import VENUES from '../assets/venues.json';
 import styles from './MapPage.module.scss';
 import ToiletControlller from '../api/ToiletController';
 import { getToiletsBreakdown } from '../utilities/Util';
-import ToiletBottomModal from '../components/ToiletBottomModal/ToiletBottomModal';
+import ToiletPreferencesModal from '../components/ToiletPreferencesModal/ToiletPreferencesModal';
 
 const CIRCLE_FILL_OPTIONS = {
   fillOpacity: 1,
@@ -184,7 +184,7 @@ const MapPage = () => {
         {state.selectedCluster !== null && (
           <ClusterDetails state={state} dispatch={dispatch} />
         )}
-        {<ToiletBottomModal state={state} />}
+        {<ToiletPreferencesModal state={state} />}
         <PanZoomCenter />
       </MapContainer>
     </div>

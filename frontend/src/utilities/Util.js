@@ -40,8 +40,21 @@ export const getToiletsBreakdown = (toilets) =>
       }
     );
 
-// ORDER BY FAVOURITE -> BLACKLIST -> FLOOR ASC, CLEANLINESS DESC, ID ASC
-export const sortToilets = (toilet1, toilet2) => {
+// ORDER BY DIST ASC, FAVOURITE, BLACKLIST, FLOOR ASC, CLEANLINESS DESC, ID ASC
+export const sortToilets = (toilet1, toilet2, userLocation) => {
+  const orderByDistance =
+    getDistance(
+      toilet1.latitude,
+      toilet1.longitude,
+      userLocation[0],
+      userLocation[1]
+    ) -
+    getDistance(
+      toilet2.latitude,
+      toilet2.longitude,
+      userLocation[0],
+      userLocation[1]
+    );
   const orderByFavouriteBlacklist =
     getOrder(toilet1.user_preference_type) -
     getOrder(toilet2.user_preference_type);
@@ -49,6 +62,9 @@ export const sortToilets = (toilet1, toilet2) => {
   const orderByCleanDesc = toilet2.cleanliness - toilet1.cleanliness;
   const orderByIdAsc = toilet1.id - toilet2.id;
 
+  if (orderByDistance !== 0) {
+    return orderByDistance;
+  }
   if (orderByFavouriteBlacklist !== 0) {
     return orderByFavouriteBlacklist;
   }

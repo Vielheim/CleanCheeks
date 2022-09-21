@@ -47,7 +47,7 @@ const ToiletCard = ({ toilet, onSelect, tagType, userLocation }) => {
   }, [latitude, longitude, tagType, userLocation, user_preference_type]);
 
   return (
-    <Card key={id} className="mb-3" onClick={onSelect}>
+    <Card key={id} className="mb-3" onClick={() => onSelect(toilet)}>
       <Card.Body>
         <Card.Title className={`${styles['card-header']} border-0 p-0`}>
           <p className="mb-2">{`${building}, Level ${fmtedFloor}`}</p>
