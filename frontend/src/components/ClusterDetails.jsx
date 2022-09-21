@@ -10,9 +10,12 @@ import StyledUtility from './shared/StyledUtility';
 import ToiletDetail from './ToiletDetail/ToiletDetail';
 
 import { Utilities } from '../enums/ToiletEnums';
+import {
+  getOrder,
+  getPreferenceTypeDisplay,
+} from '../enums/ToiletPreferenceEnums';
 import './ClusterDetails.scss';
 import { getCleanlinessMetadata } from './shared/Util';
-import { getPreferenceTypeDisplay } from '../enums/ToiletPreferenceEnums';
 
 const UTILITIES = [
   [Utilities.FRAGRANCE, Utilities.WATERCOOLER],
@@ -51,12 +54,18 @@ const ClusterDetails = ({ state, dispatch }) => {
     );
   }
 
-  // ORDER BY FLOOR ASC, CLEANLINESS DESC, ID ASC
+  // ORDER BY FAVOURITE -> BLACKLIST -> FLOOR ASC, CLEANLINESS DESC, ID ASC
   const sortToilets = (toilet1, toilet2) => {
+    const orderByFavouriteBlacklist =
+      getOrder(toilet1.user_preference_type) -
+      getOrder(toilet2.user_preference_type);
     const orderByFloorAsc = toilet1.floor - toilet2.floor;
     const orderByCleanDesc = toilet2.cleanliness - toilet1.cleanliness;
     const orderByIdAsc = toilet1.id - toilet2.id;
 
+    if (orderByFavouriteBlacklist !== 0) {
+      return orderByFavouriteBlacklist;
+    }
     if (orderByFloorAsc !== 0) {
       return orderByFloorAsc;
     }
