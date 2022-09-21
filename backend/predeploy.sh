@@ -1,4 +1,4 @@
-echo 'Starting deployment...'
+echo 'Starting predeployment...'
 
 echo 'Removing node_modules...'
 rm -r ./node_modules
