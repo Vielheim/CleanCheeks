@@ -10,10 +10,6 @@ export const create = async (
   return await db.create(payload);
 };
 
-export const getAll = async (): Promise<IToiletRatingOutput[]> => {
-  return await db.getAll();
-};
-
 export const getUserLastRated = async (
   toilet_id: string,
   user_id: string
