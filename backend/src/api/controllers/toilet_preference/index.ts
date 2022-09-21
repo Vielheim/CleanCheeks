@@ -20,13 +20,3 @@ export const deleteByUserIdAndToiletId = async (
 ): Promise<boolean> => {
   return await service.deleteByUserIdAndToiletId(userId, toiletId);
 };
-
-export const getByUserId = async (
-  userId: string
-): Promise<Array<IPreference>> => {
-  return (await service.queryByUserId(userId)).map(mapper.toIPreference);
-};
-
-export const getAll = async (): Promise<Array<IPreference>> => {
-  return (await service.queryAll()).map(mapper.toIPreference);
-};
