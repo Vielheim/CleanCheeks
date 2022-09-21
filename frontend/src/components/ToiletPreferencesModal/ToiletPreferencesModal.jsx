@@ -23,6 +23,7 @@ const ToiletPreferencesModal = ({ state }) => {
   const [blacklistedToilets, setBlacklistedToilets] = useState([]);
   const [favouritedToilets, setFavouritedToilets] = useState([]);
 
+  // TODO: Fetch toilets whenever user changes preferences (can add action to useContext)
   const fetchToiletsWithPreferences = useCallback(() => {
     ToiletControlller.fetchToiletWithUserPreferences()
       .then((result) => {

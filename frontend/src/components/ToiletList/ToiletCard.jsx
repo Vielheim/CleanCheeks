@@ -47,37 +47,52 @@ const ToiletCard = ({ toilet, onSelect, tagType, userLocation }) => {
   }, [latitude, longitude, tagType, userLocation, user_preference_type]);
 
   return (
-    <Card key={id} className="mb-3" onClick={() => onSelect(toilet)}>
+    <Card
+      key={id}
+      className={`${styles['card-body']} mb-3`}
+      onClick={() => onSelect(toilet)}
+    >
       <Card.Body>
-        <Card.Title className={`${styles['card-header']} border-0 p-0`}>
-          <p className="mb-2">{`${building}, Level ${fmtedFloor}`}</p>
+        <Card.Title className={`${styles['card-header']} border-0 p-0 mb-`}>
+          <p>{`${building}, Level ${fmtedFloor}`}</p>
           {tagDisplay && (
             <p className={`${styles['preference']} mb-2`}>{tagDisplay}</p>
           )}
         </Card.Title>
-        <Card.Subtitle className="mb-1 text-muted">{description}</Card.Subtitle>
-        <Badge className="mb-2" bg={type}>{`${text} cleanliness`}</Badge>
-        <Row className="mb-1">
-          <Col>{`Number of seats: ${num_seats}`}</Col>
-          <Col>{`Number of squats: ${num_squats}`}</Col>
-        </Row>
-
+        <Card.Subtitle className="mb-2 text-muted">{description}</Card.Subtitle>
+        <Badge className="mb-3" bg={type}>{`${text} cleanliness`}</Badge>
         {UTILITIES.length > 0 && (
-          <Container className={styles['toilet-utilities-row']}>
-            {UTILITIES.map((group, i) => (
-              <Row key={i}>
-                {group.map((utility, i) => (
-                  <Col key={i}>
-                    <StyledUtility
-                      utility={utility}
-                      presentUtilities={utilities}
-                    />
-                  </Col>
-                ))}
-              </Row>
-            ))}
-          </Container>
+          <div className={`${styles['container']} mb-2`}>
+            <Container className={styles['toilet-utilities-row']}>
+              {UTILITIES.map((group, i) => (
+                <Row md={4} key={i}>
+                  {group.map((utility, i) => (
+                    <Col key={i}>
+                      <StyledUtility
+                        utility={utility}
+                        presentUtilities={utilities}
+                      />
+                    </Col>
+                  ))}
+                </Row>
+              ))}
+            </Container>
+          </div>
         )}
+        <div className={styles['num-row']}>
+          <div className={styles['sitting']}>
+            <span>Sitting: </span>
+            <span className={`${styles['toilet-utilities-row']} p-1`}>
+              {num_seats}
+            </span>
+          </div>
+          <div>
+            <span>Squatting: </span>
+            <span className={`${styles['toilet-utilities-row']} p-1`}>
+              {num_squats}
+            </span>
+          </div>
+        </div>
       </Card.Body>
     </Card>
   );
