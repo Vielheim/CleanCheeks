@@ -1,5 +1,5 @@
-import { TOILET_CLEANLINESS_METADATA, TOILET_QUOTES } from '../../constants';
-import { getOrder } from '../../enums/ToiletPreferenceEnums';
+import { TOILET_CLEANLINESS_METADATA, TOILET_QUOTES } from '../constants';
+import { getOrder } from '../enums/ToiletPreferenceEnums';
 
 const DIRTY_CLEANLINESS_VALUE = -0.25;
 const CLEAN_CLEANLINESS_VALUE = 0.25;
@@ -60,3 +60,12 @@ export const sortToilets = (toilet1, toilet2) => {
   }
   return orderByIdAsc;
 };
+
+export const getDistance = (fLat, fLon, sLat, sLon) => {
+  const straight =
+    (Math.abs(fLat - sLat) ** 2 + Math.abs(fLon - sLon) ** 2) ** 0.5;
+  return (straight * 110000).toFixed(1);
+};
+
+export const fmtDistance = (distance) =>
+  distance >= 1000 ? `${(distance / 1000).toFixed(1)}km` : `${distance}m`;

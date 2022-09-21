@@ -7,7 +7,7 @@ import { GrFormPreviousLink } from 'react-icons/gr';
 import ToiletControlller from '../../api/ToiletController';
 import { Utilities } from '../../enums/ToiletEnums';
 
-import { getCleanlinessMetadata } from '../shared/Util';
+import { getCleanlinessMetadata } from '../../utilities/Util';
 import PreferenceIcons from './PreferenceIcons';
 import styles from './ToiletDetail.module.scss';
 import ToiletRating from './ToiletRating';

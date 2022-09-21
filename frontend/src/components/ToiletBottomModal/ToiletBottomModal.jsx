@@ -1,11 +1,12 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
 import ToiletList from '../ToiletList/ToiletList';
-
+import { FaHeart } from 'react-icons/fa';
+import { TiCancel } from 'react-icons/ti';
 import Draggable from 'react-draggable';
 import ToiletControlller from '../../api/ToiletController';
-import './ToiletBottomModal.scss';
+import styles from './ToiletBottomModal.module.scss';
 
 // const distance = getDistance(;
 //   latitude,
@@ -14,9 +15,13 @@ import './ToiletBottomModal.scss';
 //   state.center.current[1]
 // );
 
-// TODO: Sync blacklisted and favourited toilets
-// TODO: Show login button when user is not logged in
-const ToiletBottomModal = () => {
+/* 
+TODO: Sync blacklisted and favourited toilets when user favourites and blacklist toilets
+TODO: Show login button when user is not logged in
+TODO: Update UI
+- Apply gray background to toilet detail (for visual hierarchy)
+ */
+const ToiletBottomModal = ({ state }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [position, setPosition] = useState({
     x: 0,
@@ -57,7 +62,6 @@ const ToiletBottomModal = () => {
     }
   };
 
-  const isShow = true;
   const onHide = () => {};
 
   const prop = {
@@ -65,53 +69,60 @@ const ToiletBottomModal = () => {
   };
 
   return (
-    <Draggable
-      axis="y"
-      position={position}
-      bounds={{
-        top: 0.1 * window.innerHeight,
-        bottom: 0.6 * window.innerHeight,
-      }}
-      onStart={() => false}
-    >
+    <Draggable axis="y" position={position} onStart={() => false}>
       <Offcanvas
-        className="bottom-modal"
+        className={styles['bottom-modal']}
         placement="bottom"
         show={showModal}
         onHide={setShowModal}
         {...prop}
       >
         <Offcanvas.Header>
-          <Offcanvas.Title>Favourited Toilets</Offcanvas.Title>
+          <div></div>
           {isExpanded ? (
             <FiChevronDown
-              className="modal-chevron"
+              className={styles['modal-chevron']}
               size={28}
               onClick={onHandleDrag}
             />
           ) : (
             <FiChevronUp
-              className="modal-chevron"
+              className={styles['modal-chevron']}
               size={28}
               onClick={onHandleDrag}
             />
           )}
         </Offcanvas.Header>
         <Offcanvas.Body>
+          <Offcanvas.Title className={`${styles['title']} mb-3 fw-bolder`}>
+            <FaHeart
+              className={styles['favourite-icon']}
+              color="#D2222D"
+              size={22}
+            />
+            Favourited Toilets
+          </Offcanvas.Title>
           <ToiletList
+            state={state}
             toilets={favouritedToilets}
-            isShow={isShow}
+            isShow={true}
             onCustomHide={onHide}
+            tagType="distance"
           />
-        </Offcanvas.Body>
-        <Offcanvas.Header>
-          <Offcanvas.Title>Blacklisted Toilets</Offcanvas.Title>
-        </Offcanvas.Header>
-        <Offcanvas.Body>
+          <Offcanvas.Title className={`${styles['title']} mb-3 fw-bolder`}>
+            <TiCancel
+              className={styles['blacklisted-icon']}
+              color="#453F41"
+              size={28}
+            />
+            Blacklisted Toilets
+          </Offcanvas.Title>
           <ToiletList
+            state={state}
             toilets={blacklistedToilets}
-            isShow={isShow}
+            isShow={true}
             onCustomHide={onHide}
+            tagType="distance"
           />
         </Offcanvas.Body>
       </Offcanvas>
