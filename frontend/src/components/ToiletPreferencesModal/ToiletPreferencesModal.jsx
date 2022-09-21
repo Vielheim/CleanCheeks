@@ -8,13 +8,6 @@ import ToiletControlller from '../../api/ToiletController';
 import ToiletList from '../ToiletList/ToiletList';
 import styles from './ToiletPreferencesModal.module.scss';
 
-// const distance = getDistance(;
-//   latitude,
-//   longitude,
-//   state.center.current[0],
-//   state.center.current[1]
-// );
-
 /* 
 TODO: Sync blacklisted and favourited toilets when user favourites and blacklist toilets
 TODO: Show login button when user is not logged in
