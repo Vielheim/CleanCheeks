@@ -1,8 +1,10 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FaHeart } from 'react-icons/fa';
 import { TiCancel } from 'react-icons/ti';
 import ToiletPreferenceControlller from '../../api/ToiletPreferenceController';
 import { PreferenceType } from '../../enums/ToiletPreferenceEnums';
+import { AuthContext } from '../../utilities/context';
 
 const PreferenceIcons = ({
   toiletId,
@@ -10,6 +12,8 @@ const PreferenceIcons = ({
   onSetPreferenceType,
 }) => {
   const [preference, setPreference] = useState(initPreferenceType);
+  const navigate = useNavigate();
+  const { setUser } = useContext(AuthContext);
 
   const updateToiletPreference = useCallback(
     async (type) => {
@@ -19,7 +23,8 @@ const PreferenceIcons = ({
           onSetPreferenceType(result.data.type);
         })
         .catch((e) => {
-          console.error(e);
+          setUser(false);
+          navigate('/');
         });
     },
     [toiletId, onSetPreferenceType]

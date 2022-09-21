@@ -6,9 +6,8 @@ import {
   Navigate,
 } from 'react-router-dom';
 import MapPage from './pages/MapPage';
-import { getLocalStorageValue } from './utilities/localStorage';
-import { ACCESS_TOKEN_KEY, USER_ID_KEY } from './constants';
-import { ToastContext } from './utilities/context';
+import Api from './api/api';
+import { ToastContext, AuthContext } from './utilities/context';
 import LoginPage from './pages/LoginPage';
 import Toast from 'react-bootstrap/Toast';
 import ToastContainer from 'react-bootstrap/ToastContainer';
@@ -38,30 +37,36 @@ const TOAST_CONTENTS = {
 };
 
 function App() {
-  const [user, setUser] = useState();
+  const [user, setUser] = useState(false);
   const [toastType, setToastType] = useState(null);
 
   useEffect(() => {
-    setUser(
-      getLocalStorageValue(ACCESS_TOKEN_KEY) &&
-        getLocalStorageValue(USER_ID_KEY)
-    );
+    Api.makeApiRequest({
+      method: 'POST',
+      url: '/auth/check-login',
+    })
+      .then(() => setUser(true))
+      .catch(setUser(false));
   }, []);
 
   return (
     <>
-      <Router>
-        <ToastContext.Provider value={setToastType}>
-          <Routes>
-            <Route path="/home" className="app" element={<MapPage />} />
-            <Route
-              exact
-              path="/"
-              element={!user ? <LoginPage /> : <Navigate to="/home" replace />}
-            />
-          </Routes>
-        </ToastContext.Provider>
-      </Router>
+      <AuthContext.Provider value={{ user, setUser }}>
+        <Router>
+          <ToastContext.Provider value={setToastType}>
+            <Routes>
+              <Route path="/home" className="app" element={<MapPage />} />
+              <Route
+                exact
+                path="/"
+                element={
+                  !user ? <LoginPage /> : <Navigate to="/home" replace />
+                }
+              />
+            </Routes>
+          </ToastContext.Provider>
+        </Router>
+      </AuthContext.Provider>
 
       {toastType !== null && (
         <ToastContainer position="bottom-center">

@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { setLocalStorageValue } from '../../utilities/localStorage';
 import { ACCESS_TOKEN_KEY, USER_ID_KEY } from '../../constants';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import Api from '../../api/api';
 import './GoogleAuth.scss';
+import { AuthContext } from '../../utilities/context';
 
 const GoogleAuth = () => {
   const navigate = useNavigate();
+  const { setUser } = useContext(AuthContext);
   const [errorMsg, setErrorMsg] = useState('');
   const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 
@@ -19,9 +21,10 @@ const GoogleAuth = () => {
           url: '/auth/google',
           data: { response },
         }).then((result) => {
-          const { userId, accessToken } = result.data;
-          setLocalStorageValue(ACCESS_TOKEN_KEY, accessToken);
-          setLocalStorageValue(USER_ID_KEY, userId);
+          setUser(true);
+          // const { userId, accessToken } = result.data;
+          // setLocalStorageValue(ACCESS_TOKEN_KEY, accessToken);
+          // setLocalStorageValue(USER_ID_KEY, userId);
           navigate('/home');
         });
       }
