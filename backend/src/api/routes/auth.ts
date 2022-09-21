@@ -12,11 +12,11 @@ authRouter.post('/google', async (req: Request, res: Response) => {
     const { userId, accessToken } = result;
     res.cookie('user_id', userId, {
       secure: true,
-      sameSite: false,
+      sameSite: 'none',
     });
     res.cookie('access_token', accessToken, {
       secure: true,
-      sameSite: false,
+      sameSite: 'none',
     });
     Util.sendSuccess(res, 201, 'Successfully logged in', true);
   } catch (error: unknown) {
