@@ -27,14 +27,6 @@ export const updateToiletRating = async ({
   });
 };
 
-export const deleteById = async (id: string): Promise<boolean> => {
-  const deletedToiletCount = await Toilet.destroy({
-    where: { id: id },
-  });
-
-  return !!deletedToiletCount;
-};
-
 export const getById = async (id: string): Promise<Toilet> => {
   const toilet = await Toilet.findByPk(id);
 

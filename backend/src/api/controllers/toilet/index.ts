@@ -12,10 +12,6 @@ import {
 } from '../../interfaces/toilet.interface';
 import * as mapper from './mapper';
 
-export const deleteById = async (id: string): Promise<boolean> => {
-  return await service.deleteById(id);
-};
-
 export const getById = async (id: string): Promise<IToilet> => {
   const toiletOutput = await service.getById(id);
   return mapper.toToilet(toiletOutput);
