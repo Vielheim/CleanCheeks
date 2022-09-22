@@ -7,6 +7,7 @@ import { ToastContext, UserContext } from '../../utilities/context';
 import { getLocalStorageValue } from '../../utilities/localStorage';
 import { ACCESS_TOKEN_KEY, USER_ID_KEY } from '../../constants';
 import gtag from 'ga-gtag';
+import styles from './PreferenceIcons.module.scss';
 
 const PreferenceIcons = ({
   toiletId,
@@ -81,7 +82,7 @@ const PreferenceIcons = ({
   }, [updateToiletPreference]);
 
   return (
-    <div>
+    <div className={styles['preference-icons-container']}>
       <FaHeart
         color={preference === PreferenceType.FAVOURITE ? 'red' : 'lightgrey'}
         size={20}
