@@ -6,7 +6,6 @@ import { PreferenceType } from '../../enums/ToiletPreferenceEnums';
 import { ToastContext, UserContext } from '../../utilities/context';
 import { getLocalStorageValue } from '../../utilities/localStorage';
 import { ACCESS_TOKEN_KEY, USER_ID_KEY } from '../../constants';
-import gtag from 'ga-gtag';
 import styles from './PreferenceIcons.module.scss';
 
 const PreferenceIcons = ({
