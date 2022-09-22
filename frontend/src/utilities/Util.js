@@ -85,3 +85,9 @@ export const getDistance = (fLat, fLon, sLat, sLon) => {
 
 export const fmtDistance = (distance) =>
   distance >= 1000 ? `${(distance / 1000).toFixed(1)}km` : `${distance}m`;
+
+export const getToiletName = (toilet) => {
+  const { floor, building } = toilet;
+  const fmtedFloor = floor < 0 ? `B${Math.abs(floor)}` : floor.toString();
+  return `${building} ${fmtedFloor}`;
+};

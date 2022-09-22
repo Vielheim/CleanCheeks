@@ -6,6 +6,7 @@ import './GoogleAuth.scss';
 import { UserContext } from '../../utilities/context';
 import { setLocalStorageValue } from '../../utilities/localStorage';
 import { ACCESS_TOKEN_KEY, USER_ID_KEY } from '../../constants';
+import gtag from 'ga-gtag';
 
 const GoogleAuth = () => {
   const navigate = useNavigate();
@@ -27,15 +28,26 @@ const GoogleAuth = () => {
           setUser(true);
           fetchToiletPreferences();
           navigate('/home');
+
+          gtag('event', 'login', {
+            method: 'Google',
+          });
         });
       }
     } catch (e) {
       setErrorMsg('Error signing in with Google. Try again.');
+      gtag('event', 'exception', {
+        method: 'Error logging in with Google',
+      });
     }
   };
 
   const onFailure = () => {
     setErrorMsg('Error signing in with Google. Try again.');
+
+    gtag('event', 'exception', {
+      method: 'Error logging in with Google',
+    });
   };
 
   return (
