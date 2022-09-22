@@ -8,9 +8,6 @@ import { UserContext } from '../../utilities/context';
 import ToiletList from '../ToiletList/ToiletList';
 import styles from './ToiletPreferencesModal.module.scss';
 
-/* 
-TODO: Show login button when user is not logged in
- */
 const ToiletPreferencesModal = ({ state }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [position, setPosition] = useState({
