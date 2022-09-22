@@ -8,3 +8,7 @@ npm install
 
 echo 'Done. Running deploy-init...'
 npm run deploy-init
+
+# Only run once
+echo 'Done. Running db-init...'
+npm run db-init
