@@ -39,7 +39,7 @@ paths:
           schema:
             type: array
             format: string
-            enum: ['SHOWERS', 'HOOKS', 'BIDETS', 'WATERCOOLER', 'FRAGRANCE']
+            enum: ['SHOWERS', 'BIDETS', 'WATERCOOLER', 'FRAGRANCE']
       responses:
         '200':
           description: Success
@@ -586,8 +586,8 @@ components:
           type: array
           items:
             type: string
-            enum: [SHOWERS, FRAGRANCE, BIDETS, HOOKS, WATERCOOLER]
-          example: [BIDETS, HOOKS]
+            enum: [SHOWERS, FRAGRANCE, BIDETS, WATERCOOLER]
+          example: [BIDETS]
         createdAt:
           type: string
           example: 2022-09-14T09:36:51.277Z

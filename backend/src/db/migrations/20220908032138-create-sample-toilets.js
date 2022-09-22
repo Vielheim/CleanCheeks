@@ -73,7 +73,7 @@ module.exports = {
         utilities: {
           type: Sequelize.ARRAY(Sequelize.STRING),
           allowNull: false,
-          values: ['SHOWERS', 'FRAGRANCE', 'BIDETS', 'HOOKS', 'WATERCOOLER'],
+          values: ['SHOWERS', 'FRAGRANCE', 'BIDETS', 'WATERCOOLER'],
         },
         createdAt: {
           allowNull: false,
