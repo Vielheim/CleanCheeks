@@ -7,7 +7,11 @@ import { GrFormPreviousLink } from 'react-icons/gr';
 import ToiletControlller from '../../api/ToiletController';
 import { Utilities } from '../../enums/ToiletEnums';
 
-import { getCleanlinessMetadata, getToiletName } from '../../utilities/Util';
+import {
+  getCleanlinessMetadata,
+  getToiletName,
+  getToiletQuote,
+} from '../../utilities/Util';
 import PreferenceIcons from './PreferenceIcons';
 import styles from './ToiletDetail.module.scss';
 import ToiletRating from './ToiletRating';
@@ -17,6 +21,9 @@ const ToiletDetail = ({ building, toilet, isShow, onBack, onHide }) => {
   const { id, description, utilities } = toilet;
   const setToastType = useContext(ToastContext);
 
+  const [toiletQuote, setToiletQuote] = useState(
+    'Haha our website clogged just like the toilet cannot flush'
+  );
   const [cleanlinessMetadata, setCleanlinessMetadata] = useState({
     text: 'BAD',
     type: 'danger',
@@ -30,6 +37,9 @@ const ToiletDetail = ({ building, toilet, isShow, onBack, onHide }) => {
         setPercentageBeat(result.data.percentageBeat);
         setCleanlinessMetadata(getCleanlinessMetadata(cleanliness));
         toilet.cleanliness = cleanliness;
+
+        const newToiletQuote = getToiletQuote(cleanliness, id);
+        setToiletQuote(newToiletQuote);
       })
       .catch((e) => {
         setToastType('ERROR');
@@ -65,9 +75,7 @@ const ToiletDetail = ({ building, toilet, isShow, onBack, onHide }) => {
       </Offcanvas.Header>
       <Offcanvas.Body>
         <div className={styles['toilet-summary']}>
-          <p className={styles['toilet-summary-item']}>
-            {cleanlinessMetadata.quote}
-          </p>
+          <p className={styles['toilet-summary-item']}>{toiletQuote}</p>
 
           <img
             className={styles['toilet-summary-item']}
