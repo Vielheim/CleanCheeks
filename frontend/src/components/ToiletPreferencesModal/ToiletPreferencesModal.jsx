@@ -84,7 +84,7 @@ const ToiletPreferencesModal = ({ state }) => {
             onCustomHide={onHide}
             tagType="distance"
           />
-          <Offcanvas.Title className="mb-3 mt-5 ">
+          <Offcanvas.Title className="mb-3 mt-5 fw-bolder">
             <TiCancel
               className={styles['blacklisted-icon']}
               color="#453F41"

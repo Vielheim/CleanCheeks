@@ -42,8 +42,8 @@ function App() {
   const [toastType, setToastType] = useState(null);
   const [toiletPreferences, setToiletPreferences] = useState([]);
 
-  const fetchToiletPreferences = useCallback(() => {
-    ToiletControlller.fetchToiletWithUserPreferences()
+  const fetchToiletPreferences = useCallback(async () => {
+    await ToiletControlller.fetchToiletWithUserPreferences()
       .then((result) => {
         setToiletPreferences(result.data);
       })
