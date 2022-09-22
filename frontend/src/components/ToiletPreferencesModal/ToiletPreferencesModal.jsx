@@ -8,11 +8,13 @@ import { UserContext } from '../../utilities/context';
 import ToiletList, { DISTANCE_KEY } from '../ToiletList/ToiletList';
 import styles from './ToiletPreferencesModal.module.scss';
 
+const yOffset = 0.8 * window.innerHeight - 80;
+
 const ToiletPreferencesModal = ({ state }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [position, setPosition] = useState({
     x: 0,
-    y: window.innerHeight - 252,
+    y: yOffset,
   });
   const { toiletPreferences } = useContext(UserContext);
 
@@ -20,7 +22,7 @@ const ToiletPreferencesModal = ({ state }) => {
     if (isExpanded) {
       setPosition({
         x: 0,
-        y: window.innerHeight - 252,
+        y: yOffset,
       });
       setIsExpanded(false);
     } else {
