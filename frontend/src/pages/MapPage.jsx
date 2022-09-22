@@ -11,7 +11,6 @@ import {
   TileLayer,
   Circle,
   Polyline,
-  ZoomControl,
   useMapEvents,
 } from 'react-leaflet';
 import SearchBar from '../components/SearchBar';
@@ -73,7 +72,7 @@ const MapPage = () => {
           setToastType('ERROR');
         });
     },
-    [setToastType]
+    [setToastType, userId]
   );
 
   // runs only on first load
@@ -183,7 +182,6 @@ const MapPage = () => {
             </React.Fragment>
           );
         })}
-        <ZoomControl position="bottomright" />
         {state.selectedCluster !== null && (
           <ClusterDetails state={state} dispatch={dispatch} />
         )}
