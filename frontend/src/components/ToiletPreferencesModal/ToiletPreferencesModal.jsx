@@ -10,7 +10,7 @@ import styles from './ToiletPreferencesModal.module.scss';
 
 const ToiletPreferencesModal = ({ state }) => {
   const isMobile = window.innerWidth <= 768;
-  const yOffset = 0.8 * window.innerHeight - (isMobile ? 0 : 80);
+  const yOffset = 0.8 * window.innerHeight - (isMobile ? 60 : 80);
 
   const [isExpanded, setIsExpanded] = useState(false);
   const [position, setPosition] = useState({
