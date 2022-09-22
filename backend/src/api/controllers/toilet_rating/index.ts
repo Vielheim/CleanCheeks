@@ -18,10 +18,6 @@ export const create = async (payload: CreateRatingDTO): Promise<IRating> => {
   return mapper.toIRating(result);
 };
 
-export const getAll = async (): Promise<Array<IRating>> => {
-  return (await service.getAll()).map(mapper.toIRating);
-};
-
 export const getUserLastRated = async (
   payload: QueryRatingDTO
 ): Promise<IRating | null> => {

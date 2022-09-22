@@ -27,15 +27,6 @@ ratingsRouter.post('/', async (req: Request, res: Response) => {
   }
 });
 
-ratingsRouter.get('/', async (_, res: Response) => {
-  try {
-    const results = await ratingController.getAll();
-    return Util.sendSuccess(res, 200, 'Retrieve all ratings', results);
-  } catch (error: unknown) {
-    return Util.sendFailure(res, error);
-  }
-});
-
 ratingsRouter.get('/last-rated', async (req: Request, res: Response) => {
   try {
     const { user_id } = req.cookies;
