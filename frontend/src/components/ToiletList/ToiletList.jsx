@@ -7,6 +7,9 @@ import { UserContext } from '../../utilities/context';
 import LoginButton from '../LoginButton/LoginButton';
 import styles from './ToiletList.module.scss';
 
+export const DISTANCE_KEY = 'distance';
+export const PREFERENCE_KEY = 'preference';
+
 const ToiletList = ({ state, toilets, isShow, onCustomHide, tagType }) => {
   const [selectedToilet, setSelectedToilet] = useState(null);
   const { user } = useContext(UserContext);
@@ -16,7 +19,7 @@ const ToiletList = ({ state, toilets, isShow, onCustomHide, tagType }) => {
     onCustomHide();
   };
 
-  if (!user) {
+  if (tagType === DISTANCE_KEY && !user) {
     return <LoginButton />;
   }
 
