@@ -4,12 +4,13 @@ import { getOrder } from '../enums/ToiletPreferenceEnums';
 const DIRTY_CLEANLINESS_VALUE = -0.25;
 const CLEAN_CLEANLINESS_VALUE = 0.25;
 
-const getRandomToiletQuote = (quotes) => {
-  const idx = Math.floor(Math.random() * quotes.length);
-  return quotes[idx];
-};
+// https://gist.github.com/hyamamoto/fd435505d29ebfa3d9716fd2be8d42f0
+const hashCode = (str) =>
+  Math.abs(
+    str.split('').reduce((s, c) => (Math.imul(31, s) + c.charCodeAt(0)) | 0, 0)
+  );
 
-export const getCleanlinessMetadata = (cleanliness) => {
+const getCleanlinessKey = (cleanliness) => {
   let key = '';
   if (cleanliness < DIRTY_CLEANLINESS_VALUE) {
     key = 'BAD';
@@ -18,11 +19,20 @@ export const getCleanlinessMetadata = (cleanliness) => {
   } else {
     key = 'AVERAGE';
   }
+  return key;
+};
 
-  const metadata = TOILET_CLEANLINESS_METADATA[key];
-  const quote = getRandomToiletQuote(TOILET_QUOTES[key]);
-  metadata.quote = quote;
-  return metadata;
+export const getToiletQuote = (cleanliness, id) => {
+  const key = getCleanlinessKey(cleanliness);
+  const quotes = TOILET_QUOTES[key];
+  const idx = hashCode(id) % quotes.length;
+
+  return quotes[idx];
+};
+
+export const getCleanlinessMetadata = (cleanliness) => {
+  const key = getCleanlinessKey(cleanliness);
+  return TOILET_CLEANLINESS_METADATA[key];
 };
 
 export const getToiletsBreakdown = (toilets) =>

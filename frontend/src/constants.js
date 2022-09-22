@@ -90,18 +90,15 @@ export const TOILET_CLEANLINESS_METADATA = {
     text: 'GOOD',
     type: 'success',
     icon: clean_toilet,
-    quote: TOILET_QUOTES.GOOD[0],
   },
   BAD: {
     text: 'BAD',
     type: 'danger',
     icon: dirty_toilet,
-    quote: TOILET_QUOTES.BAD[0],
   },
   AVERAGE: {
     text: 'AVERAGE',
     type: 'warning',
     icon: normal_toilet,
-    quote: TOILET_QUOTES.AVERAGE[0],
   },
 };
