@@ -59,7 +59,7 @@ function App() {
       .catch((e) => {
         setToastType('ERROR');
       });
-  }, []);
+  }, [userId]);
 
   useEffect(() => {
     const accessToken = getLocalStorageValue(ACCESS_TOKEN_KEY);

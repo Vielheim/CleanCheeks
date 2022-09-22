@@ -7,7 +7,6 @@ import { PreferenceType } from '../../enums/ToiletPreferenceEnums';
 import { ToastContext, UserContext } from '../../utilities/context';
 import { getLocalStorageValue } from '../../utilities/localStorage';
 import { ACCESS_TOKEN_KEY, USER_ID_KEY } from '../../constants';
-import gtag from 'ga-gtag';
 
 const PreferenceIcons = ({
   toiletId,
@@ -57,7 +56,7 @@ const PreferenceIcons = ({
             navigate('/');
           });
 
-        gtag('event', type, {
+        window.gtag('event', type, {
           event_category: 'preferences',
           event_label: type,
         });
