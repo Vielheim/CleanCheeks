@@ -7,17 +7,15 @@ import { GrFormPreviousLink } from 'react-icons/gr';
 import ToiletControlller from '../../api/ToiletController';
 import { Utilities } from '../../enums/ToiletEnums';
 
-import { getCleanlinessMetadata } from '../../utilities/Util';
+import { getCleanlinessMetadata, getToiletName } from '../../utilities/Util';
 import PreferenceIcons from './PreferenceIcons';
 import styles from './ToiletDetail.module.scss';
 import ToiletRating from './ToiletRating';
 import { ToastContext } from '../../utilities/context';
 
 const ToiletDetail = ({ building, toilet, isShow, onBack, onHide }) => {
-  const { id, description, floor, utilities } = toilet;
+  const { id, description, utilities } = toilet;
   const setToastType = useContext(ToastContext);
-
-  const fmtedFloor = floor < 0 ? `B${Math.abs(floor)}` : floor.toString();
 
   const [cleanlinessMetadata, setCleanlinessMetadata] = useState({
     text: 'BAD',
@@ -36,7 +34,7 @@ const ToiletDetail = ({ building, toilet, isShow, onBack, onHide }) => {
       .catch((e) => {
         setToastType('ERROR');
       });
-  }, [id, toilet]);
+  }, [id, setToastType, toilet]);
 
   const onUpdateToiletPreference = (preference) => {
     toilet.user_preference_type = preference;
@@ -56,7 +54,7 @@ const ToiletDetail = ({ building, toilet, isShow, onBack, onHide }) => {
       <Offcanvas.Header>
         <GrFormPreviousLink onClick={onBack} size={28} />
         <Offcanvas.Title className="text-center">
-          <p className="m-0">{`${building}, Level ${fmtedFloor}`}</p>
+          <p className="m-0">{getToiletName(toilet)}</p>
           <p className="m-0 text-muted fs-6">{description}</p>
         </Offcanvas.Title>
         <PreferenceIcons

@@ -10,6 +10,7 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import ListGroup from 'react-bootstrap/ListGroup';
 import { BsSearch } from 'react-icons/bs';
 import throttle from 'lodash/throttle';
+import gtag from 'ga-gtag';
 
 import styles from './SearchBar.module.scss';
 
@@ -52,6 +53,10 @@ const SearchBar = ({ state, dispatch, venues }) => {
     dispatch({ type: 'updateSearch', payload: value });
     setTempSearch(value);
     setIsShowList(false);
+
+    gtag('event', 'search', {
+      search_term: value,
+    });
   };
 
   const filterVenues = (venues) =>

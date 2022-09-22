@@ -8,9 +8,10 @@ import { UserContext } from '../../utilities/context';
 import ToiletList, { DISTANCE_KEY } from '../ToiletList/ToiletList';
 import styles from './ToiletPreferencesModal.module.scss';
 
-const yOffset = 0.8 * document.documentElement.clientHeight - 80;
-
 const ToiletPreferencesModal = ({ state }) => {
+  const isMobile = window.innerWidth <= 768;
+  const yOffset = 0.8 * window.innerHeight - (isMobile ? 0 : 80);
+
   const [isExpanded, setIsExpanded] = useState(false);
   const [position, setPosition] = useState({
     x: 0,

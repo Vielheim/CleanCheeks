@@ -12,6 +12,7 @@ import { parseISO, differenceInMilliseconds } from 'date-fns';
 import ToiletRatingButtons from './ToiletRatingButtons';
 import ToiletRatingCountdown from './ToiletRatingCountdown';
 import { ToastContext, UserContext } from '../../utilities/context';
+import gtag from 'ga-gtag';
 
 const ToiletRating = ({ toiletId, onRate }) => {
   const navigate = useNavigate();
@@ -61,11 +62,14 @@ const ToiletRating = ({ toiletId, onRate }) => {
         user_id: userId,
       };
 
-      // TODO: Handle error
       await ToiletRatingController.addUserRating(data, accessToken)
         .then((res) => {
           updateRatingInfo(res.data);
           onRate();
+          gtag('event', 'rate_toilet', {
+            event_category: 'ratings',
+            event_label: rating,
+          });
         })
         .catch((e) => {
           setToastType('LOGIN');
@@ -73,7 +77,16 @@ const ToiletRating = ({ toiletId, onRate }) => {
           navigate('/');
         });
     },
-    [navigate, onRate, setUser, toiletId, updateRatingInfo]
+    [
+      accessToken,
+      navigate,
+      onRate,
+      setToastType,
+      setUser,
+      toiletId,
+      updateRatingInfo,
+      userId,
+    ]
   );
 
   const rateCleanToilet = useCallback(async () => {
