@@ -36,17 +36,3 @@ export const deleteByToiletIdAndUserId = async (
 
   return !!deletedToiletCount;
 };
-
-export const queryByUserId = async (
-  userId: string
-): Promise<Array<IToiletPreferenceOutput>> => {
-  return await ToiletPreference.findAll({
-    where: {
-      user_id: userId,
-    },
-  });
-};
-
-export const queryAll = async (): Promise<Array<IToiletPreferenceOutput>> => {
-  return await ToiletPreference.findAll();
-};

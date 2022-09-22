@@ -16,13 +16,3 @@ export const deleteByUserIdAndToiletId = async (
 ): Promise<boolean> => {
   return await db.deleteByToiletIdAndUserId(userId, toiletId);
 };
-
-export const queryByUserId = async (
-  userId: string
-): Promise<Array<IToiletPreferenceOutput>> => {
-  return await db.queryByUserId(userId);
-};
-
-export const queryAll = async (): Promise<Array<IToiletPreferenceOutput>> => {
-  return await db.queryAll();
-};
