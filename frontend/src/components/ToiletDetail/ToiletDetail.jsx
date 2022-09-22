@@ -73,8 +73,8 @@ const ToiletDetail = ({ building, toilet, isShow, onBack, onHide }) => {
             className={styles['toilet-summary-item']}
             alt={cleanlinessMetadata.text}
             src={cleanlinessMetadata.icon}
-            width={100}
-            height={100}
+            width="auto"
+            height={window.innerHeight / 6}
           />
         </div>
 

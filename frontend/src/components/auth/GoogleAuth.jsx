@@ -3,11 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import Api from '../../api/api';
 import './GoogleAuth.scss';
-import { AuthContext } from '../../utilities/context';
+import { UserContext } from '../../utilities/context';
 
 const GoogleAuth = () => {
   const navigate = useNavigate();
-  const { setUser } = useContext(AuthContext);
+  const { setUser, fetchToiletPreferences } = useContext(UserContext);
   const [errorMsg, setErrorMsg] = useState('');
   const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 
@@ -20,6 +20,7 @@ const GoogleAuth = () => {
           data: { response },
         }).then(() => {
           setUser(true);
+          fetchToiletPreferences();
           navigate('/home');
         });
       }

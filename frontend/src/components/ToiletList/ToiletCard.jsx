@@ -82,15 +82,11 @@ const ToiletCard = ({ toilet, onSelect, tagType, userLocation }) => {
         <div className={styles['num-row']}>
           <div className={styles['sitting']}>
             <span>Sitting: </span>
-            <span className={`${styles['toilet-utilities-row']} p-1`}>
-              {num_seats}
-            </span>
+            <span className="p-1">{num_seats}</span>
           </div>
           <div>
             <span>Squatting: </span>
-            <span className={`${styles['toilet-utilities-row']} p-1`}>
-              {num_squats}
-            </span>
+            <span className="p-1">{num_squats}</span>
           </div>
         </div>
       </Card.Body>

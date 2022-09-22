@@ -11,13 +11,13 @@ import ToiletRatingController from '../../api/ToiletRatingController';
 import { parseISO, differenceInMilliseconds } from 'date-fns';
 import ToiletRatingButtons from './ToiletRatingButtons';
 import ToiletRatingCountdown from './ToiletRatingCountdown';
-import { AuthContext } from '../../utilities/context';
+import { UserContext } from '../../utilities/context';
 
 const ToiletRating = ({ toiletId, onRate }) => {
   const navigate = useNavigate();
   const [nextRatingTime, setNextRatingTime] = useState(null);
   const rating_info_key = `rating_info_${toiletId}`;
-  const { setUser } = useContext(AuthContext);
+  const { setUser } = useContext(UserContext);
 
   const clearNextRatingTime = useCallback(() => {
     removeLocalStorageValue(rating_info_key);

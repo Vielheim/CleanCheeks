@@ -2,12 +2,12 @@ import React from 'react';
 
 import { Link } from 'react-router-dom';
 
-import './LoginButton.scss';
+import styles from './LoginButton.module.scss';
 
 const LoginButton = () => {
   return (
     <Link to="/">
-      <button className="login-button">Log in to view</button>
+      <button className={styles['login-button']}>Sign in to view</button>
     </Link>
   );
 };
