@@ -67,38 +67,40 @@ const ToiletPreferencesModal = ({ state }) => {
             />
           )}
         </Offcanvas.Header>
-        <Offcanvas.Body>
-          <Offcanvas.Title className="mb-3 fw-bolder">
-            <FaHeart
-              className={styles['favourite-icon']}
-              color="#D2222D"
-              size={22}
+        {isExpanded && (
+          <Offcanvas.Body>
+            <Offcanvas.Title className="mb-3 fw-bolder">
+              <FaHeart
+                className={styles['favourite-icon']}
+                color="#D2222D"
+                size={22}
+              />
+              Favourited Toilets
+            </Offcanvas.Title>
+            <ToiletList
+              state={state}
+              toilets={toiletPreferences.favouritedToilets}
+              isShow={true}
+              onCustomHide={onHide}
+              tagType="distance"
             />
-            Favourited Toilets
-          </Offcanvas.Title>
-          <ToiletList
-            state={state}
-            toilets={toiletPreferences.favouritedToilets}
-            isShow={true}
-            onCustomHide={onHide}
-            tagType="distance"
-          />
-          <Offcanvas.Title className="mb-3 mt-5 fw-bolder">
-            <TiCancel
-              className={styles['blacklisted-icon']}
-              color="#453F41"
-              size={28}
+            <Offcanvas.Title className="mb-3 mt-5 fw-bolder">
+              <TiCancel
+                className={styles['blacklisted-icon']}
+                color="#453F41"
+                size={28}
+              />
+              Blacklisted Toilets
+            </Offcanvas.Title>
+            <ToiletList
+              state={state}
+              toilets={toiletPreferences.blacklistedToilets}
+              isShow={true}
+              onCustomHide={onHide}
+              tagType={DISTANCE_KEY}
             />
-            Blacklisted Toilets
-          </Offcanvas.Title>
-          <ToiletList
-            state={state}
-            toilets={toiletPreferences.blacklistedToilets}
-            isShow={true}
-            onCustomHide={onHide}
-            tagType={DISTANCE_KEY}
-          />
-        </Offcanvas.Body>
+          </Offcanvas.Body>
+        )}
       </Offcanvas>
     </Draggable>
   );
