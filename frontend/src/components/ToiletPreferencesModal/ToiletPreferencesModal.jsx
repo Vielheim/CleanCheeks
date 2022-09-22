@@ -69,7 +69,9 @@ const ToiletPreferencesModal = ({ state }) => {
         {...prop}
       >
         <Offcanvas.Header>
-          <div></div>
+          <Offcanvas.Title className={`${styles['header-title']}`}>
+            Your favourites / blacklists
+          </Offcanvas.Title>
           {isExpanded ? (
             <FiChevronDown
               className={styles['modal-chevron']}
@@ -85,7 +87,7 @@ const ToiletPreferencesModal = ({ state }) => {
           )}
         </Offcanvas.Header>
         <Offcanvas.Body>
-          <Offcanvas.Title className={`${styles['title']} mb-3 fw-bolder`}>
+          <Offcanvas.Title className="mb-3 fw-bolder">
             <FaHeart
               className={styles['favourite-icon']}
               color="#D2222D"
@@ -100,7 +102,7 @@ const ToiletPreferencesModal = ({ state }) => {
             onCustomHide={onHide}
             tagType="distance"
           />
-          <Offcanvas.Title className={`${styles['title']} mb-3 mt-5 fw-bolder`}>
+          <Offcanvas.Title className="mb-3 mt-5 ">
             <TiCancel
               className={styles['blacklisted-icon']}
               color="#453F41"
