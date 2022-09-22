@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
 import Container from 'react-bootstrap/Container';
-import { useNavigate } from 'react-router-dom';
 import { ACCESS_TOKEN_KEY, TOILET_RATING, USER_ID_KEY } from '../../constants';
 import {
   getLocalStorageValue,
@@ -15,7 +14,6 @@ import { ToastContext, UserContext } from '../../utilities/context';
 import gtag from 'ga-gtag';
 
 const ToiletRating = ({ toiletId, onRate }) => {
-  const navigate = useNavigate();
   const [nextRatingTime, setNextRatingTime] = useState(null);
   const rating_info_key = `rating_info_${toiletId}`;
   const { setUser } = useContext(UserContext);
@@ -74,12 +72,10 @@ const ToiletRating = ({ toiletId, onRate }) => {
         .catch((e) => {
           setToastType('LOGIN');
           setUser(false);
-          navigate('/');
         });
     },
     [
       accessToken,
-      navigate,
       onRate,
       setToastType,
       setUser,

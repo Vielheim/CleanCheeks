@@ -1,5 +1,4 @@
 import React, { useCallback, useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { FaHeart } from 'react-icons/fa';
 import { TiCancel } from 'react-icons/ti';
 import ToiletPreferenceControlller from '../../api/ToiletPreferenceController';
@@ -15,7 +14,6 @@ const PreferenceIcons = ({
   onSetPreferenceType,
 }) => {
   const [preference, setPreference] = useState(initPreferenceType);
-  const navigate = useNavigate();
   const { setUser, fetchToiletPreferences } = useContext(UserContext);
   const setToastType = useContext(ToastContext);
   const accessToken = getLocalStorageValue(ACCESS_TOKEN_KEY);
@@ -38,7 +36,6 @@ const PreferenceIcons = ({
           .catch((e) => {
             setToastType('LOGIN');
             setUser(false);
-            navigate('/');
           });
       } else {
         await ToiletPreferenceControlller.updateToiletPreference(
@@ -54,7 +51,6 @@ const PreferenceIcons = ({
           .catch((e) => {
             setToastType('LOGIN');
             setUser(false);
-            navigate('/');
           });
 
         gtag('event', type, {
@@ -73,7 +69,6 @@ const PreferenceIcons = ({
       onSetPreferenceType,
       setToastType,
       setUser,
-      navigate,
     ]
   );
 

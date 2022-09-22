@@ -13,10 +13,14 @@
 
 // dropdown styles
 .dropdown-toggle::after {
-  display: none !important; 
+  display: none !important;
 }
 
 // toast styles
+.toast-container {
+  z-index: 9999;
+}
+
 .toast-header {
   justify-content: space-between;
 }
