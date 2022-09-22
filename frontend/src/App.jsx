@@ -60,7 +60,9 @@ function App() {
     Api.makeApiRequest({
       method: 'POST',
       url: '/auth/check-login',
-      data: { accessToken },
+      headers: {
+        'x-auth-token': accessToken,
+      },
     })
       .then(() => setUser(true))
       .catch(() => setUser(false));

@@ -17,7 +17,7 @@ authRouter.post('/google', async (req: Request, res: Response) => {
 
 authRouter.post('/check-login', (req: Request, res: Response) => {
   try {
-    const { accessToken } = req.body;
+    const accessToken = (req.headers['x-auth-token'] as string) ?? '';
     JwtUtils.verifyAccessToken(accessToken);
     Util.sendSuccess(res, 200, 'Successfully authenticated', true);
   } catch (error: unknown) {
