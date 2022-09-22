@@ -4,7 +4,7 @@ import { FaHeart } from 'react-icons/fa';
 import { TiCancel } from 'react-icons/ti';
 import ToiletPreferenceControlller from '../../api/ToiletPreferenceController';
 import { PreferenceType } from '../../enums/ToiletPreferenceEnums';
-import { UserContext } from '../../utilities/context';
+import { ToastContext, UserContext } from '../../utilities/context';
 import { getLocalStorageValue } from '../../utilities/localStorage';
 import { ACCESS_TOKEN_KEY, USER_ID_KEY } from '../../constants';
 
@@ -16,6 +16,7 @@ const PreferenceIcons = ({
   const [preference, setPreference] = useState(initPreferenceType);
   const navigate = useNavigate();
   const { setUser, fetchToiletPreferences } = useContext(UserContext);
+  const setToastType = useContext(ToastContext);
   const accessToken = getLocalStorageValue(ACCESS_TOKEN_KEY);
   const userId = getLocalStorageValue(USER_ID_KEY);
 
@@ -34,6 +35,7 @@ const PreferenceIcons = ({
             }
           })
           .catch((e) => {
+            setToastType('LOGIN');
             setUser(false);
             navigate('/');
           });
@@ -49,6 +51,7 @@ const PreferenceIcons = ({
             onSetPreferenceType(result.data.type);
           })
           .catch((e) => {
+            setToastType('LOGIN');
             setUser(false);
             navigate('/');
           });

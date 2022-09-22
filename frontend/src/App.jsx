@@ -37,6 +37,12 @@ const TOAST_CONTENTS = {
     bg: 'warning',
     img: focused_face,
   },
+  LOGIN: {
+    title: 'Hello!',
+    body: 'Please login to rate, favourite or blacklist toilets!',
+    bg: 'light',
+    img: focused_face,
+  },
 };
 
 function App() {
@@ -51,7 +57,7 @@ function App() {
         setToiletPreferences(result.data);
       })
       .catch((e) => {
-        console.error(e);
+        setToastType('ERROR');
       });
   }, []);
 

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import Badge from 'react-bootstrap/Badge';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import StyledUtility from '../StyledUtility/StyledUtility';
@@ -11,9 +11,11 @@ import { getCleanlinessMetadata } from '../../utilities/Util';
 import PreferenceIcons from './PreferenceIcons';
 import styles from './ToiletDetail.module.scss';
 import ToiletRating from './ToiletRating';
+import { ToastContext } from '../../utilities/context';
 
 const ToiletDetail = ({ building, toilet, isShow, onBack, onHide }) => {
   const { id, description, floor, utilities } = toilet;
+  const setToastType = useContext(ToastContext);
 
   const fmtedFloor = floor < 0 ? `B${Math.abs(floor)}` : floor.toString();
 
@@ -32,7 +34,7 @@ const ToiletDetail = ({ building, toilet, isShow, onBack, onHide }) => {
         toilet.cleanliness = cleanliness;
       })
       .catch((e) => {
-        console.error(e);
+        setToastType('ERROR');
       });
   }, [id, toilet]);
 

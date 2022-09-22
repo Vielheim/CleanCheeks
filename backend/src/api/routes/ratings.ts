@@ -8,9 +8,8 @@ import Util from '../util/Util';
 import authMiddleware from '../middlewares/auth';
 
 const ratingsRouter = Router();
-ratingsRouter.use(authMiddleware);
 
-ratingsRouter.post('/', async (req: Request, res: Response) => {
+ratingsRouter.post('/', authMiddleware, async (req: Request, res: Response) => {
   try {
     const payload: CreateRatingDTO = {
       user_id: req.body.user_id,
