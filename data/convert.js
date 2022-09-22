@@ -55,7 +55,8 @@ const generateToiletsFromFloors = (
             cleanliness: CLEANLINESS,
             type: TOILET_TYPE[gender],
             utilities: [
-                UTILITIES.BIDETS,
+                ...isAdd(UTILITIES.SHOWERS),
+                ...isAdd(UTILITIES.BIDETS),
                 ...isAdd(UTILITIES.FRAGRANCE),
                 ...isAdd(UTILITIES.WATERCOOLER),
             ],
