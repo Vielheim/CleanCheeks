@@ -12,7 +12,6 @@ import { parseISO, differenceInMilliseconds } from 'date-fns';
 import ToiletRatingButtons from './ToiletRatingButtons';
 import ToiletRatingCountdown from './ToiletRatingCountdown';
 import { ToastContext, UserContext } from '../../utilities/context';
-import gtag from 'ga-gtag';
 
 const ToiletRating = ({ toiletId, onRate }) => {
   const navigate = useNavigate();
@@ -66,7 +65,7 @@ const ToiletRating = ({ toiletId, onRate }) => {
         .then((res) => {
           updateRatingInfo(res.data);
           onRate();
-          gtag('event', 'rate_toilet', {
+          window.gtag('event', 'rate_toilet', {
             event_category: 'ratings',
             event_label: rating,
           });
@@ -129,7 +128,15 @@ const ToiletRating = ({ toiletId, onRate }) => {
     };
 
     checkUserLastRated();
-  }, [rating_info_key, toiletId, updateNextRatingTime, updateRatingInfo]);
+  }, [
+    accessToken,
+    rating_info_key,
+    setToastType,
+    toiletId,
+    updateNextRatingTime,
+    updateRatingInfo,
+    userId,
+  ]);
 
   // Update rating component when nextRatingTime expires
   useEffect(() => {
