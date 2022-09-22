@@ -1,4 +1,3 @@
-import { ToiletType, Utilities } from './enums/ToiletEnums';
 import clean_toilet from './assets/toilet-icons/clean_toilet.jpeg';
 import normal_toilet from './assets/toilet-icons/normal_toilet.jpeg';
 import dirty_toilet from './assets/toilet-icons/dirty_toilet.jpeg';
@@ -58,12 +57,6 @@ export const OFFLINE_TOILETS = [
     utilities: ['FRAGRANCE', 'BIDETS', 'WATERCOOLER'],
   },
 ];
-
-export const INITIAL_FILTER_STATE = {
-  search: 'UT-AUD1',
-  types: Object.keys(ToiletType),
-  utilities: Object.keys(Utilities),
-};
 
 export const ACCESS_TOKEN_KEY = 'accessToken';
 export const USER_ID_KEY = 'userId';
