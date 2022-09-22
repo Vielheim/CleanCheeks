@@ -14,7 +14,7 @@ import ToastContainer from 'react-bootstrap/ToastContainer';
 import focused_face from './assets/focused_face.png';
 import ToiletControlller from './api/ToiletController';
 import { getLocalStorageValue } from './utilities/localStorage';
-import { ACCESS_TOKEN_KEY } from './constants';
+import { ACCESS_TOKEN_KEY, USER_ID_KEY } from './constants';
 
 const TOAST_CONTENTS = {
   OFFLINE: {
@@ -43,9 +43,10 @@ function App() {
   const [user, setUser] = useState(false);
   const [toastType, setToastType] = useState(null);
   const [toiletPreferences, setToiletPreferences] = useState([]);
+  const userId = getLocalStorageValue(USER_ID_KEY);
 
   const fetchToiletPreferences = useCallback(async () => {
-    await ToiletControlller.fetchToiletWithUserPreferences()
+    await ToiletControlller.fetchToiletWithUserPreferences(userId)
       .then((result) => {
         setToiletPreferences(result.data);
       })
