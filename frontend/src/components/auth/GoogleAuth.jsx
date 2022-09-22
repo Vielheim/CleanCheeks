@@ -4,6 +4,8 @@ import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import Api from '../../api/api';
 import './GoogleAuth.scss';
 import { UserContext } from '../../utilities/context';
+import { setLocalStorageValue } from '../../utilities/localStorage';
+import { ACCESS_TOKEN_KEY, USER_ID_KEY } from '../../constants';
 
 const GoogleAuth = () => {
   const navigate = useNavigate();
@@ -18,7 +20,10 @@ const GoogleAuth = () => {
           method: 'POST',
           url: '/auth/google',
           data: { response },
-        }).then(() => {
+        }).then((result) => {
+          const { accessToken, userId } = result.data;
+          setLocalStorageValue(ACCESS_TOKEN_KEY, accessToken);
+          setLocalStorageValue(USER_ID_KEY, userId);
           setUser(true);
           fetchToiletPreferences();
           navigate('/home');

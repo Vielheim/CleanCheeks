@@ -7,8 +7,8 @@ function authMiddleware(
   next: NextFunction
 ) {
   try {
-    const { access_token } = request.cookies;
-    JwtUtils.verifyAccessToken(access_token);
+    const accessToken = (request.headers['x-auth-token'] as string) ?? '';
+    JwtUtils.verifyAccessToken(accessToken);
     next();
   } catch (e: any) {
     response.status(401).send('Invalid JWT');

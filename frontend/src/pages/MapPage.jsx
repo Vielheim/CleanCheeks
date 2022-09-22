@@ -26,6 +26,8 @@ import styles from './MapPage.module.scss';
 import ToiletControlller from '../api/ToiletController';
 import { getToiletsBreakdown } from '../utilities/Util';
 import ToiletPreferencesModal from '../components/ToiletPreferencesModal/ToiletPreferencesModal';
+import { getLocalStorageValue } from '../utilities/localStorage';
+import { USER_ID_KEY } from '../constants';
 
 const CIRCLE_FILL_OPTIONS = {
   fillOpacity: 1,
@@ -58,10 +60,11 @@ const MapPage = () => {
   const setToastType = useContext(ToastContext);
   const [state, dispatch] = useReducer(toiletReducer, INITIAL_TOILET_STATE);
   const [map, setMap] = useState(null);
+  const userId = getLocalStorageValue(USER_ID_KEY);
 
   const fetchCloseToilets = useCallback(
     (coordinates, radius) => {
-      ToiletControlller.fetchCloseToilets(coordinates, radius)
+      ToiletControlller.fetchCloseToilets(coordinates, radius, userId)
         .then((result) => {
           dispatch({ type: 'updateToilets', payload: result.data });
         })

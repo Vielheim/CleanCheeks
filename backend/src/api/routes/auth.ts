@@ -9,16 +9,7 @@ authRouter.post('/google', async (req: Request, res: Response) => {
   try {
     const { credential } = req.body.response;
     const result = await authController.googleLogin(credential);
-    const { userId, accessToken } = result;
-    res.cookie('user_id', userId, {
-      secure: true,
-      sameSite: 'none',
-    });
-    res.cookie('access_token', accessToken, {
-      secure: true,
-      sameSite: 'none',
-    });
-    Util.sendSuccess(res, 201, 'Successfully logged in', true);
+    Util.sendSuccess(res, 201, 'Successfully logged in', result);
   } catch (error: unknown) {
     return Util.sendFailure(res, error);
   }
@@ -26,8 +17,8 @@ authRouter.post('/google', async (req: Request, res: Response) => {
 
 authRouter.post('/check-login', (req: Request, res: Response) => {
   try {
-    const { access_token } = req.cookies;
-    JwtUtils.verifyAccessToken(access_token);
+    const { accessToken } = req.body;
+    JwtUtils.verifyAccessToken(accessToken);
     Util.sendSuccess(res, 200, 'Successfully authenticated', true);
   } catch (error: unknown) {
     return Util.sendFailure(res, error);

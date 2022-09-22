@@ -3,10 +3,10 @@ import Api from './api';
 const TOILETS_URL = '/toilets';
 
 export default class ToiletControlller {
-  static async fetchCloseToilets(coordinates, radius) {
+  static async fetchCloseToilets(coordinates, radius, userId) {
     return Api.makeApiRequest({
       method: 'GET',
-      url: `${TOILETS_URL}/neighbours?latitude=${coordinates[0]}&longitude=${coordinates[1]}&radius=${radius}`,
+      url: `${TOILETS_URL}/neighbours?latitude=${coordinates[0]}&longitude=${coordinates[1]}&radius=${radius}&userId=${userId}`,
     });
   }
 
@@ -17,10 +17,10 @@ export default class ToiletControlller {
     });
   }
 
-  static async fetchToiletWithUserPreferences() {
+  static async fetchToiletWithUserPreferences(userId) {
     return Api.makeApiRequest({
       method: 'GET',
-      url: `${TOILETS_URL}/with_user_preferences`,
+      url: `${TOILETS_URL}/with_user_preferences?userId=${userId}`,
     });
   }
 }

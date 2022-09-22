@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
 import Container from 'react-bootstrap/Container';
 import { useNavigate } from 'react-router-dom';
-import { TOILET_RATING } from '../../constants';
+import { ACCESS_TOKEN_KEY, TOILET_RATING, USER_ID_KEY } from '../../constants';
 import {
   getLocalStorageValue,
   removeLocalStorageValue,
@@ -18,6 +18,8 @@ const ToiletRating = ({ toiletId, onRate }) => {
   const [nextRatingTime, setNextRatingTime] = useState(null);
   const rating_info_key = `rating_info_${toiletId}`;
   const { setUser } = useContext(UserContext);
+  const accessToken = getLocalStorageValue(ACCESS_TOKEN_KEY);
+  const userId = getLocalStorageValue(USER_ID_KEY);
 
   const clearNextRatingTime = useCallback(() => {
     removeLocalStorageValue(rating_info_key);
@@ -55,10 +57,11 @@ const ToiletRating = ({ toiletId, onRate }) => {
       const data = {
         toilet_id: toiletId,
         type: rating,
+        user_id: userId,
       };
 
       // TODO: Handle error
-      await ToiletRatingController.addUserRating(data)
+      await ToiletRatingController.addUserRating(data, accessToken)
         .then((res) => {
           updateRatingInfo(res.data);
           onRate();
@@ -86,7 +89,11 @@ const ToiletRating = ({ toiletId, onRate }) => {
 
       // No info stored in cache, check with backend
       if (!rating_info) {
-        return await ToiletRatingController.getUserLastRatedInfo(toiletId)
+        return await ToiletRatingController.getUserLastRatedInfo(
+          toiletId,
+          userId,
+          accessToken
+        )
           .then((res) => {
             const data = res.data;
 

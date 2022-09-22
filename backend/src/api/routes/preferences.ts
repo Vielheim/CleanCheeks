@@ -9,8 +9,7 @@ preferencesRouter.use(authMiddleware);
 
 preferencesRouter.put('/', async (req: Request, res: Response) => {
   try {
-    const { user_id } = req.cookies;
-    const payload: UpsertPreferenceDTO = { ...req.body, user_id };
+    const payload: UpsertPreferenceDTO = { ...req.body };
     const [result, isCreated] = await preferenceController.upsert(payload);
 
     if (isCreated) {
@@ -30,10 +29,10 @@ preferencesRouter.put('/', async (req: Request, res: Response) => {
 
 preferencesRouter.delete('/', async (req: Request, res: Response) => {
   try {
-    const { user_id } = req.cookies;
     const toiletId: string = req.query.toiletId as string;
+    const userId: string = req.query.userId as string;
     const result = await preferenceController.deleteByUserIdAndToiletId(
-      user_id,
+      userId,
       toiletId
     );
 

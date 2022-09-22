@@ -7,7 +7,6 @@ export default class Api {
     try {
       const result = await axios({
         ...axiosConfig,
-        withCredentials: true,
         baseURL: BASE_URL,
       });
       return result.data;
