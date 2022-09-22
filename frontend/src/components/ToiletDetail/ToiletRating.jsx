@@ -68,7 +68,7 @@ const ToiletRating = ({ toiletId, onRate }) => {
           navigate('/');
         });
     },
-    [onRate, toiletId, updateRatingInfo]
+    [navigate, onRate, setUser, toiletId, updateRatingInfo]
   );
 
   const rateCleanToilet = useCallback(async () => {

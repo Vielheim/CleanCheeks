@@ -5,6 +5,7 @@ import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import StyledUtility from '../StyledUtility/StyledUtility';
+import { DISTANCE_KEY, PREFERENCE_KEY } from '../ToiletList/ToiletList';
 
 import { Utilities } from '../../enums/ToiletEnums';
 import { getPreferenceTypeDisplay } from '../../enums/ToiletPreferenceEnums';
@@ -36,12 +37,12 @@ const ToiletCard = ({ toilet, onSelect, tagType, userLocation }) => {
   const fmtedFloor = floor < 0 ? `B${Math.abs(floor)}` : floor.toString();
 
   const tagDisplay = useMemo(() => {
-    if (tagType === 'distance') {
+    if (tagType === DISTANCE_KEY) {
       return fmtDistance(
         getDistance(latitude, longitude, userLocation[0], userLocation[1])
       );
     }
-    if (tagType === 'user_preference' && user_preference_type) {
+    if (tagType === PREFERENCE_KEY && user_preference_type) {
       return getPreferenceTypeDisplay(user_preference_type);
     }
   }, [latitude, longitude, tagType, userLocation, user_preference_type]);

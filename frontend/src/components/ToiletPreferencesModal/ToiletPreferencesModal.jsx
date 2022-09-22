@@ -5,22 +5,22 @@ import { FaHeart } from 'react-icons/fa';
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
 import { TiCancel } from 'react-icons/ti';
 import { UserContext } from '../../utilities/context';
-import ToiletList from '../ToiletList/ToiletList';
+import ToiletList, { DISTANCE_KEY } from '../ToiletList/ToiletList';
 import styles from './ToiletPreferencesModal.module.scss';
 
 const ToiletPreferencesModal = ({ state }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [position, setPosition] = useState({
     x: 0,
-    y: 0.4 * window.innerHeight,
+    y: window.innerHeight - 252,
   });
   const { toiletPreferences } = useContext(UserContext);
 
-  const onHandleDrag = (e) => {
+  const onHandleDrag = () => {
     if (isExpanded) {
       setPosition({
         x: 0,
-        y: 0.6 * window.innerHeight,
+        y: window.innerHeight - 252,
       });
       setIsExpanded(false);
     } else {
@@ -94,7 +94,7 @@ const ToiletPreferencesModal = ({ state }) => {
             toilets={toiletPreferences.blacklistedToilets}
             isShow={true}
             onCustomHide={onHide}
-            tagType="distance"
+            tagType={DISTANCE_KEY}
           />
         </Offcanvas.Body>
       </Offcanvas>

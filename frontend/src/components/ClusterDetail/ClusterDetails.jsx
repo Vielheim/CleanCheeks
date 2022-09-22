@@ -1,7 +1,7 @@
 import React from 'react';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { fmtDistance, getDistance } from '../../utilities/Util';
-import ToiletList from '../ToiletList/ToiletList';
+import ToiletList, { PREFERENCE_KEY } from '../ToiletList/ToiletList';
 
 import styles from './ClusterDetails.module.scss';
 
@@ -36,7 +36,7 @@ const ClusterDetails = ({ state, dispatch }) => {
           toilets={toilets}
           isShow={state.isShowCluster}
           onCustomHide={() => dispatch({ type: 'closeCluster' })}
-          tagType="user_preference"
+          tagType={PREFERENCE_KEY}
         />
       </Offcanvas.Body>
     </Offcanvas>
