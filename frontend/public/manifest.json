@@ -3,9 +3,14 @@
   "name": "Clean Cheeks!",
   "icons": [
     {
-      "src": "grumpy.png",
+      "src": "satisfied.png",
       "type": "image/png",
       "sizes": "512x512"
+    },
+    {
+      "src": "192x192.png",
+      "type": "image/png",
+      "sizes": "192x192"
     }
   ],
   "start_url": ".",
