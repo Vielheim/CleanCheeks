@@ -5,6 +5,8 @@ import { FaHeart } from 'react-icons/fa';
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
 import { TiCancel } from 'react-icons/ti';
 import ToiletControlller from '../../api/ToiletController';
+import { USER_ID_KEY } from '../../constants';
+import { getLocalStorageValue } from '../../utilities/localStorage';
 import ToiletList from '../ToiletList/ToiletList';
 import styles from './ToiletPreferencesModal.module.scss';
 
@@ -20,10 +22,11 @@ const ToiletPreferencesModal = ({ state }) => {
   });
   const [blacklistedToilets, setBlacklistedToilets] = useState([]);
   const [favouritedToilets, setFavouritedToilets] = useState([]);
+  const userId = getLocalStorageValue(USER_ID_KEY);
 
   // TODO: Fetch toilets whenever user changes preferences (can add action to useContext)
   const fetchToiletsWithPreferences = useCallback(() => {
-    ToiletControlller.fetchToiletWithUserPreferences()
+    ToiletControlller.fetchToiletWithUserPreferences(userId)
       .then((result) => {
         setBlacklistedToilets(result.data.blacklistedToilets);
         setFavouritedToilets(result.data.favouritedToilets);

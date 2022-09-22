@@ -12,10 +12,8 @@ ratingsRouter.use(authMiddleware);
 
 ratingsRouter.post('/', async (req: Request, res: Response) => {
   try {
-    const { user_id } = req.cookies;
-
     const payload: CreateRatingDTO = {
-      user_id: user_id,
+      user_id: req.body.user_id,
       toilet_id: req.body.toilet_id,
       type: req.body.type,
     };
@@ -38,11 +36,9 @@ ratingsRouter.get('/', async (_, res: Response) => {
 
 ratingsRouter.get('/last-rated', async (req: Request, res: Response) => {
   try {
-    const { user_id } = req.cookies;
-
     const payload: QueryRatingDTO = {
       toilet_id: req.query.toilet_id as string,
-      user_id: user_id,
+      user_id: req.query.user_id as string,
     };
     const results = await ratingController.getUserLastRated(payload);
     return Util.sendSuccess(res, 200, 'Retrieve last rating by user', results);

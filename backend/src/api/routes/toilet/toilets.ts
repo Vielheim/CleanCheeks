@@ -45,11 +45,11 @@ toiletsRouter.delete('/:id', async (req: Request, res: Response) => {
 
 toiletsRouter.get('/neighbours', async (req: Request, res: Response) => {
   try {
-    const { user_id } = req.cookies;
+    const userId: string = req.query.userId as string;
     const coordinates = getCoordinatesFromReq(req);
     const results = await toiletController.getAllNeighbouringToilets(
       coordinates,
-      user_id
+      userId
     );
     return Util.sendSuccess(
       res,
@@ -66,9 +66,9 @@ toiletsRouter.get(
   '/with_user_preferences',
   async (req: Request, res: Response) => {
     try {
-      const { user_id } = req.cookies;
+      const userId: string = req.query.userId as string;
       const results = await toiletController.getToiletsWithUserPreferences(
-        user_id
+        userId
       );
       return Util.sendSuccess(
         res,

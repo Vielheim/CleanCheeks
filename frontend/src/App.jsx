@@ -12,6 +12,8 @@ import LoginPage from './pages/LoginPage';
 import Toast from 'react-bootstrap/Toast';
 import ToastContainer from 'react-bootstrap/ToastContainer';
 import focused_face from './assets/focused_face.png';
+import { getLocalStorageValue } from './utilities/localStorage';
+import { ACCESS_TOKEN_KEY } from './constants';
 
 const TOAST_CONTENTS = {
   OFFLINE: {
@@ -41,9 +43,11 @@ function App() {
   const [toastType, setToastType] = useState(null);
 
   useEffect(() => {
+    const accessToken = getLocalStorageValue(ACCESS_TOKEN_KEY);
     Api.makeApiRequest({
       method: 'POST',
       url: '/auth/check-login',
+      data: { accessToken },
     })
       .then(() => setUser(true))
       .catch(() => setUser(false));

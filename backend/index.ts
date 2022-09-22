@@ -17,15 +17,9 @@ export const getApp = () => {
   const swaggerDoc = YAML.load('./swagger.yml');
 
   // middleware
-  const corsConfig = {
-    origin: process.env.FRONTEND_APP_URL,
-    credentials: true,
-  };
-  app.use(cors(corsConfig));
-  app.options('*', cors(corsConfig));
+  app.use(cors());
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
-  app.use(cookieParser());
 
   // For Render.com to ping: https://stackoverflow.com/questions/72150113/nodejs-app-build-is-successful-render-but-application-error-in-render-at-the-l
   app.get('/', (_, res: Response) => {

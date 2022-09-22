@@ -5,6 +5,8 @@ import { TiCancel } from 'react-icons/ti';
 import ToiletPreferenceControlller from '../../api/ToiletPreferenceController';
 import { PreferenceType } from '../../enums/ToiletPreferenceEnums';
 import { AuthContext } from '../../utilities/context';
+import { getLocalStorageValue } from '../../utilities/localStorage';
+import { ACCESS_TOKEN_KEY, USER_ID_KEY } from '../../constants';
 
 const PreferenceIcons = ({
   toiletId,
@@ -14,11 +16,17 @@ const PreferenceIcons = ({
   const [preference, setPreference] = useState(initPreferenceType);
   const navigate = useNavigate();
   const { setUser } = useContext(AuthContext);
+  const accessToken = getLocalStorageValue(ACCESS_TOKEN_KEY);
+  const userId = getLocalStorageValue(USER_ID_KEY);
 
   const updateToiletPreference = useCallback(
     async (type) => {
       if (type === preference) {
-        await ToiletPreferenceControlller.deleteToiletPreference(toiletId)
+        await ToiletPreferenceControlller.deleteToiletPreference(
+          toiletId,
+          userId,
+          accessToken
+        )
           .then((result) => {
             if (result.data) {
               setPreference(null);
@@ -30,7 +38,12 @@ const PreferenceIcons = ({
             navigate('/');
           });
       } else {
-        await ToiletPreferenceControlller.updateToiletPreference(toiletId, type)
+        await ToiletPreferenceControlller.updateToiletPreference(
+          toiletId,
+          type,
+          userId,
+          accessToken
+        )
           .then((result) => {
             setPreference(result.data.type);
             onSetPreferenceType(result.data.type);
