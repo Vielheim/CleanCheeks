@@ -43,6 +43,7 @@ const ToiletPreferencesModal = ({ state }) => {
   return (
     <Draggable axis="y" position={position} onStart={() => false}>
       <Offcanvas
+        enforceFocus={false}
         className={styles['bottom-modal']}
         placement="bottom"
         show={true}
