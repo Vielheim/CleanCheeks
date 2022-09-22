@@ -11,13 +11,14 @@ import ToiletRatingController from '../../api/ToiletRatingController';
 import { parseISO, differenceInMilliseconds } from 'date-fns';
 import ToiletRatingButtons from './ToiletRatingButtons';
 import ToiletRatingCountdown from './ToiletRatingCountdown';
-import { UserContext } from '../../utilities/context';
+import { ToastContext, UserContext } from '../../utilities/context';
 
 const ToiletRating = ({ toiletId, onRate }) => {
   const navigate = useNavigate();
   const [nextRatingTime, setNextRatingTime] = useState(null);
   const rating_info_key = `rating_info_${toiletId}`;
   const { setUser } = useContext(UserContext);
+  const setToastType = useContext(ToastContext);
   const accessToken = getLocalStorageValue(ACCESS_TOKEN_KEY);
   const userId = getLocalStorageValue(USER_ID_KEY);
 
@@ -67,6 +68,7 @@ const ToiletRating = ({ toiletId, onRate }) => {
           onRate();
         })
         .catch((e) => {
+          setToastType('LOGIN');
           setUser(false);
           navigate('/');
         });
@@ -104,7 +106,7 @@ const ToiletRating = ({ toiletId, onRate }) => {
             }
           })
           .catch((e) => {
-            console.log(e); // TODO: Handle error
+            setToastType('ERROR');
           });
       }
 
