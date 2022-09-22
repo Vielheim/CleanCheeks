@@ -61,6 +61,14 @@ const generateToiletsFromFloors = (
                 ...isAdd(UTILITIES.WATERCOOLER),
             ],
         };
+
+        // generate a random utility
+        if (toilet.utilities.length === 0) {
+            const utilities = Object.values(UTILITIES);
+            const idx = Math.floor(Math.random * utilities.length) + 1;
+            toilet.utilities.push(utilities[idx]);
+        }
+
         toilets.push(toilet);
     }
     return toilets;
