@@ -1,6 +1,6 @@
 .preference {
   font-size: 0.8rem;
-  border-color: lightgrey;  
+  border-color: lightgrey;
   border-radius: 0.4rem;
   border-style: solid;
   padding: 5px;
@@ -8,7 +8,11 @@
 }
 
 .card-body {
-  background-color: #F3F3F3;
+  box-shadow: 5px 5px 10px #f3f3f3;
+}
+
+.card-body:hover {
+  cursor: pointer;
 }
 
 .container {
@@ -19,8 +23,7 @@
   background-color: #f3f3f3;
   border-style: solid;
   border-radius: 0.375rem;
-  border-color: lightgrey;
-  max-width: 600px;
+  border-color: #f3f3f3;
 }
 
 .num-row {
@@ -38,4 +41,5 @@
   display: flex;
   justify-content: space-between;
   border: none;
+  margin: 0;
 }

@@ -15,6 +15,7 @@ import focused_face from './assets/focused_face.png';
 import ToiletControlller from './api/ToiletController';
 import { getLocalStorageValue } from './utilities/localStorage';
 import { ACCESS_TOKEN_KEY, USER_ID_KEY } from './constants';
+import LoginToastBody from './components/LoginToastBody';
 
 const TOAST_CONTENTS = {
   OFFLINE: {
@@ -39,8 +40,8 @@ const TOAST_CONTENTS = {
   },
   LOGIN: {
     title: 'Hello!',
-    body: 'Please login to rate, favourite or blacklist toilets!',
-    bg: 'light',
+    body: <LoginToastBody />,
+    bg: 'warning',
     img: focused_face,
   },
 };
@@ -78,10 +79,10 @@ function App() {
 
   return (
     <>
-      <UserContext.Provider
-        value={{ user, setUser, toiletPreferences, fetchToiletPreferences }}
-      >
-        <Router>
+      <Router>
+        <UserContext.Provider
+          value={{ user, setUser, toiletPreferences, fetchToiletPreferences }}
+        >
           <ToastContext.Provider value={setToastType}>
             <Routes>
               <Route path="/home" className="app" element={<MapPage />} />
@@ -94,36 +95,36 @@ function App() {
               />
             </Routes>
           </ToastContext.Provider>
-        </Router>
-      </UserContext.Provider>
+        </UserContext.Provider>
 
-      {toastType !== null && (
-        <ToastContainer position="bottom-center">
-          <Toast
-            className="mb-4 offline-toast"
-            bg={TOAST_CONTENTS[toastType].bg}
-            show={true}
-            onClose={() => setToastType(null)}
-            delay={4000}
-            autohide
-          >
-            <Toast.Header className="toast-header">
-              <div className="toast-header-content">
-                <img
-                  alt="Focused Face"
-                  src={TOAST_CONTENTS[toastType].img}
-                  height={25}
-                  width={25}
-                />
-                <strong className="toast-header-title">
-                  {TOAST_CONTENTS[toastType].title}
-                </strong>
-              </div>
-            </Toast.Header>
-            <Toast.Body>{TOAST_CONTENTS[toastType].body}</Toast.Body>
-          </Toast>
-        </ToastContainer>
-      )}
+        {toastType !== null && (
+          <ToastContainer position="top-center">
+            <Toast
+              className="mb-4 offline-toast"
+              bg={TOAST_CONTENTS[toastType].bg}
+              show={true}
+              onClose={() => setToastType(null)}
+              delay={4000}
+              autohide
+            >
+              <Toast.Header className="toast-header">
+                <div className="toast-header-content">
+                  <img
+                    alt="Focused Face"
+                    src={TOAST_CONTENTS[toastType].img}
+                    height={25}
+                    width={25}
+                  />
+                  <strong className="toast-header-title">
+                    {TOAST_CONTENTS[toastType].title}
+                  </strong>
+                </div>
+              </Toast.Header>
+              <Toast.Body>{TOAST_CONTENTS[toastType].body}</Toast.Body>
+            </Toast>
+          </ToastContainer>
+        )}
+      </Router>
     </>
   );
 }
