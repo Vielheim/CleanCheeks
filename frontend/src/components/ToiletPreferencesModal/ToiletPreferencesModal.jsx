@@ -1,15 +1,14 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import Draggable from 'react-draggable';
 import { FaHeart } from 'react-icons/fa';
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
 import { TiCancel } from 'react-icons/ti';
-import ToiletControlller from '../../api/ToiletController';
+import { UserContext } from '../../utilities/context';
 import ToiletList from '../ToiletList/ToiletList';
 import styles from './ToiletPreferencesModal.module.scss';
 
 /* 
-TODO: Sync blacklisted and favourited toilets when user favourites and blacklist toilets
 TODO: Show login button when user is not logged in
  */
 const ToiletPreferencesModal = ({ state }) => {
@@ -18,24 +17,7 @@ const ToiletPreferencesModal = ({ state }) => {
     x: 0,
     y: 0.4 * window.innerHeight,
   });
-  const [blacklistedToilets, setBlacklistedToilets] = useState([]);
-  const [favouritedToilets, setFavouritedToilets] = useState([]);
-
-  // TODO: Fetch toilets whenever user changes preferences (can add action to useContext)
-  const fetchToiletsWithPreferences = useCallback(() => {
-    ToiletControlller.fetchToiletWithUserPreferences()
-      .then((result) => {
-        setBlacklistedToilets(result.data.blacklistedToilets);
-        setFavouritedToilets(result.data.favouritedToilets);
-      })
-      .catch((e) => {
-        console.error(e);
-      });
-  }, []);
-
-  useEffect(() => {
-    fetchToiletsWithPreferences();
-  }, [fetchToiletsWithPreferences]);
+  const { toiletPreferences } = useContext(UserContext);
 
   const onHandleDrag = (e) => {
     if (isExpanded) {
@@ -97,7 +79,7 @@ const ToiletPreferencesModal = ({ state }) => {
           </Offcanvas.Title>
           <ToiletList
             state={state}
-            toilets={favouritedToilets}
+            toilets={toiletPreferences.favouritedToilets}
             isShow={true}
             onCustomHide={onHide}
             tagType="distance"
@@ -112,7 +94,7 @@ const ToiletPreferencesModal = ({ state }) => {
           </Offcanvas.Title>
           <ToiletList
             state={state}
-            toilets={blacklistedToilets}
+            toilets={toiletPreferences.blacklistedToilets}
             isShow={true}
             onCustomHide={onHide}
             tagType="distance"

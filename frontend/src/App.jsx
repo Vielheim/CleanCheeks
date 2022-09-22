@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   BrowserRouter as Router,
   Routes,
@@ -7,11 +7,12 @@ import {
 } from 'react-router-dom';
 import MapPage from './pages/MapPage';
 import Api from './api/api';
-import { ToastContext, AuthContext } from './utilities/context';
+import { ToastContext, UserContext } from './utilities/context';
 import LoginPage from './pages/LoginPage';
 import Toast from 'react-bootstrap/Toast';
 import ToastContainer from 'react-bootstrap/ToastContainer';
 import focused_face from './assets/focused_face.png';
+import ToiletControlller from './api/ToiletController';
 
 const TOAST_CONTENTS = {
   OFFLINE: {
@@ -39,6 +40,17 @@ const TOAST_CONTENTS = {
 function App() {
   const [user, setUser] = useState(false);
   const [toastType, setToastType] = useState(null);
+  const [toiletPreferences, setToiletPreferences] = useState([]);
+
+  const fetchToiletPreferences = useCallback(() => {
+    ToiletControlller.fetchToiletWithUserPreferences()
+      .then((result) => {
+        setToiletPreferences(result.data);
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+  }, []);
 
   useEffect(() => {
     Api.makeApiRequest({
@@ -47,11 +59,15 @@ function App() {
     })
       .then(() => setUser(true))
       .catch(() => setUser(false));
-  }, []);
+
+    fetchToiletPreferences();
+  }, [fetchToiletPreferences]);
 
   return (
     <>
-      <AuthContext.Provider value={{ user, setUser }}>
+      <UserContext.Provider
+        value={{ user, setUser, toiletPreferences, fetchToiletPreferences }}
+      >
         <Router>
           <ToastContext.Provider value={setToastType}>
             <Routes>
@@ -66,7 +82,7 @@ function App() {
             </Routes>
           </ToastContext.Provider>
         </Router>
-      </AuthContext.Provider>
+      </UserContext.Provider>
 
       {toastType !== null && (
         <ToastContainer position="bottom-center">

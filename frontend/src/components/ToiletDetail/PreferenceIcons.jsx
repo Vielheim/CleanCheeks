@@ -4,7 +4,7 @@ import { FaHeart } from 'react-icons/fa';
 import { TiCancel } from 'react-icons/ti';
 import ToiletPreferenceControlller from '../../api/ToiletPreferenceController';
 import { PreferenceType } from '../../enums/ToiletPreferenceEnums';
-import { AuthContext } from '../../utilities/context';
+import { UserContext } from '../../utilities/context';
 
 const PreferenceIcons = ({
   toiletId,
@@ -13,7 +13,7 @@ const PreferenceIcons = ({
 }) => {
   const [preference, setPreference] = useState(initPreferenceType);
   const navigate = useNavigate();
-  const { setUser } = useContext(AuthContext);
+  const { setUser, fetchToiletPreferences } = useContext(UserContext);
 
   const updateToiletPreference = useCallback(
     async (type) => {
@@ -40,8 +40,16 @@ const PreferenceIcons = ({
             navigate('/');
           });
       }
+      fetchToiletPreferences();
     },
-    [preference, toiletId, onSetPreferenceType, setUser, navigate]
+    [
+      preference,
+      fetchToiletPreferences,
+      toiletId,
+      onSetPreferenceType,
+      setUser,
+      navigate,
+    ]
   );
 
   const onClickFavourite = useCallback(() => {
