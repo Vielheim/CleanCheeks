@@ -6,6 +6,7 @@ import ToiletCard from './ToiletCard';
 import { UserContext } from '../../utilities/context';
 import LoginButton from '../LoginButton/LoginButton';
 import styles from './ToiletList.module.scss';
+import ToiletsLoadingPlaceholder from '../ToiletsLoadingPlaceholder';
 
 export const DISTANCE_KEY = 'distance';
 export const PREFERENCE_KEY = 'preference';
@@ -23,7 +24,11 @@ const ToiletList = ({ state, toilets, isShow, onCustomHide, tagType }) => {
     return <LoginButton />;
   }
 
-  if (toilets == null || toilets.length === 0) {
+  if (toilets == null) {
+    return <ToiletsLoadingPlaceholder />;
+  }
+
+  if (toilets.length === 0) {
     return <p className={styles['no-toilets-text']}>Nothing to see here...</p>;
   }
 

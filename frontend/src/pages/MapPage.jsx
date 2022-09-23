@@ -27,6 +27,7 @@ import { getToiletsBreakdown } from '../utilities/Util';
 import ToiletPreferencesModal from '../components/ToiletPreferencesModal/ToiletPreferencesModal';
 import { getLocalStorageValue } from '../utilities/localStorage';
 import { USER_ID_KEY } from '../constants';
+import ToiletsLoadingPlaceholder from '../components/ToiletsLoadingPlaceholder';
 
 const CIRCLE_FILL_OPTIONS = {
   fillOpacity: 1,
@@ -56,6 +57,7 @@ const MapPage = () => {
     },
   };
 
+  const [isLoadingToilets, setIsLoadingToilets] = useState(true);
   const setToastType = useContext(ToastContext);
   const [state, dispatch] = useReducer(toiletReducer, INITIAL_TOILET_STATE);
   const [map, setMap] = useState(null);
@@ -69,6 +71,9 @@ const MapPage = () => {
         })
         .catch((e) => {
           console.error(e);
+        })
+        .finally(() => {
+          setIsLoadingToilets(false);
         });
     },
     [setToastType, userId]
@@ -131,6 +136,7 @@ const MapPage = () => {
       // minimum distance apart in metres
       const minDistance = (Math.min(width, height) * 110000) / 2;
       radius = minDistance * 0.7;
+      setIsLoadingToilets(true);
       fetchCloseToilets(state.center.map, radius);
     }
   }, [state.center.map, map, fetchCloseToilets]);
@@ -168,6 +174,8 @@ const MapPage = () => {
           pathOptions={CIRCLE_FILL_OPTIONS}
           radius={10}
         />
+        {isLoadingToilets && <ToiletsLoadingPlaceholder />}
+
         {state.filteredClusters.map((cluster, i) => {
           const { latitude, longitude, toilets } = cluster;
           const isNear =

@@ -1,11 +1,10 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import Badge from 'react-bootstrap/Badge';
 import Offcanvas from 'react-bootstrap/Offcanvas';
-import StyledUtility from '../StyledUtility/StyledUtility';
 
 import { GrFormPreviousLink } from 'react-icons/gr';
 import ToiletControlller from '../../api/ToiletController';
-import { Utilities } from '../../enums/ToiletEnums';
+import ToiletDetailBody from './ToiletDetailBody';
+import ToiletLoadingScreen from './ToiletLoadingScreen';
 
 import {
   getCleanlinessMetadata,
@@ -14,13 +13,20 @@ import {
 } from '../../utilities/Util';
 import PreferenceIcons from './PreferenceIcons';
 import styles from './ToiletDetail.module.scss';
-import ToiletRating from './ToiletRating';
 import { ToastContext } from '../../utilities/context';
+import ToiletErrorScreen from './ToiletErrorScreen';
+
+const PAGE_STATE = {
+  LOADING: 'LOADING',
+  ERROR: 'ERROR',
+  READY: 'READY',
+};
 
 const ToiletDetail = ({ building, toilet, isShow, onBack, onHide }) => {
   const { id, description, utilities } = toilet;
   const setToastType = useContext(ToastContext);
 
+  const [pageState, setPageState] = useState(PAGE_STATE.LOADING);
   const [toiletQuote, setToiletQuote] = useState(
     'Haha our website clogged just like the toilet cannot flush'
   );
@@ -40,9 +46,12 @@ const ToiletDetail = ({ building, toilet, isShow, onBack, onHide }) => {
 
         const newToiletQuote = getToiletQuote(cleanliness, id);
         setToiletQuote(newToiletQuote);
+
+        setPageState(PAGE_STATE.READY);
       })
       .catch((e) => {
         setToastType('ERROR');
+        setPageState(PAGE_STATE.ERROR);
       });
   }, [id, setToastType, toilet]);
 
@@ -53,6 +62,25 @@ const ToiletDetail = ({ building, toilet, isShow, onBack, onHide }) => {
   useEffect(() => {
     updateToiletRank();
   }, [updateToiletRank]);
+
+  const getOffCanvasBody = () => {
+    if (pageState === PAGE_STATE.LOADING) {
+      return <ToiletLoadingScreen />;
+    } else if (pageState === PAGE_STATE.ERROR) {
+      return <ToiletErrorScreen />;
+    }
+
+    return (
+      <ToiletDetailBody
+        id={id}
+        toiletQuote={toiletQuote}
+        cleanlinessMetadata={cleanlinessMetadata}
+        percentageBeat={percentageBeat}
+        updateToiletRank={updateToiletRank}
+        utilities={utilities}
+      />
+    );
+  };
 
   return (
     <Offcanvas
@@ -73,54 +101,7 @@ const ToiletDetail = ({ building, toilet, isShow, onBack, onHide }) => {
           onSetPreferenceType={onUpdateToiletPreference}
         />
       </Offcanvas.Header>
-      <Offcanvas.Body>
-        <div className={styles['toilet-summary']}>
-          <p className={styles['toilet-summary-item']}>{toiletQuote}</p>
-
-          <img
-            className={styles['toilet-summary-item']}
-            alt={cleanlinessMetadata.text}
-            src={cleanlinessMetadata.icon}
-            width="auto"
-            height={window.innerHeight / 6}
-          />
-        </div>
-
-        <p className="mb-3 h6 fw-bold">Utilities</p>
-        <div className={`${styles['toilet-utilities']} ${styles['box']}`}>
-          {Object.keys(Utilities).map((utility, i) => (
-            <StyledUtility
-              key={i}
-              utility={utility}
-              presentUtilities={utilities}
-            />
-          ))}
-        </div>
-        <p className="mb-3 h6 fw-bold">Cleanliness</p>
-        <div className={`text-center ${styles['box']}`}>
-          <Badge
-            className="mb-2"
-            bg={cleanlinessMetadata.type}
-          >{`${cleanlinessMetadata.text} cleanliness`}</Badge>
-          <input
-            type="range"
-            className="form-range"
-            id="disabledRange"
-            min="0"
-            value={percentageBeat}
-            max="100"
-            disabled
-          />
-          <p>
-            This toilet is cleaner than <strong>{percentageBeat}%</strong> of
-            all other toilets on campus!
-          </p>
-        </div>
-        <p className="mb-3 h6 fw-bold">Your Rating</p>
-        <div className={styles['box']}>
-          <ToiletRating toiletId={id} onRate={updateToiletRank} />
-        </div>
-      </Offcanvas.Body>
+      <Offcanvas.Body>{getOffCanvasBody()}</Offcanvas.Body>
     </Offcanvas>
   );
 };
