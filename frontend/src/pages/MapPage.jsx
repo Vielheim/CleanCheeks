@@ -88,7 +88,6 @@ const MapPage = () => {
             payload: { current: newCenter, map: newCenter },
           });
           localStorage.setItem('lastCenter', JSON.stringify(newCenter));
-          console.log('Pos: [', latitude, ',', longitude, ']');
         },
         (error) => {
           switch (error.code) {
