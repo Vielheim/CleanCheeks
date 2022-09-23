@@ -116,7 +116,7 @@ paths:
       tags:
         - Ratings
       summary: Create a toilet rating
-      description: Creating a toilet rating
+      description: Add a toilet rating when a user rates a toilet clean / dirty.
       requestBody:
         content:
           application/json:
@@ -140,21 +140,41 @@ paths:
               schema:
                 $ref: '#/components/schemas/CreateRatingResponse'
         '400':
-          description: Bad request
+          description: Bad request 
+
+  /api/v1/toilet_ratings/last-rated:
     get:
       tags:
         - Ratings
-      summary: Get all toilet ratings
-      description: Get all toilet ratings for all users
+      summary: Queries when the user last rated for this toilet
+      description: Queries when the user last rated for this toilet.
+      parameters:
+        - name: toilet_id
+          in: query
+          description: ID of toilet
+          required: true
+          schema:
+            type: string
+            format: uuidv4
+        - name: user_id
+          in: query
+          description: ID of user
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetRatingResponseArray'
+                $ref: '#/components/schemas/CreateRatingResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/CreateRatingResponse'
         '400':
           description: Bad request
+
   /api/v1/toilet_preferences:
     put:
       tags:
@@ -370,6 +390,7 @@ components:
       properties:
         toilet_id:
           type: string
+          format: uuidv4
           example: 7c2e5a75-286f-4c17-bbb4-21e645678e28
         user_id:
           type: string
@@ -399,6 +420,9 @@ components:
         updatedAt:
           type: string
           example: 2022-09-14T09:36:51.277Z
+        nextRatingTime:
+          type: string
+          example: 2022-09-14T10:06:51.277Z
     CreateRatingResponse:
       type: object
       properties:
@@ -410,7 +434,7 @@ components:
           example: Added rating
         data:
           $ref: '#/components/schemas/Rating'
-    GetRatingResponseArray:
+    UserLastRatingResponse:
       type: object
       properties:
         status:
@@ -418,11 +442,9 @@ components:
           example: success
         message:
           type: string
-          example: Retrieved all ratings
+          example: Retrieved last rating by user
         data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Rating'
+          $ref: '#/components/schemas/Rating'
     UpsertPreferenceDTO:
       type: object
       required:
@@ -615,17 +637,10 @@ components:
         updatedAt:
           type: string
           example: 2022-09-14T09:36:51.277Z
-    GetToiletResponse:
-      type: object
-      properties:
-        status:
+        user_preference_type:
           type: string
-          example: success
-        message:
-          type: string
-          example: Retrieved toilet
-        data:
-          $ref: '#/components/schemas/Toilet'
+          enum: [BLACKLIST, FAVOURITE]
+          example: FAVOURITE
     GetToiletNeighboursResponseArray:
       type: object
       properties:
