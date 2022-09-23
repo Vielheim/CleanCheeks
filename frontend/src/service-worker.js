@@ -11,8 +11,8 @@ import { clientsClaim } from 'workbox-core';
 import { ExpirationPlugin } from 'workbox-expiration';
 import { precacheAndRoute, createHandlerBoundToURL } from 'workbox-precaching';
 import { registerRoute } from 'workbox-routing';
-import { StaleWhileRevalidate, NetworkOnly } from 'workbox-strategies';
-import {BackgroundSyncPlugin} from 'workbox-background-sync';
+import { StaleWhileRevalidate, NetworkOnly, NetworkFirst } from 'workbox-strategies';
+import { BackgroundSyncPlugin } from 'workbox-background-sync';
 
 clientsClaim();
 
@@ -64,7 +64,7 @@ registerRoute(
 // Cache API call responses. Pattern match url host to work with CORS requests.
 registerRoute(
   ({url}) => url.pathname.includes('/api/v1'),
-  new StaleWhileRevalidate({
+  new NetworkFirst({
     cacheName: 'api',
     plugins: [
       // Ensure that once this runtime cache reaches a maximum size the
