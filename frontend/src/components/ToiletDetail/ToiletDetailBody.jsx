@@ -2,7 +2,7 @@ import Badge from 'react-bootstrap/Badge';
 import StyledUtility from '../StyledUtility/StyledUtility';
 import { Utilities } from '../../enums/ToiletEnums';
 import ToiletRating from './ToiletRating';
-import styles from './ToiletDetail.module.scss';
+import styles from './ToiletDetailBody.module.scss';
 
 const ToiletDetailBody = ({
   id,

@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './ToiletDetail.module.scss';
+import styles from './ToiletPlaceholderScreen.module.scss';
 import Spinner from 'react-bootstrap/Spinner';
 
 const ToiletLoadingScreen = () => {

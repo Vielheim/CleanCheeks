@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './ToiletDetail.module.scss';
+import styles from './ToiletPlaceholderScreen.module.scss';
 import Alert from 'react-bootstrap/Alert';
 
 const ToiletErrorScreen = () => {
