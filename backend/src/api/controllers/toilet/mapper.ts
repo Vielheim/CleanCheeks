@@ -1,6 +1,6 @@
 import { IToiletOutput } from '../../../db/models/Toilet';
 import { PreferenceType } from '../../../enums';
-import { IToilet } from '../../interfaces';
+import { IToilet } from '../../interfaces/toilet.interface';
 
 // maps data from db layer to api layer
 export const toToilet = ({
