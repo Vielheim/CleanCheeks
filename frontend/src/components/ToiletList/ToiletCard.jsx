@@ -51,7 +51,7 @@ const ToiletCard = ({ toilet, onSelect, tagType, userLocation }) => {
       onClick={() => onSelect(toilet)}
     >
       <Card.Body>
-        <Card.Title className={`${styles['card-header']} border-0 p-0 mb-`}>
+        <Card.Title className={`${styles['card-header']} border-0 p-0`}>
           <p>{getToiletName(toilet)}</p>
           {tagDisplay && (
             <p className={`${styles['preference']} mb-2`}>{tagDisplay}</p>

@@ -97,8 +97,8 @@ const ToiletPreferencesModal = ({ state }) => {
             <ToiletList
               state={state}
               toilets={toiletPreferences.favouritedToilets}
-              isShow={true}
-              onCustomHide={emptyFunction}
+              isShow={isExpanded}
+              onCustomHide={closeModal}
               tagType="distance"
             />
             <Offcanvas.Title className="mb-3 mt-5 fw-bolder">
@@ -112,8 +112,8 @@ const ToiletPreferencesModal = ({ state }) => {
             <ToiletList
               state={state}
               toilets={toiletPreferences.blacklistedToilets}
-              isShow={true}
-              onCustomHide={emptyFunction}
+              isShow={isExpanded}
+              onCustomHide={closeModal}
               tagType={DISTANCE_KEY}
             />
           </Offcanvas.Body>
