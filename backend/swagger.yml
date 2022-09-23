@@ -11,8 +11,6 @@ tags:
     description: Ratings for each toilet
   - name: Preferences
     description: Preferences for each toilet
-  - name: Users
-    description: User
   - name: Auth
     description: Authentication routes
 
@@ -168,10 +166,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CreateRatingResponse'
+                $ref: '#/components/schemas/UserLastRatingResponse'
             application/xml:
               schema:
-                $ref: '#/components/schemas/CreateRatingResponse'
+                $ref: '#/components/schemas/UserLastRatingResponse'
         '400':
           description: Bad request
 
@@ -214,28 +212,6 @@ paths:
                 $ref: '#/components/schemas/UpdatePreferenceResponse'
         '400':
           description: Bad request
-    get:
-      tags:
-        - Preferences
-      summary: Get a user's toilet preferences
-      description: Get toilet preferences for a specific user. Get for all users for internal use.
-      parameters:
-        - name: userId
-          in: query
-          description: Id of current user
-          required: false
-          explode: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GetPreferenceResponseArray'
-        '400':
-          description: Bad request
     delete:
       tags:
         - Preferences
@@ -265,77 +241,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/DeletePreferenceResponse'
-        '400':
-          description: Bad request
-  /api/v1/users:
-    post:
-      tags:
-        - Users
-      summary: Create a user
-      description: Creates a user.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateUserDTO'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/CreateUserDTO'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/CreateUserDTO'
-        required: true
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CreateUserResponse'
             application/xml:
               schema:
-                $ref: '#/components/schemas/CreateUserResponse'
+                $ref: '#/components/schemas/DeletePreferenceResponse'
         '400':
           description: Bad request
-    get:
-      tags:
-        - Users
-      summary: Get all users
-      description: Get all users
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GetUserResponseArray'
-        '400':
-          description: Bad request
-  /api/v1/users/{userId}:
-    get:
-      tags:
-        - Users
-      summary: Get user by ID
-      description: Get a single user
-      parameters:
-        - name: userId
-          in: path
-          description: ID of user to return
-          required: true
-          schema:
-            type: string
-            format: uuidv4
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GetUserResponse'
-        '400':
-          description: Bad request
-        '404':
-          description: User not found
+
   /api/v1/auth/google:
     post:
       tags:
@@ -454,6 +365,7 @@ components:
       properties:
         toilet_id:
           type: string
+          format: uuidv4
           example: 7c2e5a75-286f-4c17-bbb4-21e645678e28
         user_id:
           type: string
@@ -502,19 +414,6 @@ components:
           example: Update existing toilet preference
         data:
           $ref: '#/components/schemas/Preference'
-    GetPreferenceResponseArray:
-      type: object
-      properties:
-        status:
-          type: string
-          example: success
-        message:
-          type: string
-          example: Retrieved toilet preferences
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Preference'
     DeletePreferenceResponse:
       type: object
       properties:
@@ -527,63 +426,6 @@ components:
         data:
           type: boolean
           example: true
-    CreateUserDTO:
-      type: object
-      required:
-        - id
-      properties:
-        id:
-          type: string
-          format: string
-          example: 7c2e5a75-286f-4c17-bbb4-21e645678e28
-    User:
-      type: object
-      properties:
-        id:
-          type: string
-          format: string
-          example: 7c2e5a75-286f-4c17-bbb4-21e645678e28
-        createdAt:
-          type: string
-          example: 2022-09-14T09:36:51.277Z
-        updatedAt:
-          type: string
-          example: 2022-09-14T09:36:51.277Z
-    CreateUserResponse:
-      type: object
-      properties:
-        status:
-          type: string
-          example: success
-        message:
-          type: string
-          example: Added user
-        data:
-          $ref: '#/components/schemas/User'
-    GetUserResponse:
-      type: object
-      properties:
-        status:
-          type: string
-          example: success
-        message:
-          type: string
-          example: Retrieved user
-        data:
-          $ref: '#/components/schemas/User'
-    GetUserResponseArray:
-      type: object
-      properties:
-        status:
-          type: string
-          example: success
-        message:
-          type: string
-          example: Retrieved all users
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/User'
     Toilet:
       type: object
       properties:
@@ -713,8 +555,13 @@ components:
           type: string
           example: Successfully logged in
         data:
-          type: boolean
-          example: true
+          properties:
+            user_id:  
+              type: string
+              example: aa39c1e1-7591-47a9-a11c-1566e0b29e9e
+            accessToken:
+              type: string
+              example: lhdCI6MTY2MzkwMTcwOCkpXVCJ9jBUMDc6MDA6MDQuMDQyWiIsImwiZJ8xphSS7iA0tUtIK4
     CheckLoginResponse:
       type: object
       properties:
