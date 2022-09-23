@@ -28,8 +28,8 @@ export const getUserLastRated = async (
     payload.user_id
   );
 
-  if (!ratingOutput) {
-    return ratingOutput;
+  if (ratingOutput == null) {
+    return null;
   }
 
   return mapper.toIRating(ratingOutput);

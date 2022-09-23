@@ -48,7 +48,7 @@ toiletsRouter.get('/ranking', async (req: Request, res: Response) => {
   try {
     const toiletId: string = req.query.id as string;
     const result = await toiletController.getRank(toiletId);
-    return Util.sendSuccess(res, 200, 'Get toilet ranking', result);
+    return Util.sendSuccess(res, 200, 'Retrieved toilet ranking', result);
   } catch (error: unknown) {
     return Util.sendFailure(res, error);
   }
