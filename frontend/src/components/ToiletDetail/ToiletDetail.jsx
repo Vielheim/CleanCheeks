@@ -6,6 +6,7 @@ import ToiletControlller from '../../api/ToiletController';
 import ToiletDetailBody from './ToiletDetailBody';
 import ToiletLoadingScreen from './ToiletLoadingScreen';
 
+import { ToastContext } from '../../utilities/context';
 import {
   getCleanlinessMetadata,
   getToiletName,
@@ -13,12 +14,9 @@ import {
 } from '../../utilities/Util';
 import PreferenceIcons from './PreferenceIcons';
 import styles from './ToiletDetail.module.scss';
-import { ToastContext } from '../../utilities/context';
-import ToiletErrorScreen from './ToiletErrorScreen';
 
 const PAGE_STATE = {
   LOADING: 'LOADING',
-  ERROR: 'ERROR',
   READY: 'READY',
 };
 
@@ -71,8 +69,6 @@ const ToiletDetail = ({ toilet, isShow, onBack, onHide }) => {
   const getOffCanvasBody = () => {
     if (pageState === PAGE_STATE.LOADING) {
       return <ToiletLoadingScreen />;
-    } else if (pageState === PAGE_STATE.ERROR) {
-      return <ToiletErrorScreen />;
     }
 
     return (
