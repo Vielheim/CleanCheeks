@@ -101,3 +101,5 @@ export const getToiletName = (toilet) => {
   const fmtedFloor = floor < 0 ? `B${Math.abs(floor)}` : floor.toString();
   return `${building} ${fmtedFloor}`;
 };
+
+export const emptyFunction = () => {};

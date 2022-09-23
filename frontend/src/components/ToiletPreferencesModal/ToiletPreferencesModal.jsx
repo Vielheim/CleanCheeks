@@ -7,6 +7,7 @@ import { TiCancel } from 'react-icons/ti';
 import { UserContext } from '../../utilities/context';
 import ToiletList, { DISTANCE_KEY } from '../ToiletList/ToiletList';
 import styles from './ToiletPreferencesModal.module.scss';
+import { emptyFunction } from '../../utilities/Util';
 
 const ToiletPreferencesModal = ({ state }) => {
   const isMobile = window.innerWidth <= 768;
@@ -50,8 +51,6 @@ const ToiletPreferencesModal = ({ state }) => {
       closeModal();
     }
   }, [closeModal, state.isTopItemsExpanded]);
-
-  const emptyFunction = () => false;
 
   const prop = {
     backdrop: false,
