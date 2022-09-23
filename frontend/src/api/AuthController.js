@@ -15,7 +15,7 @@ export default class AuthController {
 
   static async checkLogin(accessToken) {
     return Api.makeApiRequest({
-      method: 'POST',
+      method: 'GET',
       url: `${AUTH_URL}/check-login`,
       headers: {
         'x-auth-token': accessToken,
