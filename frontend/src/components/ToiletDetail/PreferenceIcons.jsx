@@ -39,8 +39,12 @@ const PreferenceIcons = ({
             }
           })
           .catch((e) => {
-            setToastType('LOGIN');
-            setUser(false);
+            if (e.status == 401) {
+              setToastType('LOGIN');
+              setUser(false);
+            } else {
+              setToastType('ERROR');
+            }
           });
       } else {
         await ToiletPreferenceControlller.updateToiletPreference(
@@ -59,8 +63,12 @@ const PreferenceIcons = ({
             onSetPreferenceType(result.data.type);
           })
           .catch((e) => {
-            setToastType('LOGIN');
-            setUser(false);
+            if (e.status == 401) {
+              setToastType('LOGIN');
+              setUser(false);
+            } else {
+              setToastType('ERROR');
+            }
           });
 
         window.gtag('event', type, {

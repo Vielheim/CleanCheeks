@@ -70,8 +70,12 @@ const ToiletRating = ({ toiletId, onRate }) => {
           });
         })
         .catch((e) => {
-          setToastType('LOGIN');
-          setUser(false);
+          if (e.status == 401) {
+            setToastType('LOGIN');
+            setUser(false);
+          } else {
+            setToastType('ERROR');
+          }
         });
     },
     [
