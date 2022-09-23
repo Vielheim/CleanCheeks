@@ -61,11 +61,37 @@ registerRoute(
   })
 );
 
-// Cache API call responses. Pattern match url host to work with CORS requests.
+// Cache ranking API call responses. Pattern match url host to work with CORS requests.
 registerRoute(
-  ({url}) => url.pathname.includes('/api/v1'),
+  new RegExp('.*\/api\/v1\/toilets\/ranking.*'),
   new NetworkFirst({
-    cacheName: 'api',
+    cacheName: 'api-ranking',
+    plugins: [
+      // Ensure that once this runtime cache reaches a maximum size the
+      // least-recently used images are removed.
+      new ExpirationPlugin({ maxEntries: 50 }),
+    ],
+  })
+);
+
+// Cache user preferences API call responses. Pattern match url host to work with CORS requests.
+registerRoute(
+  new RegExp('.*\/api\/v1\/toilets\/with_user_preferences.*'),
+  new NetworkFirst({
+    cacheName: 'api-preferences',
+    plugins: [
+      // Ensure that once this runtime cache reaches a maximum size the
+      // least-recently used images are removed.
+      new ExpirationPlugin({ maxEntries: 50 }),
+    ],
+  })
+);
+
+// Cache toilet ratings API call responses. Pattern match url host to work with CORS requests.
+registerRoute(
+  new RegExp('.*\/api\/v1\/toilet_ratings.*'),
+  new NetworkFirst({
+    cacheName: 'api-ratings',
     plugins: [
       // Ensure that once this runtime cache reaches a maximum size the
       // least-recently used images are removed.
@@ -75,20 +101,15 @@ registerRoute(
 );
 
 // Retry offline requests
-const RETRY_METHODS = [
-  'DELETE',
-  'POST', 
-  'PUT',
-  'GET'
-];
 const bgSyncPlugin = new BackgroundSyncPlugin('apiRetryQueue', {
   maxRetentionTime: 24 * 60 // Retry for max of 24 Hours (specified in minutes)
 });
 registerRoute(
-  true,
+  new RegExp('.*\/api\/v1\/.*'),
   new NetworkOnly({
     plugins: [bgSyncPlugin]
-  })
+  }),
+  'POST',
 );
 
 // This allows the web app to trigger skipWaiting via
