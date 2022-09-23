@@ -56,6 +56,7 @@ export const INITIAL_TOILET_STATE = {
       getLocation(VENUES['UT-AUD1']),
   },
   filters: JSON.parse(localStorage.getItem('filters')) ?? INITIAL_FILTER_STATE,
+  isTopItemsExpanded: false,
 };
 
 const toiletReducer = (state, action) => {
@@ -82,6 +83,11 @@ const toiletReducer = (state, action) => {
           current: newCenter,
           map: newCenter,
         },
+      };
+    case 'expandTopItems':
+      return {
+        ...state,
+        isTopItemsExpanded: action.payload,
       };
     case 'updateFilters':
       const filters = {

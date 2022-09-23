@@ -33,10 +33,14 @@ const FilterOptions = ({ state, dispatch }) => {
     dispatch({ type: 'updateFilters', payload: { types: updatedTypes } });
   };
 
+  const onShow = (value) => {
+    dispatch({ type: 'expandTopItems', payload: value });
+  };
+
   const { filters } = state;
 
   return (
-    <Dropdown autoClose="outside">
+    <Dropdown autoClose="outside" onToggle={onShow}>
       <Dropdown.Toggle className={styles['filter-options-button']}>
         <BsFilter height={22} />
       </Dropdown.Toggle>

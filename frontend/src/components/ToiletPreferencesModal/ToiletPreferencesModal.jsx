@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import Draggable from 'react-draggable';
 import { FaHeart } from 'react-icons/fa';
@@ -13,28 +13,43 @@ const ToiletPreferencesModal = ({ state }) => {
   const yOffset =
     0.8 * document.documentElement.clientHeight - (isMobile ? 70 : 80);
 
+  const { toiletPreferences } = useContext(UserContext);
+
   const [isExpanded, setIsExpanded] = useState(false);
   const [position, setPosition] = useState({
     x: 0,
     y: yOffset,
   });
-  const { toiletPreferences } = useContext(UserContext);
+
+  const closeModal = useCallback(() => {
+    setPosition({
+      x: 0,
+      y: yOffset,
+    });
+    setIsExpanded(false);
+  }, [yOffset]);
+
+  const openModal = () => {
+    setPosition({
+      x: 0,
+      y: 0,
+    });
+    setIsExpanded(true);
+  };
 
   const onHandleDrag = () => {
     if (isExpanded) {
-      setPosition({
-        x: 0,
-        y: yOffset,
-      });
-      setIsExpanded(false);
+      closeModal();
     } else {
-      setPosition({
-        x: 0,
-        y: 0,
-      });
-      setIsExpanded(true);
+      openModal();
     }
   };
+
+  useEffect(() => {
+    if (state.isTopItemsExpanded) {
+      closeModal();
+    }
+  }, [closeModal, state.isTopItemsExpanded]);
 
   const onHide = () => {};
 

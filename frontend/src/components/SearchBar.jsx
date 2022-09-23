@@ -19,6 +19,11 @@ const SearchBar = ({ state, dispatch, venues }) => {
   const [tempSearch, setTempSearch] = useState('');
   const [isShowList, setIsShowList] = useState(false);
 
+  const setListShown = (value) => {
+    setIsShowList(value);
+    dispatch({ type: 'expandTopItems', payload: value });
+  };
+
   const onSearchChange = ({ target: { value } }) => {
     setTempSearch(value);
   };
@@ -28,11 +33,11 @@ const SearchBar = ({ state, dispatch, venues }) => {
     if (searchTimeoutId > 0) {
       clearTimeout(searchTimeoutId);
     }
-    setIsShowList(true);
+    setListShown(true);
   };
 
   const onFormBlur = () => {
-    searchTimeoutId = setTimeout(() => setIsShowList(false), 300);
+    searchTimeoutId = setTimeout(() => setListShown(false), 300);
   };
 
   const onFormKeyDown = ({ key }) => {
@@ -51,7 +56,7 @@ const SearchBar = ({ state, dispatch, venues }) => {
   const onListItemClick = ({ target: { value } }) => {
     dispatch({ type: 'updateSearch', payload: value });
     setTempSearch(value);
-    setIsShowList(false);
+    setListShown(false);
 
     window.gtag('event', 'search', {
       search_term: value,
@@ -110,7 +115,7 @@ const SearchBar = ({ state, dispatch, venues }) => {
                 <ListGroup.Item
                   key={id}
                   action
-                  onBlur={() => setIsShowList(false)}
+                  onBlur={() => setListShown(false)}
                   onClick={onListItemClick}
                   onTouchMoveCapture={onCapture}
                   onMouseDownCapture={() => map.dragging.disable()}
