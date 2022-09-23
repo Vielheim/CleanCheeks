@@ -1,6 +1,6 @@
 import * as service from '../../../db/services/UserService';
 import { CreateUserDTO } from '../../data_transfer/user/user.dto';
-import { IUser } from '../../interfaces';
+import { IUser } from '../../interfaces/user.interface'; 
 import * as mapper from './mapper';
 
 export const create = async (payload: CreateUserDTO): Promise<IUser> => {

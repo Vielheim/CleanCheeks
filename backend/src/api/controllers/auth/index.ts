@@ -1,13 +1,14 @@
 import * as UserController from '../user';
 import { OAuth2Client } from 'google-auth-library';
 import JwtUtils from '../../util/JwtUtils';
+import { ILoginResponse } from '../../interfaces/auth.interface';
 
 const googleClient = new OAuth2Client({
   clientId: `${process.env.GOOGLE_CLIENT_ID}`,
   clientSecret: `${process.env.GOOGLE_CLIENT_SECRET}`,
 });
 
-export const googleLogin = async (idToken: string) => {
+export const googleLogin = async (idToken: string): Promise<ILoginResponse> => {
   const ticket = await googleClient.verifyIdToken({
     idToken,
     audience: `${process.env.GOOGLE_CLIENT_ID}`,
@@ -25,10 +26,9 @@ export const googleLogin = async (idToken: string) => {
   const accessToken = JwtUtils.generateAccessToken(user, {
     expiresIn: '7d',
   });
-  const result = {
+
+  return {
     userId: user.id,
     accessToken,
   };
-
-  return result;
 };
