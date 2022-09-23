@@ -146,7 +146,7 @@ function App() {
                     alt="Focused Face"
                     src={TOAST_CONTENTS[toastType].img}
                     height={25}
-                    width={25}
+                    width="auto"
                   />
                   <strong className="toast-header-title">
                     {TOAST_CONTENTS[toastType].title}

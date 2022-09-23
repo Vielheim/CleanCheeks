@@ -35,3 +35,11 @@
   text-align: center;
   font-style: italic;
 }
+
+.toilet-loading-screen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 80%;
+}
