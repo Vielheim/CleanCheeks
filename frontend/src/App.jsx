@@ -1,21 +1,21 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from 'react-router-dom';
-import MapPage from './pages/MapPage';
-import Api from './api/api';
-import { ToastContext, UserContext } from './utilities/context';
-import LoginPage from './pages/LoginPage';
+import React, { useCallback, useEffect, useState } from 'react';
 import Toast from 'react-bootstrap/Toast';
 import ToastContainer from 'react-bootstrap/ToastContainer';
-import focused_face from './assets/focused_face.png';
+import {
+  BrowserRouter as Router,
+  Navigate,
+  Route,
+  Routes,
+} from 'react-router-dom';
+import AuthController from './api/AuthController';
 import ToiletControlller from './api/ToiletController';
-import { getLocalStorageValue } from './utilities/localStorage';
-import { ACCESS_TOKEN_KEY, USER_ID_KEY } from './constants';
+import focused_face from './assets/focused_face.png';
 import LoginToastBody from './components/LoginToastBody';
+import { ACCESS_TOKEN_KEY, USER_ID_KEY } from './constants';
+import LoginPage from './pages/LoginPage';
+import MapPage from './pages/MapPage';
+import { ToastContext, UserContext } from './utilities/context';
+import { getLocalStorageValue } from './utilities/localStorage';
 
 const TOAST_CONTENTS = {
   OFFLINE: {
@@ -44,6 +44,12 @@ const TOAST_CONTENTS = {
     bg: 'warning',
     img: focused_face,
   },
+  WELCOME: {
+    title: 'Successful login!',
+    body: 'Welcome to Clean Cheeks!',
+    bg: 'light',
+    img: focused_face,
+  },
 };
 
 function App() {
@@ -62,20 +68,17 @@ function App() {
       });
   }, [userId]);
 
-  useEffect(() => {
+  const checkUserLogin = useCallback(async () => {
     const accessToken = getLocalStorageValue(ACCESS_TOKEN_KEY);
-    Api.makeApiRequest({
-      method: 'POST',
-      url: '/auth/check-login',
-      headers: {
-        'x-auth-token': accessToken,
-      },
-    })
+    await AuthController.checkLogin(accessToken)
       .then(() => setUser(true))
       .catch(() => setUser(false));
+  }, []);
 
+  useEffect(() => {
+    checkUserLogin();
     fetchToiletPreferences();
-  }, [fetchToiletPreferences]);
+  }, [checkUserLogin, fetchToiletPreferences]);
 
   return (
     <>
