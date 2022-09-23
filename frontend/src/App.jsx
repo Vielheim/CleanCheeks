@@ -44,6 +44,12 @@ const TOAST_CONTENTS = {
     bg: 'warning',
     img: focused_face,
   },
+  WELCOME: {
+    title: 'Successful login!',
+    body: 'Welcome to Clean Cheeks!',
+    bg: 'light',
+    img: focused_face,
+  },
 };
 
 function App() {

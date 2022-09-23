@@ -3,13 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import Api from '../../api/api';
 import './GoogleAuth.scss';
-import { UserContext } from '../../utilities/context';
+import { UserContext, ToastContext } from '../../utilities/context';
 import { setLocalStorageValue } from '../../utilities/localStorage';
 import { ACCESS_TOKEN_KEY, USER_ID_KEY } from '../../constants';
 
 const GoogleAuth = () => {
   const navigate = useNavigate();
   const { setUser, fetchToiletPreferences } = useContext(UserContext);
+  const setToastType = useContext(ToastContext);
   const [errorMsg, setErrorMsg] = useState('');
   const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 
@@ -26,6 +27,8 @@ const GoogleAuth = () => {
           setLocalStorageValue(USER_ID_KEY, userId);
           setUser(true);
           fetchToiletPreferences();
+
+          setToastType('WELCOME');
           navigate('/home');
 
           window.gtag('event', 'login', {
