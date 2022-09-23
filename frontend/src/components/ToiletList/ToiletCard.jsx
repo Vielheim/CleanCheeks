@@ -9,7 +9,7 @@ import { DISTANCE_KEY, PREFERENCE_KEY } from '../ToiletList/ToiletList';
 
 import { Utilities } from '../../enums/ToiletEnums';
 import { getPreferenceTypeDisplay } from '../../enums/ToiletPreferenceEnums';
-import { fmtDistance, getDistance } from '../../utilities/Util';
+import { fmtDistance, getDistance, getToiletName } from '../../utilities/Util';
 import { getCleanlinessMetadata } from '../../utilities/Util';
 import styles from './ToiletCard.module.scss';
 
@@ -34,7 +34,6 @@ const ToiletCard = ({ toilet, onSelect, tagType, userLocation }) => {
   } = toilet;
 
   const { text, type } = getCleanlinessMetadata(cleanliness);
-  const fmtedFloor = floor < 0 ? `B${Math.abs(floor)}` : floor.toString();
 
   const tagDisplay = useMemo(() => {
     if (tagType === DISTANCE_KEY) {
@@ -55,7 +54,7 @@ const ToiletCard = ({ toilet, onSelect, tagType, userLocation }) => {
     >
       <Card.Body>
         <Card.Title className={`${styles['card-header']} border-0 p-0 mb-`}>
-          <p>{`${building}, Level ${fmtedFloor}`}</p>
+          <p>{getToiletName(toilet)}</p>
           {tagDisplay && (
             <p className={`${styles['preference']} mb-2`}>{tagDisplay}</p>
           )}

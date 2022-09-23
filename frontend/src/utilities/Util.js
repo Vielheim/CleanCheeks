@@ -99,7 +99,7 @@ export const fmtDistance = (distance) =>
 export const getToiletName = (toilet) => {
   const { floor, building } = toilet;
   const fmtedFloor = floor < 0 ? `B${Math.abs(floor)}` : floor.toString();
-  return `${building} ${fmtedFloor}`;
+  return `${building}, Level ${fmtedFloor}`;
 };
 
 export const emptyFunction = () => {};
