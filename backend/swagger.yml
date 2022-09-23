@@ -105,7 +105,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetToiletWithUserPreferencesResponseArray'
+                $ref: '#/components/schemas/GetToiletRankResponse'
         '400':
           description: Bad request
         '404':
@@ -666,7 +666,7 @@ components:
           example: success
         message:
           type: string
-          example: Retrieved all neighbouring toilets
+          example: Retrieved toilet ranking
         data:
           properties:
             toilet:
