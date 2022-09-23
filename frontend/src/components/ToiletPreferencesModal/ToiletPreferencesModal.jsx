@@ -51,7 +51,7 @@ const ToiletPreferencesModal = ({ state }) => {
     }
   }, [closeModal, state.isTopItemsExpanded]);
 
-  const onHide = () => {};
+  const emptyFunction = () => false;
 
   const prop = {
     backdrop: false,
@@ -64,7 +64,7 @@ const ToiletPreferencesModal = ({ state }) => {
         className={styles['bottom-modal']}
         placement="bottom"
         show={true}
-        onHide={onHide}
+        onHide={emptyFunction}
         {...prop}
       >
         <Offcanvas.Header>
@@ -99,7 +99,7 @@ const ToiletPreferencesModal = ({ state }) => {
               state={state}
               toilets={toiletPreferences.favouritedToilets}
               isShow={true}
-              onCustomHide={onHide}
+              onCustomHide={emptyFunction}
               tagType="distance"
             />
             <Offcanvas.Title className="mb-3 mt-5 fw-bolder">
@@ -114,7 +114,7 @@ const ToiletPreferencesModal = ({ state }) => {
               state={state}
               toilets={toiletPreferences.blacklistedToilets}
               isShow={true}
-              onCustomHide={onHide}
+              onCustomHide={emptyFunction}
               tagType={DISTANCE_KEY}
             />
           </Offcanvas.Body>

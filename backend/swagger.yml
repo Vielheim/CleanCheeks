@@ -14,41 +14,9 @@ tags:
   - name: Users
     description: User
   - name: Auth
-    desccription: Authentication routes
+    description: Authentication routes
 
 paths:
-  /api/v1/toilets:
-    get:
-      tags:
-        - Toilets
-      summary: Get all toilets with optional filters
-      description: Get all toilets with optional filters
-      parameters:
-        - name: type
-          in: query
-          description: Toilet Types to filter for
-          required: false
-          schema:
-            type: array
-            format: string
-            enum: ['MALE', 'FEMALE', 'HANDICAP']
-        - name: utilities
-          in: query
-          description: Utilities to filter for
-          required: false
-          schema:
-            type: array
-            format: string
-            enum: ['SHOWERS', 'BIDETS', 'WATERCOOLER', 'FRAGRANCE']
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GetToiletResponseArray'
-        '400':
-          description: Bad request
   /api/v1/toilets/neighbours:
     get:
       tags:
@@ -78,16 +46,70 @@ paths:
             type: number
             format: double
             default: 400
-
+        - name: userId
+          in: query
+          description: ID of user
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetToiletResponseArray'
+                $ref: '#/components/schemas/GetToiletNeighboursResponseArray'
         '400':
           description: Bad request
+
+  /api/v1/toilets/with_user_preferences:
+    get:
+      tags:
+        - Toilets
+      summary: Get all toilets with user preferences
+      description: Get all toilets with user preferences (i.e. toilets that have been favourited or blacklisted by the user)
+      parameters:
+        - name: userId
+          in: query
+          description: ID of user
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetToiletWithUserPreferencesResponseArray'
+        '400':
+          description: Bad request
+
+  /api/v1/toilets/ranking:
+    get:
+      tags:
+        - Toilets
+      summary: Get toilet ranking
+      description: Get the rank of the toilet among other toilets in the database
+      parameters:
+        - name: id
+          in: query
+          description: ID of toilet
+          required: true
+          schema:
+            type: string
+            format: uuidv4
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetToiletWithUserPreferencesResponseArray'
+        '400':
+          description: Bad request
+        '404':
+          description: Toilet not found
 
   /api/v1/toilet_ratings:
     post:
@@ -185,7 +207,6 @@ paths:
           explode: true
           schema:
             type: string
-            format: uuidv4
       responses:
         '200':
           description: Success
@@ -605,7 +626,7 @@ components:
           example: Retrieved toilet
         data:
           $ref: '#/components/schemas/Toilet'
-    GetToiletResponseArray:
+    GetToiletNeighboursResponseArray:
       type: object
       properties:
         status:
@@ -613,11 +634,52 @@ components:
           example: success
         message:
           type: string
-          example: Retrieved all toilets
+          example: Retrieved all neighbouring toilets
         data:
           type: array
           items:
             $ref: '#/components/schemas/Toilet'
+    GetToiletWithUserPreferencesResponseArray:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Retrieved toilets set with user preferences
+        data:
+          properties:
+            blacklistedToilets:
+              type: array
+              items:
+                $ref: '#/components/schemas/Toilet'
+            favouritedToilets:
+              type: array
+              items:
+                $ref: '#/components/schemas/Toilet'
+    GetToiletRankResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Retrieved all neighbouring toilets
+        data:
+          properties:
+            toilet:
+              $ref: '#/components/schemas/Toilet'
+            rank:
+              type: integer
+              example: 15
+            percentageBeat:
+              type: integer
+              example: 98.8
+            toiletCount:
+              type: integer
+              example: 800
     GoogleLoginRequestBody:
       type: object
       required:
