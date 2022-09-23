@@ -7,6 +7,7 @@ import { TiCancel } from 'react-icons/ti';
 import { UserContext } from '../../utilities/context';
 import ToiletList, { DISTANCE_KEY } from '../ToiletList/ToiletList';
 import styles from './ToiletPreferencesModal.module.scss';
+import { emptyFunction } from '../../utilities/Util';
 
 const ToiletPreferencesModal = ({ state }) => {
   const isMobile = window.innerWidth <= 768;
@@ -51,8 +52,6 @@ const ToiletPreferencesModal = ({ state }) => {
     }
   }, [closeModal, state.isTopItemsExpanded]);
 
-  const onHide = () => {};
-
   const prop = {
     backdrop: false,
   };
@@ -64,7 +63,7 @@ const ToiletPreferencesModal = ({ state }) => {
         className={styles['bottom-modal']}
         placement="bottom"
         show={true}
-        onHide={onHide}
+        onHide={emptyFunction}
         {...prop}
       >
         <Offcanvas.Header>
@@ -99,7 +98,7 @@ const ToiletPreferencesModal = ({ state }) => {
               state={state}
               toilets={toiletPreferences.favouritedToilets}
               isShow={true}
-              onCustomHide={onHide}
+              onCustomHide={emptyFunction}
               tagType="distance"
             />
             <Offcanvas.Title className="mb-3 mt-5 fw-bolder">
@@ -114,7 +113,7 @@ const ToiletPreferencesModal = ({ state }) => {
               state={state}
               toilets={toiletPreferences.blacklistedToilets}
               isShow={true}
-              onCustomHide={onHide}
+              onCustomHide={emptyFunction}
               tagType={DISTANCE_KEY}
             />
           </Offcanvas.Body>
