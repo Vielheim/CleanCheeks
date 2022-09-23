@@ -78,13 +78,14 @@ registerRoute(
 const RETRY_METHODS = [
   'DELETE',
   'POST', 
-  'PUT'
+  'PUT',
+  'GET'
 ];
 const bgSyncPlugin = new BackgroundSyncPlugin('apiRetryQueue', {
-  maxRetentionTime: 2 * 60 // Retry for max of 2 Hours (specified in minutes)
+  maxRetentionTime: 24 * 60 // Retry for max of 24 Hours (specified in minutes)
 });
 registerRoute(
-  ({url, request}) => url.pathname.includes('/api/v1') && RETRY_METHODS.includes(request.method),
+  true,
   new NetworkOnly({
     plugins: [bgSyncPlugin]
   })

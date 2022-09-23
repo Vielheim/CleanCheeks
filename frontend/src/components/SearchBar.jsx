@@ -37,7 +37,6 @@ const SearchBar = ({ state, dispatch, venues }) => {
   };
 
   const onFormBlur = () => {
-    console.log('here');
     searchTimeoutId = setTimeout(() => setListShown(false), 300);
   };
 
