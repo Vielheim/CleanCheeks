@@ -78,16 +78,31 @@ const MapPage = () => {
   // runs only on first load
   useEffect(() => {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        const latitude = position.coords.latitude;
-        const longitude = position.coords.longitude;
-        const newCenter = [latitude, longitude];
-        dispatch({
-          type: 'updateCenter',
-          payload: { current: newCenter, map: newCenter },
-        });
-        localStorage.setItem('lastCenter', JSON.stringify(newCenter));
-      });
+      navigator.geolocation.watchPosition(
+        (position) => {
+          const latitude = position.coords.latitude;
+          const longitude = position.coords.longitude;
+          const newCenter = [latitude, longitude];
+          dispatch({
+            type: 'updateCenter',
+            payload: { current: newCenter, map: newCenter },
+          });
+          localStorage.setItem('lastCenter', JSON.stringify(newCenter));
+        },
+        (error) => {
+          switch (error.code) {
+            case error.PERMISSION_DENIED:
+              console.log('Permission denied');
+              break;
+            case error.POSITION_UNAVAILABLE:
+              console.log('Position unavailable');
+              break;
+            case error.TIMEOUT:
+              console.log('Timeout');
+              break;
+          }
+        }
+      );
     }
 
     window.addEventListener('online', () => {
