@@ -21,9 +21,7 @@ const UTILITIES = [
 const ToiletCard = ({ toilet, onSelect, tagType, userLocation }) => {
   const {
     id,
-    building,
     description,
-    floor,
     cleanliness,
     num_seats,
     num_squats,

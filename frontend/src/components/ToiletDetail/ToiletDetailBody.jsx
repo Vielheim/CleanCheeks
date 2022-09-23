@@ -42,19 +42,23 @@ const ToiletDetailBody = ({
           className="mb-2"
           bg={cleanlinessMetadata.type}
         >{`${cleanlinessMetadata.text} cleanliness`}</Badge>
-        <input
-          type="range"
-          className="form-range"
-          id="disabledRange"
-          min="0"
-          value={percentageBeat}
-          max="100"
-          disabled
-        />
-        <p>
-          This toilet is cleaner than <strong>{percentageBeat}%</strong> of all
-          other toilets on campus!
-        </p>
+        {percentageBeat != null && (
+          <>
+            <input
+              type="range"
+              className="form-range"
+              id="disabledRange"
+              min="0"
+              value={percentageBeat}
+              max="100"
+              disabled
+            />
+            <p>
+              This toilet is cleaner than <strong>{percentageBeat}%</strong> of
+              all other toilets on campus!
+            </p>
+          </>
+        )}
       </div>
       <p className="mb-3 h6 fw-bold">Your Rating</p>
       <div className={styles['box']}>
