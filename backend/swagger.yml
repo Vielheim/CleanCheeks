@@ -138,7 +138,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/CreateRatingResponse'
         '400':
-          description: Bad request 
+          description: Bad request
 
   /api/v1/toilet_ratings/last-rated:
     get:
@@ -251,8 +251,8 @@ paths:
     post:
       tags:
         - Auth
-      summary: Verifies user's Google account and generates JWT
-      description: Verifies user's Google account using Google ID token and generates a JWT
+      summary: Verifies user's Google account, creates a new user or retrieves an existing user and generates JWT
+      description: Verifies user's Google account using a Google ID token, creates a new user or retrieves an existing user using the unique Google ID, and returns a generated JWT.
       requestBody:
         content:
           application/json:
@@ -275,11 +275,11 @@ paths:
         '400':
           description: Bad request
   /api/v1/auth/check-login:
-    post:
+    get:
       tags:
         - Auth
       summary: Verifies JWT
-      description: Verifies the user's JWT in the request cookie to determine if it is still valid or not
+      description: Verifies the user's JWT in the request header to determine if it is still valid.
       responses:
         '200':
           description: Success
@@ -556,7 +556,7 @@ components:
           example: Successfully logged in
         data:
           properties:
-            user_id:  
+            user_id:
               type: string
               example: aa39c1e1-7591-47a9-a11c-1566e0b29e9e
             accessToken:
