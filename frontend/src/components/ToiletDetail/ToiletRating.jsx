@@ -114,7 +114,9 @@ const ToiletRating = ({ toiletId, onRate }) => {
             }
           })
           .catch((e) => {
-            setToastType('ERROR');
+            if (e.status !== 401) {
+              setToastType('ERROR');
+            }
           });
       }
 
