@@ -14,12 +14,19 @@ import {
 import PreferenceIcons from './PreferenceIcons';
 import styles from './ToiletDetail.module.scss';
 import { ToastContext } from '../../utilities/context';
+import ToiletErrorScreen from './ToiletErrorScreen';
+
+const PAGE_STATE = {
+  LOADING: 'LOADING',
+  ERROR: 'ERROR',
+  READY: 'READY',
+};
 
 const ToiletDetail = ({ building, toilet, isShow, onBack, onHide }) => {
   const { id, description, utilities } = toilet;
   const setToastType = useContext(ToastContext);
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [pageState, setPageState] = useState(PAGE_STATE.LOADING);
   const [toiletQuote, setToiletQuote] = useState(
     'Haha our website clogged just like the toilet cannot flush'
   );
@@ -40,10 +47,11 @@ const ToiletDetail = ({ building, toilet, isShow, onBack, onHide }) => {
         const newToiletQuote = getToiletQuote(cleanliness, id);
         setToiletQuote(newToiletQuote);
 
-        setIsLoading(false);
+        setPageState(PAGE_STATE.READY);
       })
       .catch((e) => {
         setToastType('ERROR');
+        setPageState(PAGE_STATE.ERROR);
       });
   }, [id, setToastType, toilet]);
 
@@ -56,8 +64,10 @@ const ToiletDetail = ({ building, toilet, isShow, onBack, onHide }) => {
   }, [updateToiletRank]);
 
   const getOffCanvasBody = () => {
-    if (isLoading) {
+    if (pageState === PAGE_STATE.LOADING) {
       return <ToiletLoadingScreen />;
+    } else if (pageState === PAGE_STATE.ERROR) {
+      return <ToiletErrorScreen />;
     }
 
     return (
