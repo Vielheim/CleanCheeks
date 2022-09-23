@@ -63,11 +63,7 @@ registerRoute(
 
 // Cache API call responses. Pattern match url host to work with CORS requests.
 registerRoute(
-  ({url}) => {
-    const bool = url.pathname.includes('/api/v1');
-    console.log(bool)
-    return bool
-  },
+  ({url}) => url.pathname.includes('/api/v1'),
   new StaleWhileRevalidate({
     cacheName: 'api',
     plugins: [
@@ -88,11 +84,7 @@ const bgSyncPlugin = new BackgroundSyncPlugin('apiRetryQueue', {
   maxRetentionTime: 2 * 60 // Retry for max of 2 Hours (specified in minutes)
 });
 registerRoute(
-  ({url, request}) => {
-    const bool = url.pathname.includes('/api/v1') && RETRY_METHODS.includes(request.method)
-    console.log(bool)
-    return bool;
-  },
+  ({url, request}) => url.pathname.includes('/api/v1') && RETRY_METHODS.includes(request.method),
   new NetworkOnly({
     plugins: [bgSyncPlugin]
   })
