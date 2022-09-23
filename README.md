@@ -10,7 +10,7 @@ Our application is accessible at https://clean-cheeks.vercel.app
 
 Our backend documentation is available at https://cleancheeks-backend.onrender.com/api/v1/docs/
 
-The endpoints themselves are accessible at https://cleancheeks-backend.onrender.com/api/v1/
+The endpoints themselves are accessible at https://cleancheeks-backend.onrender.com
 
 ## Setup
 
