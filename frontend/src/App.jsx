@@ -50,6 +50,36 @@ const TOAST_CONTENTS = {
     bg: 'light',
     img: focused_face,
   },
+  RATING: {
+    title: 'Thank you!',
+    body: 'You have successfully rated this toilet!',
+    bg: 'light',
+    img: focused_face,
+  },
+  FAVOURITE: {
+    title: 'Favourited! :D',
+    body: "We've added this toilet to your favourites!",
+    bg: 'light',
+    img: focused_face,
+  },
+  BLACKLIST: {
+    title: 'Blacklisted :<',
+    body: "We've added this toilet to your blacklist!",
+    bg: 'light',
+    img: focused_face,
+  },
+  UNFAVOURITE: {
+    title: 'Unfavourited!',
+    body: "We've removed this toilet from your favourites!",
+    bg: 'light',
+    img: focused_face,
+  },
+  UNBLACKLIST: {
+    title: 'Unblacklisted!',
+    body: "We've removed this toilet from your blacklist!",
+    bg: 'light',
+    img: focused_face,
+  },
 };
 
 function App() {

@@ -69,7 +69,6 @@ const MapPage = () => {
         })
         .catch((e) => {
           console.error(e);
-          setToastType('ERROR');
         });
     },
     [setToastType, userId]

@@ -63,6 +63,7 @@ const ToiletRating = ({ toiletId, onRate }) => {
         .then((res) => {
           updateRatingInfo(res.data);
           onRate();
+          setToastType('RATING');
           window.gtag('event', 'rate_toilet', {
             event_category: 'ratings',
             event_label: rating,

@@ -28,6 +28,11 @@ const PreferenceIcons = ({
           accessToken
         )
           .then((result) => {
+            if (type === PreferenceType.FAVOURITE) {
+              setToastType('UNFAVOURITE');
+            } else {
+              setToastType('UNBLACKLIST');
+            }
             if (result.data) {
               setPreference(null);
               onSetPreferenceType(null);
@@ -45,6 +50,11 @@ const PreferenceIcons = ({
           accessToken
         )
           .then((result) => {
+            if (result.data.type === PreferenceType.FAVOURITE) {
+              setToastType('FAVOURITE');
+            } else {
+              setToastType('BLACKLIST');
+            }
             setPreference(result.data.type);
             onSetPreferenceType(result.data.type);
           })
