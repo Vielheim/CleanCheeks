@@ -87,7 +87,7 @@ function App() {
   const [user, setUser] = useState(false);
   const [toastType, setToastType] = useState(null);
   const [toiletPreferences, setToiletPreferences] = useState([]);
-  const [isOnline, setIsOnline] = useState(false);
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
   const userId = getLocalStorageValue(USER_ID_KEY);
 
   const fetchToiletPreferences = useCallback(async () => {
