@@ -1,4 +1,16 @@
-# CS3216 Assignment 3
+# CS3216 Assignment 3: CleanCheeks
+
+## Our Application
+
+### Frontend Website
+
+Our application is accessible at https://clean-cheeks.vercel.app
+
+### Backend
+
+Our backend documentation is available at https://cleancheeks-backend.onrender.com/api/v1/docs/
+
+The endpoints themselves are accessible at https://cleancheeks-backend.onrender.com/api/v1/
 
 ## Setup
 
@@ -28,13 +40,13 @@ It would be better to start the backend service before starting the frontend app
     2. For subsequent initialisations, run `npm run deploy` to start the backend service.
 
 **Note:**
-The API endpoint can be found at http://localhost:8000/api/v1.
+The API endpoint can be found at http://localhost:8000/api/v1/
 
 ## Members
 
-| Name                | Matric No. | Contributions |
-| ------------------- | ---------- | ------------- |
-| Keane Chan Jun Yu   | A0205678W  |               |
-| Wu Peirong          | A0199926E  |               |
-| Tan Su Yin          | A0205369B  |               |
-| Terence Ho Wei Yang | A0196511E  |               |
+| Name                | Matric No. | Contributions     |
+| ------------------- | ---------- | ----------------- |
+| Keane Chan Jun Yu   | A0205678W  | Full Stack        |
+| Wu Peirong          | A0199926E  | Full Stack        |
+| Tan Su Yin          | A0205369B  | Full Stack, UI/UX |
+| Terence Ho Wei Yang | A0196511E  | Full Stack        |
