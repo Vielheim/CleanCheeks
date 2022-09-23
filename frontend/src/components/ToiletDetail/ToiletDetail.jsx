@@ -22,7 +22,7 @@ const PAGE_STATE = {
   READY: 'READY',
 };
 
-const ToiletDetail = ({ building, toilet, isShow, onBack, onHide }) => {
+const ToiletDetail = ({ toilet, isShow, onBack, onHide }) => {
   const { id, description, utilities } = toilet;
   const setToastType = useContext(ToastContext);
 
@@ -46,12 +46,17 @@ const ToiletDetail = ({ building, toilet, isShow, onBack, onHide }) => {
 
         const newToiletQuote = getToiletQuote(cleanliness, id);
         setToiletQuote(newToiletQuote);
-
-        setPageState(PAGE_STATE.READY);
       })
       .catch((e) => {
+        setCleanlinessMetadata(getCleanlinessMetadata(toilet.cleanliness));
+        const newToiletQuote = getToiletQuote(toilet.cleanliness, id);
+        setToiletQuote(newToiletQuote);
+        setPercentageBeat(null);
+
         setToastType('ERROR');
-        setPageState(PAGE_STATE.ERROR);
+      })
+      .finally(() => {
+        setPageState(PAGE_STATE.READY);
       });
   }, [id, setToastType, toilet]);
 

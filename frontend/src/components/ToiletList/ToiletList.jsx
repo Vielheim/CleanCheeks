@@ -39,7 +39,6 @@ const ToiletList = ({ state, toilets, isShow, onCustomHide, tagType }) => {
     });
     return (
       <ToiletDetail
-        building={selectedToilet.building}
         toilet={selectedToilet}
         isShow={isShow}
         onBack={() => setSelectedToilet(null)}

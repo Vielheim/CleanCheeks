@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import Toast from 'react-bootstrap/Toast';
 import ToastContainer from 'react-bootstrap/ToastContainer';
 import {
@@ -20,9 +20,10 @@ import { getLocalStorageValue } from './utilities/localStorage';
 const TOAST_CONTENTS = {
   OFFLINE: {
     title: 'Oops!',
-    body: 'Looks like you are not connected to the internet. Cleancheeks will\
-    only be able to give you updated toilets near you once you are\
-    connected.',
+    body:
+      'Looks like you are not connected to the internet. Cleancheeks will ' +
+      'only be able to give you updated toilets near you once you are ' +
+      'connected.',
     bg: 'warning',
     img: focused_face,
   },
@@ -86,6 +87,7 @@ function App() {
   const [user, setUser] = useState(false);
   const [toastType, setToastType] = useState(null);
   const [toiletPreferences, setToiletPreferences] = useState([]);
+  const [isOnline, setIsOnline] = useState(false);
   const userId = getLocalStorageValue(USER_ID_KEY);
 
   const fetchToiletPreferences = useCallback(async () => {
@@ -107,14 +109,41 @@ function App() {
 
   useEffect(() => {
     checkUserLogin();
+  }, [checkUserLogin]);
+
+  useEffect(() => {
     fetchToiletPreferences();
-  }, [checkUserLogin, fetchToiletPreferences]);
+  }, [fetchToiletPreferences]);
+
+  const toastValue = useMemo(() => {
+    if (toastType == null) {
+      return null;
+    }
+    if (!isOnline) {
+      return 'OFFLINE';
+    }
+    return toastType;
+  }, [isOnline, toastType]);
+
+  window.addEventListener('online', () => {
+    setToastType('ONLINE');
+    setIsOnline(true);
+  });
+  window.addEventListener('offline', () => {
+    setToastType('OFFLINE');
+    setIsOnline(false);
+  });
 
   return (
     <>
       <Router>
         <UserContext.Provider
-          value={{ user, setUser, toiletPreferences, fetchToiletPreferences }}
+          value={{
+            user,
+            setUser,
+            toiletPreferences,
+            fetchToiletPreferences,
+          }}
         >
           <ToastContext.Provider value={setToastType}>
             <Routes>
@@ -130,7 +159,7 @@ function App() {
           </ToastContext.Provider>
         </UserContext.Provider>
 
-        {toastType !== null && (
+        {toastValue !== null && (
           <ToastContainer position="top-center">
             <Toast
               className="mb-4 offline-toast"
@@ -144,16 +173,16 @@ function App() {
                 <div className="toast-header-content">
                   <img
                     alt="Focused Face"
-                    src={TOAST_CONTENTS[toastType].img}
+                    src={TOAST_CONTENTS[toastValue].img}
                     height={25}
                     width="auto"
                   />
                   <strong className="toast-header-title">
-                    {TOAST_CONTENTS[toastType].title}
+                    {TOAST_CONTENTS[toastValue].title}
                   </strong>
                 </div>
               </Toast.Header>
-              <Toast.Body>{TOAST_CONTENTS[toastType].body}</Toast.Body>
+              <Toast.Body>{TOAST_CONTENTS[toastValue].body}</Toast.Body>
             </Toast>
           </ToastContainer>
         )}

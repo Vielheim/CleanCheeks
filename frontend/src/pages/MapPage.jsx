@@ -1,33 +1,26 @@
-import React, {
-  useState,
-  useEffect,
-  useCallback,
-  useContext,
-  useReducer,
-} from 'react';
+import React, { useCallback, useEffect, useReducer, useState } from 'react';
 import {
+  Circle,
   MapContainer,
   Marker,
-  TileLayer,
-  Circle,
   Polyline,
+  TileLayer,
   useMapEvents,
 } from 'react-leaflet';
-import SearchBar from '../components/SearchBar';
+import VENUES from '../assets/venues.json';
 import ClusterDetails from '../components/ClusterDetail/ClusterDetails';
 import getMarkerIcon from '../components/markerIcon';
-import { ToastContext } from '../utilities/context';
-import { getDistance } from '../utilities/Util';
+import SearchBar from '../components/SearchBar';
 import toiletReducer, { INITIAL_TOILET_STATE } from '../reducers/reducer';
-import VENUES from '../assets/venues.json';
+import { getDistance } from '../utilities/Util';
 
-import styles from './MapPage.module.scss';
 import ToiletControlller from '../api/ToiletController';
-import { getToiletsBreakdown } from '../utilities/Util';
 import ToiletPreferencesModal from '../components/ToiletPreferencesModal/ToiletPreferencesModal';
-import { getLocalStorageValue } from '../utilities/localStorage';
-import { USER_ID_KEY } from '../constants';
 import ToiletsLoadingPlaceholder from '../components/ToiletsLoadingPlaceholder';
+import { USER_ID_KEY } from '../constants';
+import { getLocalStorageValue } from '../utilities/localStorage';
+import { getToiletsBreakdown } from '../utilities/Util';
+import styles from './MapPage.module.scss';
 
 const CIRCLE_FILL_OPTIONS = {
   fillOpacity: 1,
@@ -58,7 +51,6 @@ const MapPage = () => {
   };
 
   const [isLoadingToilets, setIsLoadingToilets] = useState(true);
-  const setToastType = useContext(ToastContext);
   const [state, dispatch] = useReducer(toiletReducer, INITIAL_TOILET_STATE);
   const [map, setMap] = useState(null);
   const userId = getLocalStorageValue(USER_ID_KEY);
@@ -76,7 +68,7 @@ const MapPage = () => {
           setIsLoadingToilets(false);
         });
     },
-    [setToastType, userId]
+    [userId]
   );
 
   // runs only on first load
@@ -94,6 +86,7 @@ const MapPage = () => {
           localStorage.setItem('lastCenter', JSON.stringify(newCenter));
         },
         (error) => {
+          // eslint-disable-next-line default-case
           switch (error.code) {
             case error.PERMISSION_DENIED:
               console.log('Permission denied');
@@ -108,18 +101,7 @@ const MapPage = () => {
         }
       );
     }
-
-    window.addEventListener('online', () => {
-      if (setToastType) {
-        setToastType('ONLINE');
-      }
-    });
-    window.addEventListener('offline', () => {
-      if (setToastType) {
-        setToastType('OFFLINE');
-      }
-    });
-  }, [setToastType]);
+  }, []);
 
   useEffect(() => {
     localStorage.setItem('filters', JSON.stringify(state.filters));
