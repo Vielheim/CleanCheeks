@@ -35,7 +35,7 @@ const filterToilets = (toilets, filters) => {
 };
 
 export const INITIAL_FILTER_STATE = {
-  search: 'UT-AUD1',
+  search: '',
   types: Object.keys(ToiletType),
   utilities: Object.keys(Utilities),
 };
@@ -52,6 +52,9 @@ export const INITIAL_TOILET_STATE = {
       JSON.parse(localStorage.getItem('lastCenter')) ??
       getLocation(VENUES['UT-AUD1']),
     map:
+      JSON.parse(localStorage.getItem('lastCenter')) ??
+      getLocation(VENUES['UT-AUD1']),
+    venue:
       JSON.parse(localStorage.getItem('lastCenter')) ??
       getLocation(VENUES['UT-AUD1']),
   },
@@ -71,6 +74,15 @@ const toiletReducer = (state, action) => {
         center: newCenterObj,
       };
     case 'updateSearch':
+      if (action.payload === '') {
+        return {
+          ...state,
+          filters: {
+            ...state.filters,
+            search: ''
+          }
+        }
+      }
       const newCenter = getLocation(VENUES[action.payload]);
 
       return {
@@ -80,8 +92,9 @@ const toiletReducer = (state, action) => {
           search: action.payload,
         },
         center: {
-          current: newCenter,
+          ...state.center,
           map: newCenter,
+          venue: newCenter,
         },
       };
     case 'expandTopItems':

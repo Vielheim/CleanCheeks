@@ -76,7 +76,7 @@ const MapPage = () => {
           setIsLoadingToilets(false);
         });
     },
-    [setToastType, userId]
+    [userId]
   );
 
   // runs only on first load
@@ -103,6 +103,8 @@ const MapPage = () => {
               break;
             case error.TIMEOUT:
               console.log('Timeout');
+              break;
+            default:
               break;
           }
         }
@@ -170,7 +172,9 @@ const MapPage = () => {
         />
         <Circle
           className={styles['location-marker']}
-          center={state.center.current}
+          center={
+            state.filters.search ? state.center.venue : state.center.current
+          }
           pathOptions={CIRCLE_FILL_OPTIONS}
           radius={10}
         />
@@ -178,13 +182,11 @@ const MapPage = () => {
 
         {state.filteredClusters.map((cluster, i) => {
           const { latitude, longitude, toilets } = cluster;
+          const center = state.filters.search
+            ? state.center.venue
+            : state.center.current;
           const isNear =
-            getDistance(
-              latitude,
-              longitude,
-              state.center.current[0],
-              state.center.current[1]
-            ) <= 200;
+            getDistance(latitude, longitude, center[0], center[1]) <= 200;
           const { GOOD, AVERAGE, BAD } = getToiletsBreakdown(toilets);
 
           return (
@@ -192,7 +194,7 @@ const MapPage = () => {
               {isNear && (
                 <Polyline
                   pathOptions={POLYLINE_FILL_OPTIONS}
-                  positions={[state.center.current, [latitude, longitude]]}
+                  positions={[center, [latitude, longitude]]}
                 />
               )}
               <Marker

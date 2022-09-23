@@ -25,7 +25,12 @@ const SearchBar = ({ state, dispatch, venues }) => {
   };
 
   const onSearchChange = ({ target: { value } }) => {
-    setTempSearch(value);
+    if (value === '') {
+      setTempSearch(value);
+      dispatch({ type: 'updateSearch', payload: value });
+    } else {
+      setTempSearch(value);
+    }
   };
 
   // form event handlers
