@@ -1,7 +1,7 @@
 import * as service from '../../../db/services/ToiletService';
 import { PreferenceType } from '../../../enums';
 import { validateCoordinates } from '../../data_transfer/validate/Util';
-import { IToilet } from '../../interfaces';
+import { IToilet } from '../../interfaces/toilet.interface'; 
 import { ICoordinates } from '../../interfaces/coordinates.interface';
 import {
   IToiletRank,

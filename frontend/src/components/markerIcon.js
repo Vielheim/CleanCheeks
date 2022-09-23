@@ -11,7 +11,7 @@ const getSvgCircle = (numGreen, numYellow, numRed, isTransparent) => {
   const greenLength = numGreen * sectionLength;
   const redLength = numRed * sectionLength;
   const yellowLength = numYellow * sectionLength;
-  
+
   const opacity = isTransparent ? 0.7 : 1;
 
   const svgCircle = `
@@ -19,9 +19,13 @@ const getSvgCircle = (numGreen, numYellow, numRed, isTransparent) => {
       <defs>
         <circle id="circle" cx="5" cy="5" r="4" fill="transparent" transform="rotate(270, 5, 5)" />
       </defs>
-      <use xlink:href="#circle" stroke="#EB1D36" stroke-dasharray="${redLength}, ${yellowLength + greenLength}"  />
+      <use xlink:href="#circle" stroke="#EB1D36" stroke-dasharray="${redLength}, ${
+    yellowLength + greenLength
+  }"  />
       <use xlink:href="#circle" stroke="#FFDE00" stroke-dasharray="0 ${redLength}, ${yellowLength} ${greenLength}"  />
-      <use xlink:href="#circle" stroke="#367E18" stroke-dasharray="0, ${redLength + yellowLength}, ${greenLength}, 0" />
+      <use xlink:href="#circle" stroke="#367E18" stroke-dasharray="0, ${
+        redLength + yellowLength
+      }, ${greenLength}, 0" />
       <circle cx="5" cy="5" r="3.5" fill="white" />
         
       <text x="50%" y="50%" dominant-baseline="central" text-anchor="middle" fill="black" font-size="4">${numSections}</text>
