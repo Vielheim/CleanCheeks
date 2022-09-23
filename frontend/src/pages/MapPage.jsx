@@ -81,7 +81,7 @@ const MapPage = () => {
           const newCenter = [latitude, longitude];
           dispatch({
             type: 'updateCenter',
-            payload: { current: newCenter, map: newCenter },
+            payload: { current: newCenter },
           });
           localStorage.setItem('lastCenter', JSON.stringify(newCenter));
         },

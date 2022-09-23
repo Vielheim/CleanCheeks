@@ -9,11 +9,9 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import ListGroup from 'react-bootstrap/ListGroup';
 import { BsSearch } from 'react-icons/bs';
-import { MdClear } from 'react-icons/md';
 import throttle from 'lodash/throttle';
 
 import styles from './SearchBar.module.scss';
-import Button from 'react-bootstrap/esm/Button';
 
 const SearchBar = ({ state, dispatch, venues }) => {
   let searchTimeoutId = 0;
@@ -65,10 +63,6 @@ const SearchBar = ({ state, dispatch, venues }) => {
     });
   };
 
-  const onFormClear = () => {
-    setTempSearch('');
-  };
-
   const filterVenues = (venues) =>
     Object.keys(venues).filter(
       (id) =>
@@ -93,22 +87,16 @@ const SearchBar = ({ state, dispatch, venues }) => {
               <BsSearch />
             </InputGroup.Text>
             <Form.Control
+              type="search"
               className={styles['search-bar']}
               placeholder="Where are you? Eg: UTown"
+              onBlur={onFormBlur}
               onChange={onSearchChange}
               onFocus={onFormFocus}
-              onBlur={onFormBlur}
               onKeyDown={onFormKeyDown}
               value={tempSearch}
             />
-
-            {isShowList ? (
-              <Button onClick={onFormClear}>
-                <MdClear />
-              </Button>
-            ) : (
-              <FilterOptions state={state} dispatch={dispatch} />
-            )}
+            <FilterOptions state={state} dispatch={dispatch} />
           </InputGroup>
         </Col>
       </Row>
