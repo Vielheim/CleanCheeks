@@ -67,6 +67,7 @@ const SearchBar = ({ state, dispatch, venues }) => {
 
   const onFormClear = () => {
     setTempSearch('');
+    onFormFocus();
   };
 
   const filterVenues = (venues) =>
