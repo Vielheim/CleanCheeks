@@ -1,15 +1,17 @@
 import Spinner from 'react-bootstrap/Spinner';
+import Card from 'react-bootstrap/Card';
 import styles from './ToiletsLoadingPlaceholder.module.scss';
 
 const ToiletsLoadingPlaceholder = () => {
   return (
-    <div className={styles['toilet-loading-row']}>
+    <Card className={styles['toilet-loading-row']}>
       <Spinner animation="border" role="status">
         <span className="visually-hidden">Loading...</span>
       </Spinner>
-
-      <p className="mx-3">Loading the toilets...</p>
-    </div>
+      <div className={styles['toilet-loading-text']}>
+        Loading the toilets...
+      </div>
+    </Card>
   );
 };
 
